@@ -6,6 +6,7 @@ public class Usuario {
 	String Rut;
 	String id_usuario;
 	String Password;
+	boolean Admin=false;
 	
 	public Usuario(String nombre,int edad, String sexo, String rut,String id, String pass){
 		Nombre=nombre;
