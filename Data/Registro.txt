@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Registro>
+   <data>
+      <id>prueba</id>
+      <password>testpass</password>
+      <admin>false</admin>
+   </data>
+   <data>
+      <id>prueba2</id>
+      <password>testpass2</password>
+      <admin>true</admin>
+   </data>
+</Registro>
