@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Historial carrera="Ingenieria" malla="Industrial TI">
+   <Semestre periodo="2015-2">
+      <Ramo nota="4.5">IIC2143</Ramo>
+      <Ramo nota="5.4">ICS3413</Ramo>
+      <Ramo nota="4.9">IIC2133</Ramo>
+      <Ramo nota="5.1">IIC2733</Ramo>
+      <Ramo nota="5.7">IIC2764</Ramo>
+   </Semestre>
+    <Semestre periodo="2015-1">
+      <Ramo nota="4.5">IIC2143</Ramo>
+      <Ramo nota="5.4">ICS3413</Ramo>
+      <Ramo nota="4.9">IIC2133</Ramo>
+      <Ramo nota="5.1">IIC2733</Ramo>
+      <Ramo nota="5.7">IIC2764</Ramo>
+   </Semestre>
+</Historial>

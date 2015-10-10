@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Alumnos>
+   <prueba>
+      <nombre>Juan Rojas</nombre>
+      <edad>13</edad>
+      <sexo>Masculino</sexo>
+      <rut>11.111.111-1</rut>
+      <numero_alumno>10111213</numero_alumno>
+   </prueba>
+</Alumnos>
