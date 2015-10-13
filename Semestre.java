@@ -15,4 +15,13 @@ public class Semestre {
 			}
 		}
 	}
+        
+        void agregarRamo(Ramo ramoNuevo){
+            Ramo[] copia = Ramos;
+            Ramos = new Ramo[copia.length + 1];
+            for (int i=0; i<copia.length; i++){
+                Ramos[i] = copia[i];
+            }
+            Ramos[Ramos.length-1] = ramoNuevo;
+        }
 }
