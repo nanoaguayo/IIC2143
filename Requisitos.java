@@ -24,10 +24,10 @@ public class Requisitos {
 		//En el caso para los creditos, sera necesario contar los creditos del alumno y ver si cumple.
 		//en cualquier caso q no cumpla, se devolvera false. 
 		
-		String path = "data/";
-		String num=String.valueOf(a.numero_alumno);
-		path+=num;
-		path+="/Ingenieria/Requisitos.txt";
+		String path = "data/Requisitos.txt";
+		// num=String.valueOf(a.numero_alumno);
+		//path+=num;
+		//path+="/Ingenieria/Requisitos.txt";
 		ArrayList <String> siglas_requisitos = new ArrayList <String>();
 		
 		try{

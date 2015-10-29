@@ -1,5 +1,6 @@
 
 public class Ramo {
+	String Nombre;
 	String Sigla;
 	String Horario;
 	String Sala;
@@ -9,8 +10,9 @@ public class Ramo {
 	boolean Retirable;
 	int Seccion;
 	
-	public Ramo(String sigla,String horario,String sala,String facultad,int creditos,double nota,boolean retirable, int seccion){
+	public Ramo(String nombre,String sigla,String horario,String sala,String facultad,int creditos,double nota,boolean retirable, int seccion){
 		
+		Nombre=nombre;
 		Sigla=sigla;
 		Horario=horario;
 		Sala=sala;

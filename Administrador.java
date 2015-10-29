@@ -83,14 +83,14 @@ public class Administrador extends Usuario{
 
         }
         
-        Boolean CrearRamo(String Sigla, String Horario, String Sala, String Facultad, int Creditos, double Nota, boolean Retirable, int Seccion, Semestre s, Profesor p){
+        Boolean CrearRamo(String Nombre, String Sigla, String Horario, String Sala, String Facultad, int Creditos, double Nota, boolean Retirable, int Seccion, Semestre s, Profesor p){
             try {
-                Ramo r = new Ramo(Sigla, Horario, Sala, Facultad, Creditos, Nota, Retirable, Seccion); //se crea instancia ramo
+                Ramo r = new Ramo(Nombre, Sigla, Horario, Sala, Facultad, Creditos, Nota, Retirable, Seccion); //se crea instancia ramo
                 if (!VerificarRamo(p, r)){ //se verifica la validez del ramo
                     return false;
                 }
                 // se agrega al xml
-                String filepath = "data/"+Facultad+"Ramos.txt";
+                String filepath = "data/Carreras/"+Facultad+"/Ramos.txt";
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
                 Document doc = docBuilder.parse(filepath);
@@ -145,7 +145,7 @@ public class Administrador extends Usuario{
                 //revisar por cada ramo su sigla y obtener cantidad de creditos
                 //sumar a total de creditos
                 //verificar
-                String filepath = "data/"+Facultad+"Ramos.txt";
+                String filepath = "data/Carreras/"+Facultad+"/Ramos.txt";
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
                 Document doc = docBuilder.parse(filepath);
