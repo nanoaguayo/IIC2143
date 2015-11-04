@@ -7,7 +7,7 @@ import org.w3c.dom.*;
 public class Historial {
 	
 	Semestre[] GetHistorial(Alumno a){
-		String path = "data/";
+		String path = "data/Alumnos/";
 		String num=String.valueOf(a.numero_alumno);
 		path+=num;
 		path+="/Historial.txt";
@@ -29,7 +29,7 @@ public class Historial {
 		//Inicializamos el Historial
 		Semestre[] resultado = new Semestre[x];
 		//Buscamos los ramos en la carrera
-		String path2= "data/"+Carrera+"/Ramos.txt";
+		String path2= "data/Carreras/"+Carrera+"/Ramos.txt";
 		Registro = new File(path2);
 		doc = dBuilder.parse(Registro);
 		
@@ -51,12 +51,11 @@ public class Historial {
 				
 				String name1= nodo.getElementsByTagName("sigla").item(0).getTextContent();
 				String name2= nodo1.getTextContent();
-				print(name1);
-				print(name2);
+
 				
 					if(name1.equals(name2)){
+							String Nombre=nodo.getElementsByTagName("nombre").item(0).getTextContent();
 							String Sigla=nodo.getElementsByTagName("sigla").item(0).getTextContent();
-							print(Sigla);
 							String Horario=nodo.getElementsByTagName("horario").item(0).getTextContent();
 							String Sala=nodo.getElementsByTagName("sala").item(0).getTextContent();
 							String Facultad=nodo.getElementsByTagName("facultad").item(0).getTextContent();
@@ -65,7 +64,7 @@ public class Historial {
 							boolean Retirable=Boolean.parseBoolean(nodo.getElementsByTagName("retirable").item(0).getTextContent());
 							int Seccion=Integer.parseInt(nodo.getElementsByTagName("seccion").item(0).getTextContent());
 							
-							aux3 = new Ramo(Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion);
+							aux3 = new Ramo(Nombre,Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion);
 							contenido[j]=aux3;
 								}
 				}
