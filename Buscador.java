@@ -29,8 +29,8 @@ public class Buscador {
 				double Nota=Double.parseDouble(info.getElementsByTagName("nota").item(0).getTextContent());
 				boolean Retirable=Boolean.parseBoolean(info.getElementsByTagName("retirable").item(0).getTextContent());;
 				int Seccion=Integer.parseInt(info.getElementsByTagName("seccion").item(0).getTextContent());
-				
-				resultado=new Ramo(Nombre,Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion);
+				String Comentario=info.getElementsByTagName("comentario").item(0).getTextContent();
+				resultado=new Ramo(Nombre,Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion,Comentario);
 				return resultado;
 			}
 		}

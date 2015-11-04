@@ -86,6 +86,7 @@ public class Alumno extends Usuario{
 			   System.out.println(aux2.getChild("sigla").getText()+"---"+aux);
 			   if(aux2.getChild("sigla").getText().equals(aux)){
 				   System.out.println(i+"-+-+-"+j);
+				   String Nombre = aux2.getChild("nombre").getText();
 				   String Horario = aux2.getChild("horario").getText();
 				   String Sala= aux2.getChild("sala").getText();
 				   String Facultad=aux2.getChild("facultad").getText();
@@ -93,8 +94,9 @@ public class Alumno extends Usuario{
 				   String nota= aux2.getChild("nota").getText();
 				   String retirable= aux2.getChild("retirable").getText();
 				   String seccion= aux2.getChild("seccion").getText();
+				   String comentario= aux2.getChild("comentario").getText();
 				   
-				   semestre[i]= new Ramo(aux,Horario,Sala,Facultad,Integer.valueOf(Creditos),Double.valueOf(nota),Boolean.valueOf(retirable),Integer.valueOf(seccion));	   
+				   semestre[i]= new Ramo(Nombre,aux,Horario,Sala,Facultad,Integer.valueOf(Creditos),Double.valueOf(nota),Boolean.valueOf(retirable),Integer.valueOf(seccion),comentario);	   
 				   
 			   }
 			 }

@@ -9,8 +9,9 @@ public class Ramo {
 	double Nota;
 	boolean Retirable;
 	int Seccion;
+	String Comentario;
 	
-	public Ramo(String nombre,String sigla,String horario,String sala,String facultad,int creditos,double nota,boolean retirable, int seccion){
+	public Ramo(String nombre,String sigla,String horario,String sala,String facultad,int creditos,double nota,boolean retirable, int seccion,String comentario){
 		
 		Nombre=nombre;
 		Sigla=sigla;
@@ -21,5 +22,6 @@ public class Ramo {
 		Nota=nota;
 		Retirable=retirable;
 		Seccion=seccion;
+		Comentario=comentario;
 	}
 }

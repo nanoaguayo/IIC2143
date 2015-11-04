@@ -113,8 +113,8 @@ public class Avance {
 					double Nota= 0;
 					boolean Retirable=Boolean.parseBoolean(nodo.getElementsByTagName("retirable").item(0).getTextContent());
 					int Seccion=Integer.parseInt(nodo.getElementsByTagName("seccion").item(0).getTextContent());
-					
-					Ramo aux3 = new Ramo(Nombre,Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion);
+					String Comentario=nodo.getElementsByTagName("facultad").item(0).getTextContent();
+					Ramo aux3 = new Ramo(Nombre,Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion,Comentario);
 					ramosMalla[i]=aux3;
 				}
 			}
@@ -182,6 +182,3 @@ public class Avance {
 	}	
 
 }
-		
-	
-

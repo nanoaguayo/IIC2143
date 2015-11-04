@@ -60,9 +60,12 @@ public class Sistema {
 			e.printStackTrace();
 		}*/
 		
-		boolean a=Active_admin.CrearRamo("Sigla","Nombre", "Horario", "Sala", "Ingenieria", 5 , 5.8 , true, 2, "profesor");
+		boolean a=Active_admin.CrearRamo("Sigla3","Nombre", "M-J:3", "A93", "Ingenieria", 5 , 5.8 , true, 2,"Comentaro" ,"Profesor4");
 		System.out.println(a);
-		
+		//Active_admin.SetCreditosMaximos(10);
+		/*Foro fr = new Foro();
+		fr.AddMessage("Sigla", "TestStudent", "Este es un texto de prueba", "Archivo test");
+		fr.PrintForo("Sigla");*/
 		
 	}
 
@@ -125,6 +128,7 @@ static boolean RegistrarAlumno(String id,String nombre,String carrera,String mal
       outputter.output(document2,writer2);
       //outputter.output(document, System.out);
       writer.close(); // close writer
+      writer2.close();
           
     }
     catch (IOException e) {
@@ -135,9 +139,7 @@ static boolean RegistrarAlumno(String id,String nombre,String carrera,String mal
     
 	return true;
 }
-static boolean RegistrarAdmin(){
-	return true;
-}
+
 }
 	
 

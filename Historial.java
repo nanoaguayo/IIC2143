@@ -63,8 +63,9 @@ public class Historial {
 							double Nota= Double.valueOf(nodo1.getAttribute("nota"));
 							boolean Retirable=Boolean.parseBoolean(nodo.getElementsByTagName("retirable").item(0).getTextContent());
 							int Seccion=Integer.parseInt(nodo.getElementsByTagName("seccion").item(0).getTextContent());
+							String Comentario = nodo.getElementsByTagName("comentario").item(0).getTextContent();
 							
-							aux3 = new Ramo(Nombre,Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion);
+							aux3 = new Ramo(Nombre,Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion,Comentario);
 							contenido[j]=aux3;
 								}
 				}

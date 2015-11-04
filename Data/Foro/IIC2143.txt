@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Foro>
+  <mensaje>
+    <alumno>Pedro Morales</alumno>
+    <texto>Texto de prueba</texto>
+    <archivo />
+  </mensaje>
+  <mensaje>
+    <alumno>TestStudent</alumno>
+    <texto>Este es un texto de prueba</texto>
+    <archivo>Archivo test</archivo>
+  </mensaje>
+</Foro>

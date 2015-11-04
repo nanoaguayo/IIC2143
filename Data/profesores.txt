@@ -1,16 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Profesores>
-<Profesor Nombre="Profesor1">
-<ramo>IIC2143</ramo>
-<ramo>ICS3413</ramo>
-</Profesor>
-<Profesor Nombre="Profesor2">
-<ramo>IIC2133</ramo>
-</Profesor>
-<Profesor Nombre="Profesor3">
-<ramo>IIC2733</ramo>
-</Profesor>
-<Profesor Nombre="Profesor4">
-<ramo>IIC2764</ramo>
-</Profesor>
+  <Profesor Nombre="Profesor1">
+    <ramo>IIC2143</ramo>
+    <ramo>ICS3413</ramo>
+  </Profesor>
+  <Profesor Nombre="Profesor2">
+    <ramo>IIC2133</ramo>
+  </Profesor>
+  <Profesor Nombre="Profesor3">
+    <ramo>IIC2733</ramo>
+  </Profesor>
+  <Profesor Nombre="Profesor4">
+    <ramo>IIC2764</ramo>
+  </Profesor>
 </Profesores>

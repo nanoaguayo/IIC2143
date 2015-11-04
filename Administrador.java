@@ -99,32 +99,35 @@ else{
 return true;}
         }
         
-Boolean CrearRamo(String Sigla,String Nombre, String Horario, String Sala, String Facultad, int Creditos, double Nota, boolean Retirable, int Seccion, String profesor){
+Boolean CrearRamo(String Sigla,String Nombre, String Horario, String Sala, String Facultad, int Creditos, double Nota, boolean Retirable, int Seccion, String Comentario,String profesor){
     //Verificar si cumple todo   
-	Ramo r = new Ramo(Nombre,Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion);
+	Ramo r = new Ramo(Nombre,Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion,Comentario);
 	if(VerificarRamo(profesor,r)){
 	String retirablex="false";
 	if(Retirable==true){retirablex="true";}
 	try {
 	    Document document = null;
-	    
+	    Document document3=null;
 	    Element root = null;
-	 
+	    Element root2 = null;
 	    File xmlFile = new File("data/Carreras/"+Facultad+"/Ramos.txt");
-	   
+	    File xmlFile2 = new File("data/Profesores.txt");
 	    if(xmlFile.exists()) {
 	        // try to load document from xml file if it exist
 	        // create a file input stream
 	        FileInputStream fis = new FileInputStream(xmlFile);
+	        FileInputStream fis2 = new FileInputStream(xmlFile2);
 	 
 	        // create a sax builder to parse the document
 	        SAXBuilder sb = new SAXBuilder();
 	        // parse the xml content provided by the file input stream and create a Document object
 	        document = sb.build(fis);
+	        document3 = sb.build(fis2);
 	        
 	        // get the root element of the document
 	        
 	        root = document.getRootElement();
+	        root2 = document3.getRootElement();
 	        fis.close();
 	    } else{System.out.println("No existe");return false;}
  
@@ -154,6 +157,8 @@ Boolean CrearRamo(String Sigla,String Nombre, String Horario, String Sala, Strin
 	    String aux3 = String.valueOf(Creditos);
 	  
 	    element9.setText(aux3);
+	    Element element10 = new Element("comentario");
+	    element10.setText(Comentario);
 	    element.addContent(element2);
 	    element.addContent(element3);
 	    element.addContent(element4);
@@ -162,16 +167,52 @@ Boolean CrearRamo(String Sigla,String Nombre, String Horario, String Sala, Strin
 	    element.addContent(element7);
 	    element.addContent(element8);
 	    element.addContent(element9);
+	    element.addContent(element10);
 	    root.addContent(element);
-  
- 
-  FileWriter writer = new FileWriter("data/Carreras/"+Facultad+"/Ramos.txt");
-  XMLOutputter outputter = new XMLOutputter();
-  outputter.setFormat(Format.getPrettyFormat());
-  outputter.output(document, writer);
+	    //Creamos el archivo del foro y agregamos el ramo al profesor.
+	   
+	    Document document2=new Document();
+	    Element rootHist = new Element("Foro");
 
-  //outputter.output(document, System.out);
-  writer.close(); // close writer
+	    document2.setContent(rootHist);
+	      
+	    FileWriter writer2 = new FileWriter("data/Foro/"+Sigla+".txt");
+	    XMLOutputter outputter = new XMLOutputter();
+	    outputter.setFormat(Format.getPrettyFormat());
+        outputter.output(document2,writer2);
+        writer2.close();
+        //Agregamos el ramo al profesor.
+        List<Element> profesores = root2.getChildren();
+        Element x=null;
+        int AUX=0;
+        for(int i=0;i<profesores.size();i++){
+        	String profe = profesores.get(i).getAttributeValue("Nombre");
+        	System.out.println(profe+"--"+profesor);
+        	if(profe.equals(profesor)){
+        		System.out.println("entro");
+        		x = new Element("ramo");
+        		x.setText(Sigla);
+        		
+        		AUX=i;
+        	}
+        }
+        Element y = profesores.get(AUX);
+        y.addContent(x);
+        
+        FileWriter writer3 = new FileWriter("data/Profesores.txt");
+        outputter.setFormat(Format.getPrettyFormat());
+        outputter.output(document3, writer3);
+
+        //outputter.output(document, System.out);
+        writer3.close(); // close writer
+ 
+        FileWriter writer = new FileWriter("data/Carreras/"+Facultad+"/Ramos.txt");
+        outputter.setFormat(Format.getPrettyFormat());
+        outputter.output(document, writer);
+
+        //outputter.output(document, System.out);
+        writer.close(); // close writer
+        //Creamos el archivo con la lista de alumnos
       
 }
 catch (Exception e) {
