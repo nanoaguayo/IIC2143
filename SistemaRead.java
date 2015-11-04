@@ -62,7 +62,12 @@ Alumno SetStudent(String id, String pass){
 			int NA = Integer.parseInt(info.getElementsByTagName("numero_alumno").item(0).getTextContent());	
 			
 			Alumno aux= new Alumno(NAME,AGE,SEX,RUT,id,pass,NA);
+			if(CheckRamosReprobados(aux)){
 			return aux;
+			}
+			else{
+				System.out.println("Ramos reprobados mayores a lo permitido");
+				return null;}
 
 		}
 		catch(Exception e){
@@ -99,5 +104,40 @@ Administrador SetAdmin(String id, String pass){
 		}
 		
 	}
+boolean CheckRamosReprobados(Alumno a){
+	Historial hist = new Historial();
+	Semestre[] ramos=hist.GetHistorial(a);
+	int reprobados=0;
+	for(int i=0;i<ramos.length;i++){
+		reprobados+=ramos[i].Creditos_Reprobados();
+	}
+	System.out.println(reprobados);
+	//Obtenemos la cantidad maxima.
+	try{
+		File Registro = new File("data/Status.txt");
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(Registro);
+		
+		NodeList Datos = doc.getElementsByTagName("reprobados");
+		
+		Node nodo = Datos.item(0);
+		Element info = (Element)nodo;
+		String Data = info.getTextContent();
+		int max = Integer.valueOf(Data);
+		System.out.println(Data);
+		if(reprobados>max){
+			return false;}
+		
+		
+
+	}
+	catch(Exception e){
+		e.printStackTrace();
+		
+	}
 	
+	
+	return true;
+}
 }
