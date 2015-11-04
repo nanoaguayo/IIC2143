@@ -4,7 +4,6 @@ import javax.xml.parsers.*;
 import java.util.*;
 import org.w3c.dom.*;
 
-import org.w3c.dom.NodeList;
 import java.util.ArrayList;
 
 
@@ -12,6 +11,9 @@ public class Requisitos {
 
 	Boolean checkRequisitos (Alumno a, Ramo r)
 	{
+		//se asume que es true en un comienzo
+		boolean retorno = true;
+		
 		//La idea de este metodo es que se utilice al momento de que el alumno tome un ramo, por lo que, el  
 		// alumno al momento de tomar un semestre  y elegir ramos, sera una condicion que este metodo se
 		// cumpla para poder tomar el ramo.
@@ -24,11 +26,8 @@ public class Requisitos {
 		//En el caso para los creditos, sera necesario contar los creditos del alumno y ver si cumple.
 		//en cualquier caso q no cumpla, se devolvera false. 
 		
-		String path = "data/Requisitos.txt";
-		// num=String.valueOf(a.numero_alumno);
-		//path+=num;
-		//path+="/Ingenieria/Requisitos.txt";
-		ArrayList <String> siglas_requisitos = new ArrayList <String>();
+		String path = "data/Carreras/"+r.Facultad+"/Requisitos.txt";
+		
 		
 		try{
 		File Registro = new File(path);
@@ -36,76 +35,119 @@ public class Requisitos {
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(Registro);
 		
-		NodeList nList = doc.getElementsByTagName("RamoBase");
+		Node Datos = doc.getFirstChild();
+		Element aux = (Element)Datos;
 		
-		for(int temp = 0; temp < nList.getLength(); temp++)
+		NodeList ramosBases = aux.getElementsByTagName("RamoBase");
+		int x = ramosBases.getLength();
+		
+		int largo = 0;
+		int creditos = 0;
+		
+		
+		//primero veo la cantidad de ramos de requisitos que tiene
+		for(int i=0;i<x;i++)
 		{
-				
-			Node nNode = nList.item(temp);
-			Element e = (Element)nNode;
-			if(r.Sigla.equals(e.getAttribute("nombre")))  // el ramo tiene requisitos
+			Node aux2 = ramosBases.item(i);
+			Element E2 = (Element)aux2;
+			String sigla = E2.getAttribute("sigla");
+			
+			if (sigla.equals(r.Sigla))
 			{
-				NodeList nList2 = doc.getElementsByTagName("RamoReq");
-
-				for(int i = 0; i < nList.getLength(); i++)
+				try
 				{
-
-					Node nNode2 = nList2.item(i);
-					Element e2 = (Element)nNode2;
-					siglas_requisitos.add(e2.getTextContent()); //agrego a la lista los cursos de requisitos
-					
+					NodeList creditosAux = E2.getElementsByTagName("CredReq");
+					String credito = creditosAux.item(0).getTextContent();
+					creditos = Integer.valueOf(credito);
 				}
+				catch (Exception e){
+				}
+
+				NodeList requisitos = E2.getElementsByTagName("RamoReq");
+				largo = requisitos.getLength();
+
 			}
 		}
 		
+		String[] contenido = new String[largo];
+		
+		
+		
+		NodeList ramosBases2 = aux.getElementsByTagName("RamoBase");
+		
+		for(int i=0;i<x;i++)
+		{
+			Node aux2 = ramosBases2.item(i);
+			Element E2 = (Element)aux2;
+			String sigla = E2.getAttribute("sigla");
+			
+			if (sigla.equals(r.Sigla))
+			{	
+				NodeList requisitos2 = E2.getElementsByTagName("RamoReq");
+				
+			
+			
+				for(int j=0; j<largo; j++)
+				{
+					Node nodo1 = requisitos2.item(j);
+					Element elem = (Element)nodo1;
+					String sigla2= elem.getTextContent();
+					contenido[j]= sigla2;
+				}
+			}
 		}
-		catch(Exception e){e.printStackTrace();}
 		
 		//Ya teniendo la lista de cursos de requisitos, falta ver si estan aprobados.
 		//Para esto utilizara el historial del alumno para ver que ramos tiene aprobados,
-		// esto se saca directamente de avance curricular para no repetir codigo ya armado
+		// esto se saca directamente de historial para no repetir codigo ya armado
 		
-		Historial HA = new Historial();
-		HA.GetHistorial(a);
+		Historial hist_aux = new Historial();
 		
-		Semestre[] aux = HA.GetHistorial(a); // aux es un array con los semestres cursados
-		int largo_aux = HA.GetHistorial(a).length;
-		//Ahora se revisaran todos los ramos cursados para hacer una lista de todos los ramos aprobados.
+		Semestre [] sem = hist_aux.GetHistorial(a);
 		
-		ArrayList<Ramo> ramos_aprobados = new ArrayList<Ramo>();
-		for(int i=0; i<largo_aux; i++)
-		{
-			int largo = aux[i].Ramos.length;
-			for(int j=0; j<largo ; j++)
-			{
-				if(aux[i].Ramos[j].Nota >= 4) // si ramo esta con nota mayor a 4, esta aprobado
-				{
-					ramos_aprobados.add(aux[i].Ramos[j]); // se agrega el ramo aprobado a la lista
-				}
-			}
-		}
-		
-		//Hay una lista con las siglas de los ramos de requisitos y otra lista con ramos aprobados, falta
-		//compararlos y ver si se cumplen.
-		
-		for(int k=0; k < siglas_requisitos.size() ; k++)
-		{
-			boolean bool_aux = false; // si el ramo no esta, esta variable seguira false
+		int contadorCreditos = 0;
 
-			for(int j=0; j < ramos_aprobados.size() ; j++)
+		for(int i=0; i<largo;i++)
+		{
+			retorno = false; //se hace false, y si encuentra que el ramo esta aprobado, se transformara en true
+			for(int j=0; j<sem.length;j++)
 			{
-				if(siglas_requisitos.get(k).equals(ramos_aprobados.get(j).Sigla))
-				{
-					bool_aux=true;
+				for(int k=0; k<sem[j].Ramos.length;k++)
+				{	
+					if(contenido[i].equals(sem[j].Ramos[k].Sigla))
+					{
+						if(sem[j].Ramos[k].Nota>=3.95)
+						{
+							retorno=true;
+						}
+					}
+					contadorCreditos = contadorCreditos + sem[j].Ramos[k].Creditos;
 				}
 			}
-			if(!bool_aux) // como el ramo requisito no esta en los aprobados, retorna falso.
+			if (retorno==false)
 			{
 				return false;
 			}
 		}
 		
+		//Ahora se chequea si tiene los creditos necesarios de requisitos
+		//los creditos ya fueron contados en el for pasado cuando se recorrio el historial
+		if (contadorCreditos<creditos)
+		{
+			return false;
+		}
+		
+		
+		
 		return true;
+		}
+		catch(Exception e){e.printStackTrace();}
+		
+		return true;
+	}
+	
+	void print(String x){
+		System.out.println(x);
 	}
 	
 }
