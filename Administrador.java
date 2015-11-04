@@ -1,17 +1,24 @@
-
 import java.io.File;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.*;
+//import org.jdom2.*;
+import javax.xml.parsers.*;
+import java.util.*;
+import org.jdom2.*;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+import org.jdom2.Attribute;
+
+
 
 
 
 public class Administrador extends Usuario{
     
-        int MaxCr;
+        int MaxCr=50;
 	
 	
 	public Administrador(String nombre,int edad, String sexo, String rut,String id, String pass){
@@ -29,145 +36,100 @@ public class Administrador extends Usuario{
 		System.out.println(Password);
 	}
         
-        Boolean VerificarRamo(Profesor p, Ramo r){
-            // Profesor no puede dictar dos ramos a la misma hora
-    try {
-      File inputFile = new File("data/Profesores.txt"); 	    	
-      DocumentBuilderFactory docFactory =
-      DocumentBuilderFactory.newInstance();
-      DocumentBuilder docBuilder = 
-      docFactory.newDocumentBuilder();
-      Document doc = docBuilder.parse(inputFile);
-      String[] ListaRamos = null;
-      NodeList nList = doc.getElementsByTagName("Profesor");
-      for(int i=0; i<nList.getLength() ;i++){
-          Node nNode = nList.item(i);
-            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-               Element eElement = (Element) nNode;
-                if (eElement.getAttribute("Nombre").equals(p.Nombre)){
-                    NodeList nListaRamos = nNode.getChildNodes();
-                    ListaRamos = new String[nListaRamos.getLength()];
-                    for (int j = 0; j<ListaRamos.length; j++){
-                        ListaRamos[j] = nListaRamos.item(j).getTextContent(); //ListaRamos contiene ramos que dicta profesor
-                    }
-                }
-            }
-        }
-      for (int i = 0; i<ListaRamos.length ; i++){
-          String ramo = ListaRamos[i];
-          NodeList nList2 = doc.getElementsByTagName("sigla");
-          for (int j = 0; j<nList2.getLength() ; j++){
-              Node nRamo = nList2.item(i);
-              String horario = nRamo.getNextSibling().getTextContent();
-              if (horario == r.Horario){
-                  return false;
-              }
-          }
-      }
-            // dos ramos no pueden dictarse en la misma sala y a la misma hora
-      NodeList nList3 = doc.getElementsByTagName("sigla");
-      for (int i = 0; i<nList3.getLength(); i++){
-          Node nRamo2 = nList3.item(i);
-          String horario = nRamo2.getNextSibling().getTextContent();
-          String sala = nRamo2.getNextSibling().getNextSibling().getTextContent();
-          if (horario == r.Horario && sala == r.Sala){
-              return false;
-          }
-      }
-      return true;
-    } catch (Exception e) {
-         e.printStackTrace();
-         return false;
-      }
+Boolean VerificarRamo(String profesor, Ramo r){
+            // Profesor no puede dictar dos ramos a la misma hora y no puede haber 2 salas a la misma hora.
+		
+    
         
+return true;
+        }
+        
+Boolean CrearRamo(String Sigla,String Nombre, String Horario, String Sala, String Facultad, int Creditos, double Nota, boolean Retirable, int Seccion, String profesor){
+    //Verificar si cumple todo   
+	Ramo r = new Ramo(Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion);
+	String retirablex="false";
+	if(Retirable==true){retirablex="true";}
+	try {
+	    Document document = null;
+	    
+	    Element root = null;
+	 
+	    File xmlFile = new File("data/Carreras/"+Facultad+"/Ramos.txt");
+	   
+	    if(xmlFile.exists()) {
+	        // try to load document from xml file if it exist
+	        // create a file input stream
+	        FileInputStream fis = new FileInputStream(xmlFile);
+	 
+	        // create a sax builder to parse the document
+	        SAXBuilder sb = new SAXBuilder();
+	        // parse the xml content provided by the file input stream and create a Document object
+	        document = sb.build(fis);
+	        
+	        // get the root element of the document
+	        
+	        root = document.getRootElement();
+	        fis.close();
+	    } else{System.out.println("No existe");return false;}
+ 
+	    Element element = new Element("Ramo");
+	    Element elementx = new Element("nombre");
+	    elementx.setText(Nombre);
+	    element.addContent(elementx);
+	    Element element2 = new Element("sigla");
+	    element2.setText(Sigla);
+	    Element element3 = new Element("horario");
+	    element3.setText(Horario);
+	    Element element4 = new Element("sala");
+	    element4.setText(Sala);
+	    Element element5 = new Element("facultad");
+	    element5.setText(Facultad);
+	    Element element6 = new Element("creditos");
+	    String aux = String.valueOf(Creditos);
+	 
+	    element6.setText(aux);
+	    Element element7 = new Element("nota");
+	    String aux2 = String.valueOf(Nota);
+	    
+	    element7.setText(aux2);
+	    Element element8 = new Element("retirable");
+	    element8.setText(retirablex);
+	    Element element9 = new Element("seccion");
+	    String aux3 = String.valueOf(Creditos);
+	  
+	    element9.setText(aux3);
+	    element.addContent(element2);
+	    element.addContent(element3);
+	    element.addContent(element4);
+	    element.addContent(element5);
+	    element.addContent(element6);
+	    element.addContent(element7);
+	    element.addContent(element8);
+	    element.addContent(element9);
+	    root.addContent(element);
+  
+ 
+  FileWriter writer = new FileWriter("data/Carreras/"+Facultad+"/Ramos.txt");
+  XMLOutputter outputter = new XMLOutputter();
+  outputter.setFormat(Format.getPrettyFormat());
+  outputter.output(document, writer);
 
-        }
+  //outputter.output(document, System.out);
+  writer.close(); // close writer
+      
+}
+catch (Exception e) {
+  System.err.println(e);
+  return false;
+}
+return true;         
+}
         
-        Boolean CrearRamo(String Nombre, String Sigla, String Horario, String Sala, String Facultad, int Creditos, double Nota, boolean Retirable, int Seccion, Semestre s, Profesor p){
-            try {
-                Ramo r = new Ramo(Nombre, Sigla, Horario, Sala, Facultad, Creditos, Nota, Retirable, Seccion); //se crea instancia ramo
-                if (!VerificarRamo(p, r)){ //se verifica la validez del ramo
-                    return false;
-                }
-                // se agrega al xml
-                String filepath = "data/Carreras/"+Facultad+"/Ramos.txt";
-                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-                Document doc = docBuilder.parse(filepath);
-                Node ramos = doc.getFirstChild();
-                Element ramo = doc.createElement("ramo");
-                ramos.appendChild(ramo);
-                Node ramoactual = ramos.getLastChild();
-                Element sigla = doc.createElement("sigla");
-                Element horario = doc.createElement("horario");
-                Element sala = doc.createElement("sala");
-                Element facultad = doc.createElement("facultad");
-                Element creditos = doc.createElement("creditos");
-                Element nota = doc.createElement("nota");
-                Element retirable = doc.createElement("retirable");
-                Element seccion = doc.createElement("seccion");
-                sigla.appendChild(doc.createTextNode(Sigla));
-                horario.appendChild(doc.createTextNode(Horario));
-                sala.appendChild(doc.createTextNode(Sala));
-                facultad.appendChild(doc.createTextNode(Facultad));
-                creditos.appendChild(doc.createTextNode(Integer.toString(Creditos)));
-                nota.appendChild(doc.createTextNode(Double.toString(Nota)));
-                retirable.appendChild(doc.createTextNode(String.valueOf(Retirable)));
-                seccion.appendChild(doc.createTextNode(Integer.toString(Seccion)));
-                ramoactual.appendChild(sigla);
-                ramoactual.appendChild(horario);
-                ramoactual.appendChild(sala);
-                ramoactual.appendChild(facultad);
-                ramoactual.appendChild(creditos);
-                ramoactual.appendChild(nota);
-                ramoactual.appendChild(retirable);
-                ramoactual.appendChild(seccion);
-                // Se agrega ramo a semestre
-                s.agregarRamo(r);
-                return true;
-                
-            }catch (Exception e) {
-             e.printStackTrace();
-             return false;
-      }
-            
-                
-        }
-        
-        void ModCantMaxCr(int cant){
+void ModCantMaxCr(int cant){
             MaxCr = cant;
         }
         
-        boolean verificarcantMaxCr(Ramo[] listaramos, String Facultad){
-            try {
-                int total_creditos = 0;
-                // meterse a path de facultad y abrir ramos.txt
-                //revisar por cada ramo su sigla y obtener cantidad de creditos
-                //sumar a total de creditos
-                //verificar
-                String filepath = "data/Carreras/"+Facultad+"/Ramos.txt";
-                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-                Document doc = docBuilder.parse(filepath);
-                NodeList nList = doc.getElementsByTagName("sigla");
-                for (int j = 0; j<listaramos.length ; j++){
-                    for (int i = 0; i<nList.getLength() ; i++){
-                        Node nRamo = nList.item(i);
-                        String nombre = nRamo.getTextContent();
-                        if (nombre == listaramos[j].Sigla){
-                            int creditos = Integer.parseInt(nRamo.getNextSibling().getNextSibling().getNextSibling().getNextSibling().getTextContent());
-                            total_creditos += creditos;
-                        }
-                    }
-                }
-                if (total_creditos <= MaxCr){
-                    return true;
-                }
-                return false;
-                }catch (Exception e) {
-                e.printStackTrace();
-                return false;
-      }
-        }
+boolean verificarcantMaxCr(Ramo[] listaramos, String Facultad){
+ return true;   
+}      
 }
-
