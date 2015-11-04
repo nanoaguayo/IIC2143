@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Ramos>
    <Ramo>
+      <nombre>Termodinamica</nombre>
       <sigla>IIC2143</sigla>
       <horario>M-J:3</horario>
       <sala>A2</sala>
@@ -11,6 +12,7 @@
       <seccion>1</seccion>
    </Ramo>
     <Ramo>
+      <nombre>Ingenieria de Software</nombre>
       <sigla>ICS3413</sigla>
       <horario>M-J:2</horario>
       <sala>A1</sala>
@@ -21,6 +23,7 @@
       <seccion>2</seccion>
    </Ramo>
     <Ramo>
+      <nombre>Calculo II</nombre>
       <sigla>IIC2133</sigla>
       <horario>L-W:3</horario>
       <sala>A2</sala>
@@ -31,6 +34,7 @@
       <seccion>1</seccion>
    </Ramo>
     <Ramo>
+      <nombre>Estructura de Datos</nombre>
       <sigla>IIC2733</sigla>
       <horario>M-J:4</horario>
       <sala>A9</sala>
@@ -41,6 +45,7 @@
       <seccion>4</seccion>
    </Ramo>
     <Ramo>
+      <nombre>Fisica General</nombre>
       <sigla>IIC2764</sigla>
       <horario>M-J:4</horario>
       <sala>A9</sala>

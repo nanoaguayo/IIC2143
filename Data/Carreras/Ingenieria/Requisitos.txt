@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Requisitos>
+   <RamoBase sigla="IIC2143">
+      <RamoReq>IIC2143</RamoReq>
+      <RamoReq>ICS3413</RamoReq>   
+   </RamoBase>
+   <RamoBase sigla="ICS4125">
+      <RamoReq>ICS2412</RamoReq>
+      <RamoReq>ICS2322</RamoReq>
+      <RamoReq>ICS4322</RamoReq>
+      <CredReq>300</CredReq>
+   </RamoBase>
+   <RamoBase sigla="ICS2345">
+      <RamoReq>ICS1111</RamoReq>
+      <RamoReq>ICS4203</RamoReq>
+      <RamoReq>ICS4322</RamoReq>
+   </RamoBase>
+   <RamoBase sigla="ICS4325">
+      <RamoReq>ICS2312</RamoReq>
+      <RamoReq>ICS4322</RamoReq>
+   </RamoBase>
+</Requisitos>
