@@ -1,9 +1,12 @@
 import java.io.*;
-import org.w3c.dom.*;
+//import org.jdom2.*;
 import javax.xml.parsers.*;
 import java.util.*;
-import org.w3c.dom.*;
-
+import org.jdom2.*;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+import org.jdom2.Attribute;
 
 
 public class Sistema {
@@ -18,14 +21,14 @@ public class Sistema {
 		boolean administrador=false;
 		
 		//Almacenaran los id y password de login o registro.
-		String id="prueba";
-		String pass="testpass";
-		
-		if(Login(id,pass)==0){
+		String id="prueba2";
+		String pass="testpass2";
+		SistemaRead sr = new SistemaRead();
+		if(sr.Login(id,pass)==0){
 			System.out.println("Login Succesful");
 			System.out.println("Administrator Mode");
 			administrador=true;
-			Active_admin=SetAdmin(id,pass);
+			Active_admin=sr.SetAdmin(id,pass);
 			
 			//Debug
 			if(Active_admin!=null){
@@ -33,10 +36,10 @@ public class Sistema {
 			}
 			
 		}
-		else if(Login(id,pass)==1){
+		else if(sr.Login(id,pass)==1){
 			System.out.println("Login Succesful");
 			System.out.println("Student Mode");
-			Active_student=SetStudent(id,pass);
+			Active_student=sr.SetStudent(id,pass);
 			
 			//Debug
 			if(Active_student!=null){
@@ -45,105 +48,96 @@ public class Sistema {
 		}
 		else{
 			System.out.println("Login failed); wrong credentials");
-		}
-		Historial HA = new Historial();
-		Semestre[] aux=HA.GetHistorial(Active_student);
-		aux[0].print();
-		aux[1].print();
-		
-		
-		
-		
-	}
-	static int Login(String id, String pass){
-		//Buscar en la base de datos de usuario los datos, entrega 0,1,2 dependiendo si es usuario, admin o no se encuentra.
-		try{
-			File Registro = new File("data/Registro.txt");
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(Registro);
 			
-			NodeList Datos = doc.getElementsByTagName("data");
-			
-			for(int i=0; i<Datos.getLength();i++){
-				Node nodo = Datos.item(i);
-				Element info = (Element)nodo;
-				String ID = info.getElementsByTagName("id").item(0).getTextContent();
-				String PASS = info.getElementsByTagName("password").item(0).getTextContent();
-				
-				if(ID.equals(id) && PASS.equals(pass)){
-					//Existen los datos
-					String ADMIN = info.getElementsByTagName("admin").item(0).getTextContent();
-					if(ADMIN.equals("true")){
-					return 0;
-					}
-					return 1;
-				}
-			}
-
 		}
-		catch(Exception e){
+		/*String[] ramos = {"IIC2143","ICS3413","IIC2133","IIC2733","IIC2764"};
+		Active_student.Tomar_Semestre(ramos, "2016-1");*/
+		/*
+		try {
+			RegistrarAlumno("a","b","c","g","d","e","f","00000000");
+		} catch (JDOMException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		return 2;
-	}
-	
-	static Alumno SetStudent(String id, String pass){
-		try{
-			File Registro = new File("data/Alumnos.txt");
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(Registro);
-			
-			NodeList Datos = doc.getElementsByTagName(id);
-			
-			
-			Node nodo = Datos.item(0);
-			Element info = (Element)nodo;
-			String NAME = info.getElementsByTagName("nombre").item(0).getTextContent();
-			int AGE = Integer.parseInt(info.getElementsByTagName("edad").item(0).getTextContent());
-			String SEX = info.getElementsByTagName("sexo").item(0).getTextContent();
-			String RUT = info.getElementsByTagName("rut").item(0).getTextContent();	
-			int NA = Integer.parseInt(info.getElementsByTagName("numero_alumno").item(0).getTextContent());	
-			
-			Alumno aux= new Alumno(NAME,AGE,SEX,RUT,id,pass,NA);
-			return aux;
-
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			return null;
-		}
+		}*/
+		
+		boolean a=Active_admin.CrearRamo("Sigla","Nombre", "Horario", "Sala", "Ingenieria", 5 , 5.8 , true, 2, "profesor");
+		System.out.println(a);
+		
 		
 	}
-	
-	static Administrador SetAdmin(String id, String pass){
-		try{
-			File Registro = new File("data/Administradores.txt");
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(Registro);
-			
-			NodeList Datos = doc.getElementsByTagName(id);
-			
-			
-			Node nodo = Datos.item(0);
-			Element info = (Element)nodo;
-			String NAME = info.getElementsByTagName("nombre").item(0).getTextContent();
-			int AGE = Integer.parseInt(info.getElementsByTagName("edad").item(0).getTextContent());
-			String SEX = info.getElementsByTagName("sexo").item(0).getTextContent();
-			String RUT = info.getElementsByTagName("rut").item(0).getTextContent();	
-			
-			Administrador aux= new Administrador(NAME,AGE,SEX,RUT,id,pass);
-			return aux;
 
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			return null;
-		}
-		
-	}
+static boolean RegistrarAlumno(String id,String nombre,String carrera,String malla, String edad, String sexo, String rut,String num_alumno) throws JDOMException{
 	
 	
+    try {
+    	    Document document = null;
+    	    Document document2 = new Document();
+    	    Element root = null;
+    	    boolean a = new File("data/Alumnos/"+num_alumno).mkdir();
+    	    if(!a){return false;}
+    	    File xmlFile = new File("data/Alumnos.txt");
+    	    
+    	    if(xmlFile.exists()) {
+    	        // try to load document from xml file if it exist
+    	        // create a file input stream
+    	        FileInputStream fis = new FileInputStream(xmlFile);
+    	 
+    	        // create a sax builder to parse the document
+    	        SAXBuilder sb = new SAXBuilder();
+    	        // parse the xml content provided by the file input stream and create a Document object
+    	        document = sb.build(fis);
+    	        
+    	        // get the root element of the document
+    	        
+    	        root = document.getRootElement();
+    	        fis.close();
+    	    } else{return false;}
+     
+      Element element = new Element(id);
+      Element element2 = new Element("nombre");
+      element2.setText(nombre);
+      Element element3 = new Element("edad");
+      element3.setText(edad);
+      Element element4 = new Element("sexo");
+      element4.setText(sexo);
+      Element element5 = new Element("rut");
+      element5.setText(rut);
+      Element element6 = new Element("numero_alumno");
+      element6.setText(num_alumno);
+      element.addContent(element2);
+      element.addContent(element3);
+      element.addContent(element4);
+      element.addContent(element5);
+      element.addContent(element6);
+      root.addContent(element);
+      
+     
+      Element rootHist = new Element("Historial");
+      Attribute carrera_att = new Attribute("carrera",carrera);
+      rootHist.setAttribute(carrera_att);
+    
+      document2.setContent(rootHist);
+      FileWriter writer = new FileWriter("data/Alumnos.txt");
+      FileWriter writer2 = new FileWriter("data/Alumnos/"+num_alumno+"/Historial.txt");
+      XMLOutputter outputter = new XMLOutputter();
+      outputter.setFormat(Format.getPrettyFormat());
+      outputter.output(document, writer);
+      outputter.output(document2,writer2);
+      //outputter.output(document, System.out);
+      writer.close(); // close writer
+          
+    }
+    catch (IOException e) {
+      System.err.println(e);
+      return false;
+    }
+	
+    
+	return true;
 }
+static boolean RegistrarAdmin(){
+	return true;
+}
+}
+	
+
