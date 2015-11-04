@@ -10,6 +10,8 @@ import org.w3c.dom.NodeList;
 
 
 public class Administrador extends Usuario{
+    
+        int MaxCr;
 	
 	
 	public Administrador(String nombre,int edad, String sexo, String rut,String id, String pass){
@@ -130,6 +132,42 @@ public class Administrador extends Usuario{
       }
             
                 
+        }
+        
+        void ModCantMaxCr(int cant){
+            MaxCr = cant;
+        }
+        
+        boolean verificarcantMaxCr(Ramo[] listaramos, String Facultad){
+            try {
+                int total_creditos = 0;
+                // meterse a path de facultad y abrir ramos.txt
+                //revisar por cada ramo su sigla y obtener cantidad de creditos
+                //sumar a total de creditos
+                //verificar
+                String filepath = "data/"+Facultad+"Ramos.txt";
+                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+                Document doc = docBuilder.parse(filepath);
+                NodeList nList = doc.getElementsByTagName("sigla");
+                for (int j = 0; j<listaramos.length ; j++){
+                    for (int i = 0; i<nList.getLength() ; i++){
+                        Node nRamo = nList.item(i);
+                        String nombre = nRamo.getTextContent();
+                        if (nombre == listaramos[j].Sigla){
+                            int creditos = Integer.parseInt(nRamo.getNextSibling().getNextSibling().getNextSibling().getNextSibling().getTextContent());
+                            total_creditos += creditos;
+                        }
+                    }
+                }
+                if (total_creditos <= MaxCr){
+                    return true;
+                }
+                return false;
+                }catch (Exception e) {
+                e.printStackTrace();
+                return false;
+      }
         }
 }
 
