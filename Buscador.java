@@ -21,6 +21,7 @@ public class Buscador {
 			if(info.getElementsByTagName("sigla").item(0).getTextContent().equals(sigla)){
 				//Es el ramo buscado. Lo retornamos
 				String Sigla=sigla;
+				String Nombre = info.getElementsByTagName("nombre").item(0).getTextContent();
 				String Horario=info.getElementsByTagName("horario").item(0).getTextContent();
 				String Sala=info.getElementsByTagName("sala").item(0).getTextContent();
 				String Facultad=info.getElementsByTagName("facultad").item(0).getTextContent();
@@ -29,7 +30,7 @@ public class Buscador {
 				boolean Retirable=Boolean.parseBoolean(info.getElementsByTagName("retirable").item(0).getTextContent());;
 				int Seccion=Integer.parseInt(info.getElementsByTagName("seccion").item(0).getTextContent());
 				
-				resultado=new Ramo(Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion);
+				resultado=new Ramo(Nombre,Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion);
 				return resultado;
 			}
 		}

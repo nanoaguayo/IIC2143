@@ -14,34 +14,14 @@ public class Avance {
 
 	Ramo[] GetAvance (Alumno a, Malla_Curricular m)
 	{
-		Historial hist_aux = new Historial();
-		
-		
-		
-		Semestre[] aux = hist_aux.GetHistorial(a); // aux es un array con los semestres cursados
-		int largo_aux = aux.length;
-		Ramo [] aux_ramo = new Ramo[largo_aux];
-		//Ahora se revisaran todos los ramos cursados para hacer una lista de todos los ramos aprobados.
-		
-		ArrayList<Ramo> ramos_aprobados = new ArrayList<Ramo>();
-		for(int i=0; i<largo_aux; i++)
-		{
-			int largo = aux[i].Ramos.length;
-			for(int j=0; j<largo ; j++)
-			{
-				if(aux[i].Ramos[j].Nota >= 4) // si ramo esta con nota mayor a 4, esta aprobado
-				{
-					ramos_aprobados.add(aux[i].Ramos[j]); // se agrega el ramo aprobado a la lista
-				}
-			}
-		}
-		
+
+
 		//Ahora ver que ramos de estos estan dentro de la malla seleccionado por el alumno, y mostrar todos los que esten.
 		
-		String path = "data/";
-		String num=String.valueOf(a.numero_alumno);
-		path+=num;
-		path+="/Ingenieria/Malla_Curricular.txt";
+		String path = "data/Carreras";
+		//String num=String.valueOf(a.numero_alumno);
+		//path+=num;
+		path+="/"+m.Nombre+"/Malla_Curricular.txt";
 		
 		try{
 		File Registro = new File(path);
@@ -49,57 +29,159 @@ public class Avance {
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(Registro);
 		
-		NodeList ramos;
+		Node Datos = doc.getFirstChild();
+		Element aux = (Element)Datos;
+		/*/Obtenemos los datos de carrera y malla
+		String Carrera= aux.getAttribute("carrera");
+		String malla = aux.getAttribute("malla");*/
 		
-		NodeList nList = doc.getElementsByTagName("Malla");
+		//Sacamos las mallas
+		NodeList Mallas = aux.getElementsByTagName("Malla");
+		int x = Mallas.getLength();
 		
-		ArrayList  <String> siglas_ramos = new ArrayList <String>(); // lista con las siglas q son de la maya
+		int largo = 0;
 		
-		for(int temp = 0; temp < nList.getLength(); temp++)
+		for(int i=0;i<x;i++)
 		{
-			Node nNode = nList.item(temp);
-			Element e = (Element)nNode;
-			if (m.equals(e.getAttribute("nombre")))  // si es que la malla ingresada por alumno es igual a la de este nodo, si no es, no hace nada
+			Node aux2 = Mallas.item(i);
+			Element E2 = (Element)aux2;
+			String carrera = E2.getAttribute("carrera");
+			String nombre = E2.getAttribute("nombre");
+			
+			if (nombre.equals(m.Especialidad))
 			{
-				ramos = e.getElementsByTagName("Ramo");  // se hace una lista de todos los ramos
-				
-				
-				for(int k=0 ; k < ramos.getLength(); k++)
+				print("entro a avance");
+				NodeList ramos = E2.getElementsByTagName("Ramo");
+				largo = ramos.getLength();
+
+			}
+		}
+		
+		String[] contenido = new String[largo];
+		
+		
+		
+		NodeList Mallas2 = aux.getElementsByTagName("Malla");
+		
+		print("hola");
+		for(int i=0;i<x;i++)
+		{
+			Node aux2 = Mallas2.item(i);
+			print("1");
+			Element E2 = (Element)aux2;
+			String carrera = E2.getAttribute("carrera");
+			String nombre = E2.getAttribute("nombre");
+			
+			print(nombre);
+			if (nombre.equals(m.Especialidad))
+			{	
+				NodeList ramos = E2.getElementsByTagName("Ramo");
+
+			
+				for(int j=0; j<largo; j++)
 				{
-					Element e2 = (Element) ramos.item(k);
-					siglas_ramos.add (e2.getTextContent());  // copio las siglas.
+					Node nodo1 = ramos.item(j);
+					Element elem = (Element)nodo1;
+					String sigla= elem.getTextContent();
+					contenido[j]= sigla;
 				}
 			}
 		}
 		
-		//Ahora se mostraran todos los ramos aprobados de la maya.
-		
-
-		ArrayList  <Ramo> ramos_aprobados_malla = new ArrayList <Ramo>(); 
-		for(int p=0; p < ramos_aprobados.size() ; p++)
+		//ahora recorrere el xml de ramos para hacer un arreglo de ramos del avance de la malla
+		Ramo [] ramosMalla = new Ramo [largo];
+		String path2= "data/Carreras/"+m.Nombre+"/Ramos.txt";
+		Registro = new File(path2);
+		doc = dBuilder.parse(Registro);
+		for(int i=0; i<largo; i++)
 		{
-
-			for(int q=0; q < siglas_ramos.size() ; q++)
+			NodeList listaRamos = doc.getElementsByTagName("Ramo");
+			for(int y=0;y<listaRamos.getLength();y++)
 			{
-				if (ramos_aprobados.get(p).Sigla.equals(siglas_ramos.get(q)))  // si ramo aprobado esta en la malla
+				Element nodo = (Element)listaRamos.item(y);
+				String nameRamo = nodo.getElementsByTagName("sigla").item(0).getTextContent();
+				
+				if(nameRamo.equals(contenido[i]))
 				{
-					ramos_aprobados_malla.add(ramos_aprobados.get(p)); // se agrega ramo aprobado a avance curricular
+					String Nombre=nodo.getElementsByTagName("nombre").item(0).getTextContent();
+					String Sigla=nodo.getElementsByTagName("sigla").item(0).getTextContent();
+					print(Sigla);
+					String Horario=nodo.getElementsByTagName("horario").item(0).getTextContent();
+					String Sala=nodo.getElementsByTagName("sala").item(0).getTextContent();
+					String Facultad=nodo.getElementsByTagName("facultad").item(0).getTextContent();
+					int Creditos=Integer.parseInt(nodo.getElementsByTagName("creditos").item(0).getTextContent());
+					double Nota= 0;
+					boolean Retirable=Boolean.parseBoolean(nodo.getElementsByTagName("retirable").item(0).getTextContent());
+					int Seccion=Integer.parseInt(nodo.getElementsByTagName("seccion").item(0).getTextContent());
+					
+					Ramo aux3 = new Ramo(Nombre,Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion);
+					ramosMalla[i]=aux3;
 				}
 			}
 		}
-	
 		
-		Ramo[] avance = new Ramo[ramos_aprobados_malla.size()];
-		for(int p=0; p < ramos_aprobados_malla.size() ; p++)
+		for (int i=0; i<largo; i++)
 		{
-			avance[p] = ramos_aprobados_malla.get(p);
+			print(ramosMalla[i].Sigla);
 		}
-		return avance;
+		
+		
+		// En ramosMalla estan los ramos correspondientes a la malla elegida (m.especialidad)
+		
+		//Ahora comparare con historial para ver los ramos aprobados de la malla y estos
+		// ponerlos con nota y aprobado, y el resto como pendiente.
+		
+		//y se imprimira un arreglo que es SIGLA , NOMBRE , A o P, Nota
+
+		Historial hist_aux = new Historial();
+		
+		Semestre [] sem = hist_aux.GetHistorial(a);
+		
+		String [][] avanceCurricular = new String [largo][4];
+		
+		for(int i=0; i<largo;i++)
+		{
+			avanceCurricular[i][0] = ramosMalla[i].Sigla;
+			avanceCurricular[i][1] = ramosMalla[i].Nombre;
+			avanceCurricular[i][2] = "P";
+			avanceCurricular[i][3] = "0";
+			for(int j=0; j<sem.length;j++)
+			{
+				for(int k=0; k<sem[j].Ramos.length;k++)
+				{
+					if(ramosMalla[i].Sigla.equals(sem[j].Ramos[k].Sigla))
+					{
+						avanceCurricular[i][2] = "A";
+						avanceCurricular[i][3] = Double.toString(sem[j].Ramos[k].Nota);
+					}
+				}
+			}
 		}
+		
+		for(int i=0 ; i <largo; i++)
+		{
+			System.out.print(avanceCurricular[i][0]);
+			System.out.print(",");
+			System.out.print(avanceCurricular[i][1]);
+			System.out.print(",");
+			System.out.print(avanceCurricular[i][2]);
+			System.out.print(",");
+			System.out.print(avanceCurricular[i][3]);
+			System.out.println();
+			
+		}
+		}
+
 		catch(Exception e){e.printStackTrace();}
-		
-		
-		return aux_ramo;
+		return null;
 	}
-	
+
+
+	void print(String x){
+		System.out.println(x);
+	}	
+
 }
+		
+	
+
