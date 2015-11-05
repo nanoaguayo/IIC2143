@@ -1,3 +1,5 @@
+package mainproyectosoft;
+
 import java.io.File;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -10,8 +12,8 @@ import org.w3c.dom.NodeList;
 
 public class SistemaRead {
 
-int Login(String id, String pass){
-		//Buscar en la base de datos de usuario los datos, entrega 0,1,2 dependiendo si es usuario, admin o no se encuentra.
+public int Login(String id, String pass){
+		//Buscar en la base de datos de usuario los datos, entrega 0,1,2,3,4 dependiendo si es usuario(1 vez o registrado), admin, profesor o no se encuentra.
 		try{
 			File Registro = new File("data/Registro.txt");
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -29,10 +31,40 @@ int Login(String id, String pass){
 				if(ID.equals(id) && PASS.equals(pass)){
 					//Existen los datos
 					String ADMIN = info.getElementsByTagName("admin").item(0).getTextContent();
+					String PROF = info.getElementsByTagName("profesor").item(0).getTextContent();
 					if(ADMIN.equals("true")){
-					return 0;
+					//Es admin
+					return 2;
 					}
+					else if(PROF.equals("true")){
+						//Es profesor
+						return 3;
+					}
+					else{
+					//Es alumno, chequeamos si existe el archivo Historial.txt
+                                            try{
+						File Registro2 = new File("data/Alumnos.txt");
+						DocumentBuilderFactory dbFactory2 = DocumentBuilderFactory.newInstance();
+						DocumentBuilder dBuilder2 = dbFactory2.newDocumentBuilder();
+						Document doc2 = dBuilder2.parse(Registro2);
+						
+						NodeList Datos2 = doc2.getElementsByTagName(id);
+						Element nodo2 = (Element)Datos2.item(0);
+						String num_alumno = nodo2.getElementsByTagName("numero_alumno").item(0).getTextContent();
+						
+						File Historial= new File("data/Alumnos/"+num_alumno+"/Historial.txt");
+						DocumentBuilderFactory dbFactory3 = DocumentBuilderFactory.newInstance();
+						DocumentBuilder dBuilder3 = dbFactory3.newDocumentBuilder();
+						Document doc3 = dBuilder3.parse(Historial);
+						
+						NodeList Datos3 = doc3.getElementsByTagName("Historial");
+						
+						}catch(Exception e){
+							return 0;
+						}	
+						
 					return 1;
+					}
 				}
 			}
 
@@ -40,10 +72,10 @@ int Login(String id, String pass){
 		catch(Exception e){
 			e.printStackTrace();
 		}
-		return 2;
+		return 4;
 	}
 	
-Alumno SetStudent(String id, String pass){
+public Alumno SetStudent(String id, String pass){
 		try{
 			File Registro = new File("data/Alumnos.txt");
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -77,7 +109,7 @@ Alumno SetStudent(String id, String pass){
 		
 	}
 	
-Administrador SetAdmin(String id, String pass){
+public Administrador SetAdmin(String id, String pass){
 		try{
 			File Registro = new File("data/Administradores.txt");
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -104,7 +136,7 @@ Administrador SetAdmin(String id, String pass){
 		}
 		
 	}
-boolean CheckRamosReprobados(Alumno a){
+public boolean CheckRamosReprobados(Alumno a){
 	Historial hist = new Historial();
 	Semestre[] ramos=hist.GetHistorial(a);
 	int reprobados=0;

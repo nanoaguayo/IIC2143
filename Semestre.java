@@ -1,3 +1,5 @@
+package mainproyectosoft;
+
 public class Semestre {
 	String Periodo;
 	Ramo[] Ramos;

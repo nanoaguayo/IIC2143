@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profesores>
-  <Profesor Nombre="Profesor1">
+  <Profesor Nombre="Profesor1" id="Prueba3">
     <ramo>IIC2143</ramo>
     <ramo>ICS3413</ramo>
   </Profesor>

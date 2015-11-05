@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Alumnos>
-   <prueba>
-      <nombre>Juan Rojas</nombre>
-      <edad>13</edad>
-      <sexo>Masculino</sexo>
-      <rut>11.111.111-1</rut>
-      <numero_alumno>10111213</numero_alumno>
-   </prueba>
+  <prueba>
+    <nombre>Juan Rojas</nombre>
+    <edad>13</edad>
+    <sexo>Masculino</sexo>
+    <rut>11.111.111-1</rut>
+    <numero_alumno>10111213</numero_alumno>
+  </prueba>
+  <prueba4>
+    <nombre>Pedro Rodriguez</nombre>
+    <edad>18</edad>
+    <sexo>Masculino</sexo>
+    <rut>11.111.111-2</rut>
+    <numero_alumno>11111111</numero_alumno>
+  </prueba4>
+  <a>
+    <nombre>aa</nombre>
+    <edad>111</edad>
+    <sexo>Masculino</sexo>
+    <rut>12345</rut>
+    <numero_alumno>123456</numero_alumno>
+  </a>
 </Alumnos>

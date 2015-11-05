@@ -1,3 +1,4 @@
+package mainproyectosoft;
 
 public class Usuario {
 	String Nombre;

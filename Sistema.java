@@ -1,3 +1,5 @@
+package mainproyectosoft;
+
 import java.io.*;
 //import org.jdom2.*;
 import javax.xml.parsers.*;
@@ -11,65 +13,9 @@ import org.jdom2.Attribute;
 
 public class Sistema {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		//Academic Manager main
-		
-		//XML:http://www.tutorialspoint.com/java_xml/java_dom_parse_document.htm
-		Alumno Active_student= null;
-		Administrador Active_admin=null;
-		boolean administrador=false;
-		
-		//Almacenaran los id y password de login o registro.
-		String id="prueba2";
-		String pass="testpass2";
-		SistemaRead sr = new SistemaRead();
-		if(sr.Login(id,pass)==0){
-			System.out.println("Login Succesful");
-			System.out.println("Administrator Mode");
-			administrador=true;
-			Active_admin=sr.SetAdmin(id,pass);
-			
-			//Debug
-			if(Active_admin!=null){
-				Active_admin.PrintData();
-			}
-			
-		}
-		else if(sr.Login(id,pass)==1){
-			System.out.println("Login Succesful");
-			System.out.println("Student Mode");
-			Active_student=sr.SetStudent(id,pass);
-			
-			//Debug
-			if(Active_student!=null){
-				Active_student.PrintData();
-			}
-		}
-		else{
-			System.out.println("Login failed); wrong credentials");
-			
-		}
-		/*String[] ramos = {"IIC2143","ICS3413","IIC2133","IIC2733","IIC2764"};
-		Active_student.Tomar_Semestre(ramos, "2016-1");*/
-		/*
-		try {
-			RegistrarAlumno("a","b","c","g","d","e","f","00000000");
-		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
-		boolean a=Active_admin.CrearRamo("Sigla3","Nombre", "M-J:3", "A93", "Ingenieria", 5 , 5.8 , true, 2,"Comentaro" ,"Profesor4");
-		System.out.println(a);
-		//Active_admin.SetCreditosMaximos(10);
-		/*Foro fr = new Foro();
-		fr.AddMessage("Sigla", "TestStudent", "Este es un texto de prueba", "Archivo test");
-		fr.PrintForo("Sigla");*/
-		
-	}
+	
 
-static boolean RegistrarAlumno(String id,String nombre,String carrera,String malla, String edad, String sexo, String rut,String num_alumno) throws JDOMException{
+public boolean RegistrarAlumno(String id,String nombre,String carrera,String malla, String edad, String sexo, String rut,String num_alumno) throws JDOMException{
 	
 	
     try {
@@ -117,7 +63,9 @@ static boolean RegistrarAlumno(String id,String nombre,String carrera,String mal
      
       Element rootHist = new Element("Historial");
       Attribute carrera_att = new Attribute("carrera",carrera);
+      Attribute malla_att = new Attribute("malla", malla);
       rootHist.setAttribute(carrera_att);
+      rootHist.setAttribute(malla_att);
     
       document2.setContent(rootHist);
       FileWriter writer = new FileWriter("data/Alumnos.txt");

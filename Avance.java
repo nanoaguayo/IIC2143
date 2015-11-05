@@ -1,3 +1,5 @@
+package mainproyectosoft;
+
 import java.io.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 
 public class Avance {
 
-	Ramo[] GetAvance (Alumno a, Malla_Curricular m)
+	RamoAvanceFX[] GetAvance (Alumno a, Malla_Curricular m)
 	{
 
 
@@ -72,7 +74,7 @@ public class Avance {
 			String carrera = E2.getAttribute("carrera");
 			String nombre = E2.getAttribute("nombre");
 			
-			print(nombre);
+			
 			if (nombre.equals(m.Especialidad))
 			{	
 				NodeList ramos = E2.getElementsByTagName("Ramo");
@@ -89,7 +91,7 @@ public class Avance {
 		}
 		
 		//ahora recorrere el xml de ramos para hacer un arreglo de ramos del avance de la malla
-		Ramo [] ramosMalla = new Ramo [largo];
+		RamoAvanceFX [] ramosMalla = new RamoAvanceFX [largo];
 		String path2= "data/Carreras/"+m.Nombre+"/Ramos.txt";
 		Registro = new File(path2);
 		doc = dBuilder.parse(Registro);
@@ -105,7 +107,6 @@ public class Avance {
 				{
 					String Nombre=nodo.getElementsByTagName("nombre").item(0).getTextContent();
 					String Sigla=nodo.getElementsByTagName("sigla").item(0).getTextContent();
-					print(Sigla);
 					String Horario=nodo.getElementsByTagName("horario").item(0).getTextContent();
 					String Sala=nodo.getElementsByTagName("sala").item(0).getTextContent();
 					String Facultad=nodo.getElementsByTagName("facultad").item(0).getTextContent();
@@ -114,17 +115,13 @@ public class Avance {
 					boolean Retirable=Boolean.parseBoolean(nodo.getElementsByTagName("retirable").item(0).getTextContent());
 					int Seccion=Integer.parseInt(nodo.getElementsByTagName("seccion").item(0).getTextContent());
 					String Comentario=nodo.getElementsByTagName("facultad").item(0).getTextContent();
-					Ramo aux3 = new Ramo(Nombre,Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion,Comentario);
+					RamoAvanceFX aux3 = new RamoAvanceFX(Nombre,Sigla,Nota);
 					ramosMalla[i]=aux3;
 				}
 			}
 		}
 		
-		for (int i=0; i<largo; i++)
-		{
-			print(ramosMalla[i].Sigla);
-		}
-		
+
 		
 		// En ramosMalla estan los ramos correspondientes a la malla elegida (m.especialidad)
 		
@@ -137,39 +134,34 @@ public class Avance {
 		
 		Semestre [] sem = hist_aux.GetHistorial(a);
 		
-		String [][] avanceCurricular = new String [largo][4];
+		 
+		//String [][] avanceCurricular = new String [largo][4];
 		
 		for(int i=0; i<largo;i++)
 		{
-			avanceCurricular[i][0] = ramosMalla[i].Sigla;
-			avanceCurricular[i][1] = ramosMalla[i].Nombre;
-			avanceCurricular[i][2] = "P";
-			avanceCurricular[i][3] = "0";
+			
 			for(int j=0; j<sem.length;j++)
 			{
 				for(int k=0; k<sem[j].Ramos.length;k++)
 				{
-					if(ramosMalla[i].Sigla.equals(sem[j].Ramos[k].Sigla))
+					if(ramosMalla[i].getSigla().equals(sem[j].Ramos[k].Sigla))
 					{
-						avanceCurricular[i][2] = "A";
-						avanceCurricular[i][3] = Double.toString(sem[j].Ramos[k].Nota);
+						if (sem[j].Ramos[k].Nota<3.95)
+						{
+							ramosMalla[i].setNota("0.0");
+						}
+						else
+						{
+							ramosMalla[i].setNota(String.valueOf(sem[j].Ramos[k].Nota));
+						}
+						
 					}
 				}
 			}
 		}
-		
-		for(int i=0 ; i <largo; i++)
-		{
-			System.out.print(avanceCurricular[i][0]);
-			System.out.print(",");
-			System.out.print(avanceCurricular[i][1]);
-			System.out.print(",");
-			System.out.print(avanceCurricular[i][2]);
-			System.out.print(",");
-			System.out.print(avanceCurricular[i][3]);
-			System.out.println();
-			
-		}
+
+
+		return ramosMalla;
 		}
 
 		catch(Exception e){e.printStackTrace();}

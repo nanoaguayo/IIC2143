@@ -1,3 +1,4 @@
+package mainproyectosoft;
 
 public class Ramo {
 	String Nombre;

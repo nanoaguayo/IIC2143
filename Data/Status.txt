@@ -2,4 +2,5 @@
 <Status>
   <reprobados>40</reprobados>
   <credxsemestre>10</credxsemestre>
+  <periodo>2015-2</periodo>
 </Status>

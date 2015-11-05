@@ -4,10 +4,24 @@
       <id>prueba</id>
       <password>testpass</password>
       <admin>false</admin>
+      <profesor>false</profesor>
    </data>
    <data>
       <id>prueba2</id>
       <password>testpass2</password>
       <admin>true</admin>
+      <profesor>false</profesor>
+   </data>
+   <data>
+      <id>prueba3</id>
+      <password>testpass3</password>
+      <admin>false</admin>
+      <profesor>true</profesor>
+   </data>
+   <data>
+      <id>a</id>
+      <password>a</password>
+      <admin>false</admin>
+      <profesor>false</profesor>
    </data>
 </Registro>

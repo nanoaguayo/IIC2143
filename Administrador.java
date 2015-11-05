@@ -1,3 +1,5 @@
+package mainproyectosoft;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -11,6 +13,11 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
+import java.util.List;  
+  
+import org.jdom2.Document;  
+import org.jdom2.Element;  
+import org.jdom2.JDOMException;  
 
 
 
@@ -26,6 +33,8 @@ public class Administrador extends Usuario{
 		
 	}
 	
+	
+	
 	void PrintData(){
 		System.out.println(Nombre);
 		System.out.println(Edad);
@@ -34,7 +43,159 @@ public class Administrador extends Usuario{
 		System.out.println(id_usuario);
 		System.out.println(Password);
 	}
+      
+	
+Boolean CrearMalla (Carrera carrera, String nombreMalla)
+{
+	
+	
+    try {
+    	    Document document = null;
+    	    //Document document2 = new Document();
+    	    Element root = null;
+    	    //boolean a = new File("data/Alumnos/"+num_alumno).mkdir();
+    	    //if(!a){return false;}
+    	    File xmlFile = new File("data/Carreras/"+carrera.Nombre+"/Malla_Curricular.txt");
+    	    
+    	    if(xmlFile.exists()) {
+    	        // try to load document from xml file if it exist
+    	        // create a file input stream
+    	        FileInputStream fis = new FileInputStream(xmlFile);
+    	 
+    	        // create a sax builder to parse the document
+    	        SAXBuilder sb = new SAXBuilder();
+    	        // parse the xml content provided by the file input stream and create a Document object
+    	        document = sb.build(fis);
+    	        
+    	        // get the root element of the document
+    	        
+    	        root = document.getRootElement();
+    	        fis.close();
+    	    } else{return false;}
+     
+      Element element = new Element("Malla");
+      
+      
+     
+      //Element rootHist = new Element("Historial");
+      Attribute carrera_att = new Attribute ("carrera", carrera.Nombre);
+      Attribute malla_att = new Attribute ("nombre", nombreMalla);
+      element.setAttribute(carrera_att);
+      element.setAttribute(malla_att);
+      root.addContent(element);
+    
+      //document2.setContent(rootHist);
+      FileWriter writer = new FileWriter("data/Carreras/"+carrera.Nombre+"/Malla_Curricular.txt");
+      //FileWriter writer2 = new FileWriter("data/Alumnos/"+num_alumno+"/Historial.txt");
+      XMLOutputter outputter = new XMLOutputter();
+      outputter.setFormat(Format.getPrettyFormat());
+      outputter.output(document, writer);
+      //outputter.output(document2,writer2);
+      //outputter.output(document, System.out);
+      writer.close(); // close writer
+      //writer2.close();
+          
+    }
+    catch (IOException | JDOMException e) {
+      System.err.println(e);
+      return false;
+    }
+	
+	return true;
+}
+
+
+
+
+Boolean AgregarRamoMalla (Malla_Curricular malla, String siglaRamo)
+{
+    try {
+	    Document document = null;
+	    Document document2 = new Document();
+	    Element root = null;
+	    //boolean a = new File("data/Alumnos/"+num_alumno).mkdir();
+	    //if(!a){return false;}    	    
+	    File xmlFile = new File("data/Carreras/"+malla.Nombre+"/Malla_Curricular.txt");
+	    
+	    
+	    if(xmlFile.exists()) {
+	        // try to load document from xml file if it exist
+	        // create a file input stream
+	        FileInputStream fis = new FileInputStream(xmlFile);
+	 
+	        // create a sax builder to parse the document
+	        SAXBuilder sb = new SAXBuilder();
+	        // parse the xml content provided by the file input stream and create a Document object
+	        document = sb.build(fis);
+	        
+	        // get the root element of the document
+	        
+	        root = document.getRootElement();
+	        fis.close();
+	    } else{return false;}
+
+  List<Element> mallasList = root.getChildren("Malla");  
+  
+  for (int i=0 ; i < mallasList.size(); i++)
+  {
+     String nombreMalla = mallasList.get(i).getAttributeValue("nombre");
+     
+     if(nombreMalla.equals(malla.Especialidad))
+     {
+    	Element element = mallasList.get(i);
+        Element element2 = new Element("Ramo");
+        element2.setText(siglaRamo);
+        element.addContent(element2);
         
+        FileWriter writer = new FileWriter("data/Carreras/"+malla.Nombre+"/Malla_Curricular.txt");
+        //FileWriter writer2 = new FileWriter("data/Alumnos/"+num_alumno+"/Historial.txt");
+        XMLOutputter outputter = new XMLOutputter();
+        outputter.setFormat(Format.getPrettyFormat());
+        outputter.output(document, writer);
+        //outputter.output(document2,writer2);
+        //outputter.output(document, System.out);
+        writer.close(); // close writer
+        //writer2.close();
+     }
+	 
+  }
+ /*
+
+  Element element = new Element("Ramo");
+  element.setText(ramo.Sigla);
+  element.addContent(element2);
+  element.addContent(element3);
+  element.addContent(element4);
+  element.addContent(element5);
+  element.addContent(element6);
+  root.addContent(element);
+  
+ 
+  Element rootHist = new Element("Historial");
+  Attribute carrera_att = new Attribute("carrera",carrera);
+  rootHist.setAttribute(carrera_att);
+
+  document2.setContent(rootHist);
+  FileWriter writer = new FileWriter("data/Alumnos.txt");
+  FileWriter writer2 = new FileWriter("data/Alumnos/"+num_alumno+"/Historial.txt");
+  XMLOutputter outputter = new XMLOutputter();
+  outputter.setFormat(Format.getPrettyFormat());
+  outputter.output(document, writer);
+  outputter.output(document2,writer2);
+  //outputter.output(document, System.out);
+  writer.close(); // close writer
+  writer2.close();
+      */
+}
+catch (IOException | JDOMException e) {
+  System.err.println(e);
+  return false;
+}
+
+	
+	return true;
+}
+	
 Boolean VerificarRamo(String profesor, Ramo r){
      // Profesor no puede dictar dos ramos a la misma hora y no puede haber 2 salas a la misma hora.
 	boolean horario=false;
@@ -99,6 +260,9 @@ else{
 return true;}
         }
         
+
+
+
 Boolean CrearRamo(String Sigla,String Nombre, String Horario, String Sala, String Facultad, int Creditos, double Nota, boolean Retirable, int Seccion, String Comentario,String profesor){
     //Verificar si cumple todo   
 	Ramo r = new Ramo(Nombre,Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion,Comentario);
@@ -212,7 +376,6 @@ Boolean CrearRamo(String Sigla,String Nombre, String Horario, String Sala, Strin
 
         //outputter.output(document, System.out);
         writer.close(); // close writer
-        //Creamos el archivo con la lista de alumnos
       
 }
 catch (Exception e) {
@@ -224,10 +387,18 @@ return true;}
 		//No se cumple horario o sala
 		return false;}
 }
-        
+   
+
+
+
+
 void ModCantMaxCr(int cant){
             MaxCr = cant;
         }
+
+
+
+
 void SetCreditosReprobados(int max){
 	try {
 	    Document document = null;
@@ -262,6 +433,8 @@ void SetCreditosReprobados(int max){
 }
 	catch(Exception e){e.printStackTrace();}
 }
+
+
 
 void SetCreditosMaximos(int max){
 	try {

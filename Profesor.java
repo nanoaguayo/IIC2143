@@ -1,3 +1,5 @@
+package mainproyectosoft;
+
 
 public class Profesor {
 	String Facultad;

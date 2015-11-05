@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Historial carrera="Ingenieria">
+  <Semestre periodo="2015-2">
+    <Ramo nota="0.0">IIC2733</Ramo>
+  </Semestre>
+</Historial>
