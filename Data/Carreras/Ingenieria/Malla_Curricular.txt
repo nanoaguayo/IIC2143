@@ -14,4 +14,11 @@
       <Ramo>IIC2733</Ramo>
       <Ramo>IIC2764</Ramo>
    </Malla>
+   <Malla carrera="Ingenieria" nombre="Industrial Hidraulica asbcdefs sdf">
+      <Ramo>IIC2423</Ramo>
+      <Ramo>ICS1342</Ramo>
+      <Ramo>IIC4738</Ramo>
+      <Ramo>IIC2733</Ramo>
+      <Ramo>IIC2764</Ramo>
+   </Malla>
 </Mallas>

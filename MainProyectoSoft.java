@@ -26,6 +26,8 @@ import javafx.collections.ObservableList;
 import javafx.stage.Modality;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 
@@ -36,6 +38,7 @@ public class MainProyectoSoft extends Application {
     Scene scene1; // Menu Registro
     Scene scene2; // Menu Logueado
     Scene scene_tomaramos; // Menu toma de ramos
+    Scene scene_admin;
     
     Alumno alumno;
     Administrador admin;
@@ -56,6 +59,38 @@ public class MainProyectoSoft extends Application {
         window = primaryStage;
         window.setTitle("Sistema Académico");
 
+        
+        //Modo Administrador
+        
+        
+        //GridPane
+        GridPane grid_admin = new GridPane();
+        grid_admin.setPadding(new Insets(50, 50, 50, 50));
+        grid_admin.setVgap(20);
+        grid_admin.setHgap(10);
+        
+        // Modo Admin
+        final Label labelbienvenida_admin = new Label("Modo Administrador");
+        labelbienvenida_admin.setFont(new Font("Arial", 15));
+        labelbienvenida_admin.setStyle("-fx-font-weight: bold");
+        GridPane.setConstraints(labelbienvenida_admin, 0, 0);
+        
+        //Button Ramo
+        Button RamoButton = new Button("Crear Ramo");
+        GridPane.setConstraints(RamoButton, 0, 1);
+        RamoButton.setOnAction(e -> Admin_crearramo());
+        
+        //Button Malla
+        Button MallaButton = new Button("Crear Malla");
+        GridPane.setConstraints(MallaButton, 0, 2);
+   
+        //Agregando a grid
+        grid_admin.getChildren().addAll(labelbienvenida_admin, RamoButton, MallaButton);
+        
+        scene_admin = new Scene(grid_admin, 250, 200); 
+        
+        //FIN modo Admin
+        
         //GridPane
         GridPane grid0 = new GridPane();
         grid0.setPadding(new Insets(20, 20, 20, 20));
@@ -77,7 +112,7 @@ public class MainProyectoSoft extends Application {
         GridPane.setConstraints(passLabel, 0, 1);
 
         //Password Input
-        TextField passInput = new TextField();
+        PasswordField passInput = new PasswordField();
         passInput.setPromptText("password");
         GridPane.setConstraints(passInput, 1, 1);
 
@@ -203,28 +238,35 @@ public class MainProyectoSoft extends Application {
         grid2.setVgap(8);
         grid2.setHgap(10);
         
+        // Mostrar Usuario
+        final Label labelbienvenida = new Label("Bienvenido al Sistema Academico");
+        labelbienvenida.setFont(new Font("Arial", 15));
+        labelbienvenida.setStyle("-fx-font-weight: bold");
+        GridPane.setConstraints(labelbienvenida, 0, 0);
+        
+        
         //ButtonSemestres
         Button SemestreButton = new Button("Crear Semestre");
-        GridPane.setConstraints(SemestreButton, 0, 0);
+        GridPane.setConstraints(SemestreButton, 0, 1);
         SemestreButton.setOnAction(e -> window.setScene(scene_tomaramos));
         
         //HistorialAcademico
         Button HistorialButton = new Button("Historial");
-        GridPane.setConstraints(HistorialButton, 1, 0);
+        GridPane.setConstraints(HistorialButton, 0, 2);
         HistorialButton.setOnAction(e -> PreVentanaHistorial());
         
         //AvanceCurricular
         Button ACButton = new Button("Avance Curricular");
-        GridPane.setConstraints(ACButton, 2, 0);
+        GridPane.setConstraints(ACButton, 0, 3);
         ACButton.setOnAction(e -> PreVentanaAvance());
         
         //BuscadorCursos
         Button BuscadorButton = new Button("Buscador de Cursos");
-        GridPane.setConstraints(BuscadorButton, 3, 0);
+        GridPane.setConstraints(BuscadorButton, 0, 4);
         BuscadorButton.setOnAction(e -> BuscadordeCursos());
    
         //Agregando a grid
-        grid2.getChildren().addAll(SemestreButton, HistorialButton, ACButton, 
+        grid2.getChildren().addAll(labelbienvenida, SemestreButton, HistorialButton, ACButton, 
                 BuscadorButton);
         
         // Sistema.poderCrearRamo()
@@ -233,13 +275,13 @@ public class MainProyectoSoft extends Application {
                 grid2.getChildren().add(SemestreButton);
                 
             }
-            scene2 = new Scene(grid2, 520, 100);
+            scene2 = new Scene(grid2, 290, 200);
         }else {
             if (grid2.getChildren().contains(SemestreButton)){
                 grid2.getChildren().remove(SemestreButton);
                 
             }
-            scene2 = new Scene(grid2, 420, 100);
+            scene2 = new Scene(grid2, 290, 160);
         }
 
         // scene2, grid2 = Menu Logueado
@@ -378,7 +420,7 @@ public class MainProyectoSoft extends Application {
     }
     private void validarRegistro(String RutInput, String NombreInput, 
             String EdadInput, String sexoInput, String CarreraInput, 
-            String NumeroInput, String malla){ //Falta Completar
+            String NumeroInput, String malla){
         try{
             String rut = RutInput;
         String Nombre = NombreInput;
@@ -410,9 +452,10 @@ public class MainProyectoSoft extends Application {
         else if (id == 1){ //Alumno Normal
             alumno = sr.SetStudent(username, pass);
             window.setScene(scene2);
+            
         }
         else if (id == 2){ //Admin
-            
+            window.setScene(scene_admin);
         }
         else if (id == 3){ //Profesor
             
@@ -623,18 +666,13 @@ public class MainProyectoSoft extends Application {
         RamoAvanceFX[] ramos = av.GetAvance(alumno, malla);
         Stage windowAvanceCurricular = new Stage();
         
-        for (int i = 0; i<ramos.length; i++){
-            System.out.println(ramos[i].Sigla);
-        }
-        
-        
         Scene scene_avance = new Scene(new Group());
         TableView<RamoAvanceFX> table = new TableView<>();
         ArrayList arrlstramos = new ArrayList<>(Arrays.asList(ramos));
         ObservableList<RamoAvanceFX> data = FXCollections.observableArrayList(arrlstramos);
         windowAvanceCurricular.setTitle("Avance Curricular");
-        windowAvanceCurricular.setWidth(350);
-        windowAvanceCurricular.setHeight(500);
+        //windowAvanceCurricular.setWidth(500);
+        //windowAvanceCurricular.setHeight(500);
  
         final Label label = new Label("Ramos");
         label.setFont(new Font("Arial", 15));
@@ -646,16 +684,16 @@ public class MainProyectoSoft extends Application {
         TableColumn col3 = new TableColumn("Nota");
         
         col1.setCellValueFactory(
-                new PropertyValueFactory<RamoAvanceFX, String>("Sigla"));
+                new PropertyValueFactory<>("Sigla"));
         col1.setMinWidth(100);
         
         col2.setCellValueFactory(
-                new PropertyValueFactory<RamoAvanceFX, String>("Nombre"));
-        col2.setMinWidth(100);
+                new PropertyValueFactory<>("Nombre"));
+        col2.setMinWidth(200);
         
         col3.setCellValueFactory(
-                new PropertyValueFactory<RamoAvanceFX, String>("Nota"));
-        col3.setMinWidth(100);
+                new PropertyValueFactory<>("Nota"));
+        col3.setMinWidth(80);
         
         System.out.println(data);
         table.setItems(data);
@@ -663,7 +701,7 @@ public class MainProyectoSoft extends Application {
  
         final VBox vbox = new VBox();
         vbox.setSpacing(5);
-        vbox.setPadding(new Insets(10, 0, 0, 10));
+        vbox.setPadding(new Insets(10, 10, 10, 10));
         vbox.getChildren().addAll(label, table);
  
         ((Group) scene_avance.getRoot()).getChildren().addAll(vbox);
@@ -703,6 +741,7 @@ public class MainProyectoSoft extends Application {
         }
         GridPane.setConstraints(carrerabox, 1, 0);
         carrerabox.setOnAction(e -> {
+            Mallabox.getItems().clear();
             ArrayList<Malla_Curricular> mallas = 
                     alumno.getMallas(carrerabox.getValue());
             Iterator<Malla_Curricular> iterador = mallas.iterator();
@@ -791,5 +830,121 @@ public class MainProyectoSoft extends Application {
  
         windowHistorial.setScene(scene_historial);
         windowHistorial.show();
+    }
+    private void Admin_crearramo(){
+        //Ventana Crear Ramo
+        Stage windowCrearRamo = new Stage();
+        windowCrearRamo.initModality(Modality.APPLICATION_MODAL);
+        windowCrearRamo.setTitle("Creador de Ramos");
+        windowCrearRamo.setMinWidth(300);
+        windowCrearRamo.setMinHeight(450);
+
+        //GridPane
+        GridPane grid_crearamo = new GridPane();
+        grid_crearamo.setPadding(new Insets(10, 10, 10, 10));
+        grid_crearamo.setVgap(8);
+        grid_crearamo.setHgap(5);
+
+        //Nombre Label
+        Label LabelNombre = new Label("Nombre:");
+        LabelNombre.setStyle("-fx-font-weight: bold");
+        GridPane.setConstraints(LabelNombre, 0, 0);
+
+        //Nombre Input
+        TextField InputNombre = new TextField();
+        GridPane.setConstraints(InputNombre, 1, 0);
+        
+         //Sigla Label
+        Label LabelSigla = new Label("Sigla:");
+        LabelSigla.setStyle("-fx-font-weight: bold");
+        GridPane.setConstraints(LabelSigla, 0, 1);
+
+        //Sigla Input
+        TextField InputSigla = new TextField();
+        GridPane.setConstraints(InputSigla, 1, 1);
+        
+        //Profesor Label
+        Label LabelProfesor = new Label("Profesor:");
+        GridPane.setConstraints(LabelProfesor, 0, 2);
+
+        //Profesor Input
+        TextField InputProfesor = new TextField();
+        GridPane.setConstraints(InputProfesor, 1, 2);
+        
+        //Facultad Label
+        Label LabelCampus = new Label("Facultad:");
+        GridPane.setConstraints(LabelCampus, 0, 3);
+
+        //Facultad Input
+        TextField Inputcampus = new TextField();
+        GridPane.setConstraints(Inputcampus, 1, 3);
+        
+        //Horario Label
+        Label LabelHorario = new Label("Horario:");
+        GridPane.setConstraints(LabelHorario, 0, 4);
+        
+        //Horario Input
+        TextField InputHorario = new TextField();
+        InputHorario.setPromptText("M-j:4");
+        GridPane.setConstraints(InputHorario, 1, 4);
+        
+        //Sala Label
+        Label LabelSala = new Label("Sala:");
+        GridPane.setConstraints(LabelSala, 0, 5);
+        
+        //Sala Input
+        TextField InputSala = new TextField();
+        GridPane.setConstraints(InputSala, 1, 5);
+        
+        //Creditos Label
+        Label LabelCreditos = new Label("Creditos:");
+        GridPane.setConstraints(LabelCreditos, 0, 6);
+        
+        //Creditos Input
+        TextField Inputcreditos = new TextField();
+        GridPane.setConstraints(Inputcreditos, 1, 6);
+        
+        //Retirable Label
+        Label LabelRetirable = new Label("Retirable:");
+        GridPane.setConstraints(LabelRetirable, 0, 7);
+        
+        //Retirable Box
+        ComboBox<String> retirablebox = new ComboBox<>();
+        retirablebox.getItems().addAll("Si", "No");
+        retirablebox.setValue("Si");
+        GridPane.setConstraints(retirablebox, 1, 7);
+  
+        //Seccion Label
+        Label LabelSeccion = new Label("Seccion:");
+        GridPane.setConstraints(LabelSeccion, 0, 8);
+        
+        //Seccion Input
+        TextField InputSeccion = new TextField();
+        GridPane.setConstraints(InputSeccion, 1, 8);
+        
+        //Comentario Label
+        Label LabelComentario = new Label("Comentarios:");
+        GridPane.setConstraints(LabelComentario, 0, 9);
+        
+        //Comentario Input
+        TextArea Inputcomentario = new TextArea();
+        GridPane.setConstraints(Inputcomentario, 1, 9);
+        Inputcomentario.setMaxWidth(200);
+        Inputcomentario.setMaxHeight(80);
+        
+        //Button Ingresar
+        Button ButtonIngresarRamo = new Button("Ingresar Ramo");
+        GridPane.setConstraints(ButtonIngresarRamo, 1, 11);
+        
+        //Display
+        grid_crearamo.getChildren().addAll(LabelSigla, InputSigla, LabelNombre, 
+                InputNombre, LabelProfesor, InputProfesor, LabelCampus, 
+                Inputcampus, LabelHorario, InputHorario, LabelCreditos, 
+                Inputcreditos, LabelRetirable, retirablebox, LabelSeccion,
+                InputSeccion, LabelComentario, Inputcomentario, 
+                ButtonIngresarRamo, LabelSala, InputSala);
+        Scene scene_crearamo = new Scene(grid_crearamo);
+        windowCrearRamo.setScene(scene_crearamo);
+        windowCrearRamo.show();
     }
 }

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Requisitos>
-   <RamoBase sigla="IIC2143">
-      <RamoReq>IIC2143</RamoReq>
-      <RamoReq>ICS3413</RamoReq>   
+   <RamoBase sigla="IIC2143">   
    </RamoBase>
    <RamoBase sigla="ICS4125">
       <RamoReq>ICS2412</RamoReq>

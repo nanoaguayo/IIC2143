@@ -24,4 +24,10 @@
       <admin>false</admin>
       <profesor>false</profesor>
    </data>
+   <data>
+      <id>ab</id>
+      <password>ab</password>
+      <admin>false</admin>
+      <profesor>false</profesor>
+   </data>
 </Registro>

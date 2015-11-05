@@ -8,9 +8,10 @@ package mainproyectosoft;
 import javafx.beans.property.SimpleStringProperty;
 
 public class RamoAvanceFX {
-	private final SimpleStringProperty Nombre;
+	SimpleStringProperty Nombre;
 	SimpleStringProperty Sigla;
 	SimpleStringProperty Nota;
+        SimpleStringProperty Periodo;
 	
 	public RamoAvanceFX(String nombre,String sigla,double nota){
 		
@@ -27,6 +28,9 @@ public class RamoAvanceFX {
         public String getNota(){
             return this.Nota.get();
         }
+        public String getPeriodo(){
+            return this.Periodo.get();
+        }
         void setNombre(String nombre){
             Nombre.set(nombre);
         }
@@ -35,5 +39,8 @@ public class RamoAvanceFX {
         }
         void setSigla(String sigla){
             Sigla.set(sigla);
+        }
+        void setPeriodo(String periodo){
+            Sigla.set(periodo);
         }
 }

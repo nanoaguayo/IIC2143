@@ -148,7 +148,7 @@ public class Avance {
 					{
 						if (sem[j].Ramos[k].Nota<3.95)
 						{
-							ramosMalla[i].setNota("0.0");
+							ramosMalla[i].setNota("P");
 						}
 						else
 						{
