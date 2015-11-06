@@ -1,5 +1,7 @@
 package mainproyectosoft;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.application.Application;
 import javafx.scene.Group;
 
@@ -59,6 +61,7 @@ public class MainProyectoSoft extends Application {
         
         window = primaryStage;
         window.setTitle("Sistema Académico");
+        window.setResizable(false);
 
         
         //Modo Administrador
@@ -117,8 +120,8 @@ public class MainProyectoSoft extends Application {
         //Agregando a grid
         grid_admin.getChildren().addAll(labelbienvenida_admin, RamoButton, 
                 MallaButton, RestriccionesButton, semstatusButton, RamoMallaButton);
-        
-        scene_admin = new Scene(grid_admin, 280, 300); 
+        grid_admin.setAlignment(Pos.CENTER);
+        scene_admin = new Scene(grid_admin); 
         
         //FIN modo Admin
         
@@ -129,9 +132,10 @@ public class MainProyectoSoft extends Application {
         
         //GridPane
         GridPane grid_profe = new GridPane();
-        grid_profe.setPadding(new Insets(20, 50, 50, 50));
+        grid_profe.setPadding(new Insets(20, 50, 20, 50));
         grid_profe.setVgap(20);
         grid_profe.setHgap(10);
+        grid_profe.setAlignment(Pos.CENTER);
         
         // Modo Admin
         final Label labelbienvenida_profe = new Label("Modo Profesor");
@@ -147,38 +151,44 @@ public class MainProyectoSoft extends Application {
         //Agregando a grid
         grid_profe.getChildren().addAll(labelbienvenida_profe, CalificarButton);
         
-        scene_profesor = new Scene(grid_profe, 210, 150); 
+        scene_profesor = new Scene(grid_profe); 
         
         //FIN modo Profesor
         
-        //GridPane
+         //GridPane
         GridPane grid0 = new GridPane();
         grid0.setPadding(new Insets(20, 20, 20, 20));
         grid0.setVgap(8);
         grid0.setHgap(10);
         
-
+        VBox box = new VBox(10);
+        Image image = new Image("file:data/logo/Logo.png") {};
+        ImageView view = new ImageView();
+        view.setImage(image);
+        box.getChildren().add(view);
+        GridPane.setConstraints(box,0,0);
         //Username Label
         Label nameLabel = new Label("Nombre Usuario:");
-        GridPane.setConstraints(nameLabel, 0, 0);
-
+        GridPane.setConstraints(nameLabel, 2, 2);
+        box.getChildren().add(nameLabel);
         //Username Input
         TextField nameInput = new TextField();
         nameInput.setPromptText("nombre usuario");
-        GridPane.setConstraints(nameInput, 1, 0);
-
+        GridPane.setConstraints(nameInput, 3, 2);
+        box.getChildren().add(nameInput);
         //Password Label
         Label passLabel = new Label("Password:");
-        GridPane.setConstraints(passLabel, 0, 1);
-
+        GridPane.setConstraints(passLabel, 2, 3);
+        box.getChildren().add(passLabel);
         //Password Input
         PasswordField passInput = new PasswordField();
         passInput.setPromptText("password");
-        GridPane.setConstraints(passInput, 1, 1);
-
+        GridPane.setConstraints(passInput, 3, 3);
+        box.getChildren().add(passInput);
         //Login
         Button loginButton = new Button("Log In");
-        GridPane.setConstraints(loginButton, 1, 2);
+        GridPane.setConstraints(loginButton, 4, 2);
+        box.getChildren().add(loginButton);
         loginButton.setOnAction(e -> validarUsuario(nameInput.getText(), 
                 passInput.getText()));
         
@@ -189,11 +199,12 @@ public class MainProyectoSoft extends Application {
         registerButton.setOnAction(e -> window.setScene(scene1)); // se dirige a registro por primera vez
 
         //Agregando a grid
-        grid0.getChildren().addAll(nameLabel, nameInput, passLabel, 
-                passInput, loginButton);
-
+        //grid0.getChildren().addAll(box,nameLabel, nameInput, passLabel, passInput, loginButton);
+        grid0.getChildren().add(box);
         // scene0, grid0 = Menu Principal
-        scene0 = new Scene(grid0, 320, 130);
+        grid0.setAlignment(Pos.CENTER);
+        scene0 = new Scene(grid0);
+
 
         //fin menu principal
         
@@ -295,7 +306,7 @@ public class MainProyectoSoft extends Application {
         //GridPane
         GridPane grid2 = new GridPane();
         grid2.setPadding(new Insets(20, 20, 20, 20));
-        grid2.setVgap(8);
+        grid2.setVgap(10);
         grid2.setHgap(10);
         
         // Mostrar Usuario
@@ -516,11 +527,13 @@ public class MainProyectoSoft extends Application {
             }
             else{
                 Stage window0 = new Stage();
+                window0.setResizable(false);
                 window0.initModality(Modality.APPLICATION_MODAL);
                 window0.setTitle("Invalido");
                 window0.setMaxWidth(450);
                 window0.setMinWidth(400);
                 window0.setMinHeight(150);
+                
 
                 Label label0 = new Label();
                 label0.setText("Usuario excede cantidad de ramos reprobados. "
@@ -555,6 +568,7 @@ public class MainProyectoSoft extends Application {
             window1.setMaxWidth(450);
             window1.setMinWidth(300);
             window1.setMinHeight(100);
+            window1.setResizable(false);
 
             Label label = new Label();
             label.setText("Usuario invalido, intente de nuevo.");
@@ -612,14 +626,15 @@ public class MainProyectoSoft extends Application {
         Stage windowBuscadordeCursos = new Stage();
         windowBuscadordeCursos.initModality(Modality.APPLICATION_MODAL);
         windowBuscadordeCursos.setTitle("Buscador de Cursos");
-        windowBuscadordeCursos.setMinWidth(300);
-        windowBuscadordeCursos.setMinHeight(450);
+        windowBuscadordeCursos.setMinWidth(410);
+        windowBuscadordeCursos.setMinHeight(350);
 
         //GridPane
         GridPane grid_buscacursos = new GridPane();
         grid_buscacursos.setPadding(new Insets(10, 10, 10, 10));
         grid_buscacursos.setVgap(8);
         grid_buscacursos.setHgap(5);
+        grid_buscacursos.setAlignment(Pos.CENTER);
         
          //Sigla Label
         Label LabelSigla = new Label("Sigla:");
@@ -700,7 +715,9 @@ public class MainProyectoSoft extends Application {
         
         ButtonAgregarHorario.setOnAction((ActionEvent event) -> {
             if (!diadesemanabox.getValue().equals("Todas") && 
-                    !modulobox.getValue().equals("Todas")){
+                    !modulobox.getValue().equals("Todas") && 
+                    !horariosingresados.contains(diadesemanabox.getValue()+
+                            ":"+modulobox.getValue())){
                 String texto_actual = Resultadoagregarhorario.getText();
             Resultadoagregarhorario.setText(texto_actual+diadesemanabox.getValue()+
                     ":"+modulobox.getValue()+" ");
@@ -796,12 +813,14 @@ public class MainProyectoSoft extends Application {
     
     private void PreVentanaAvance(){
         Stage windowpreAvance = new Stage();
+        windowpreAvance.setMinWidth(400);
         
         //GridPane
         GridPane grid_preavance = new GridPane();
-        grid_preavance.setPadding(new Insets(30, 100, 30, 100));
+        grid_preavance.setPadding(new Insets(20, 20, 20, 20));
         grid_preavance.setVgap(15);
         grid_preavance.setHgap(15);
+        grid_preavance.setAlignment(Pos.CENTER);
         
         // Label Elegir Malla
         Label labelElegirMalla = new Label("Elegir Malla:");
@@ -815,6 +834,9 @@ public class MainProyectoSoft extends Application {
         Label labelElegirCarrera = new Label("Elegir Carrera:");
         GridPane.setConstraints(labelElegirCarrera, 0, 0);
         
+        // Label Elegir Carrera
+        Label mensaje = new Label("");
+        
         // Elegir Carrera Box
         ComboBox<String> carrerabox = new ComboBox<>();
         String[] carreras = alumno.getCarrera();
@@ -823,13 +845,22 @@ public class MainProyectoSoft extends Application {
             carrerabox.getItems().add(carreras[i]);
             }
         }
+        carrerabox.getSelectionModel().selectFirst();
         GridPane.setConstraints(carrerabox, 1, 0);
-        carrerabox.setOnAction(e -> {
-            Mallabox.getItems().clear();
-            ArrayList<Malla_Curricular> mallas = 
+        ArrayList<Malla_Curricular> mallas = 
                     alumno.getMallas(carrerabox.getValue());
             Iterator<Malla_Curricular> iterador = mallas.iterator();
             while (iterador.hasNext()){
+                Malla_Curricular malla = iterador.next();
+                String malla_string = malla.Especialidad;
+                Mallabox.getItems().add(malla_string);
+            }
+        carrerabox.setOnAction(e -> {
+            Mallabox.getItems().clear();
+            ArrayList<Malla_Curricular> mallas2 = 
+                    alumno.getMallas(carrerabox.getValue());
+            Iterator<Malla_Curricular> iterador2 = mallas2.iterator();
+            while (iterador2.hasNext()){
                 Malla_Curricular malla = iterador.next();
                 String malla_string = malla.Especialidad;
                 Mallabox.getItems().add(malla_string);
@@ -847,7 +878,11 @@ public class MainProyectoSoft extends Application {
         grid_preavance.getChildren().addAll(carrerabox, labelElegirCarrera, 
                 labelElegirMalla, Mallabox, ingresar);
         
-        Scene scene_preavance = new Scene(grid_preavance, 550, 200);
+        VBox vb = new VBox(10);
+        vb.getChildren().addAll(grid_preavance, mensaje);
+        vb.setAlignment(Pos.CENTER);
+        
+        Scene scene_preavance = new Scene(vb);
         windowpreAvance.setScene(scene_preavance);
         windowpreAvance.setTitle("Avance Curricular");
         windowpreAvance.show();
@@ -903,6 +938,7 @@ public class MainProyectoSoft extends Application {
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 10, 10, 10));
         vbox.getChildren().addAll(label, table);
+        windowHistorial.setResizable(false);
  
         ((Group) scene_historial.getRoot()).getChildren().addAll(vbox);
  
@@ -922,6 +958,7 @@ public class MainProyectoSoft extends Application {
         grid_crearamo.setPadding(new Insets(10, 10, 10, 10));
         grid_crearamo.setVgap(8);
         grid_crearamo.setHgap(5);
+        grid_crearamo.setAlignment(Pos.CENTER);
 
         //Nombre Label
         Label LabelNombre = new Label("Nombre:");
@@ -1014,6 +1051,7 @@ public class MainProyectoSoft extends Application {
         Label mensaje = new Label("");
         
         VBox vb = new VBox();
+        vb.setAlignment(Pos.CENTER);
         vb.setPadding(new Insets(10, 0, 0, 10));
         vb.setSpacing(10);
 
@@ -1082,6 +1120,7 @@ public class MainProyectoSoft extends Application {
     }
     public void Admin_restricciones(){
         Stage windowRestricciones = new Stage();
+        windowRestricciones.setResizable(false);
         windowRestricciones.initModality(Modality.APPLICATION_MODAL);
         windowRestricciones.setTitle("Restricciones");
         // windowRestricciones.setMinWidth(300);
@@ -1172,6 +1211,8 @@ public class MainProyectoSoft extends Application {
         grid_crearmalla.setPadding(new Insets(10, 10, 10, 10));
         grid_crearmalla.setVgap(8);
         grid_crearmalla.setHgap(5);
+        grid_crearmalla.setAlignment(Pos.CENTER);
+        
         
         // Label Carrera
         Label lcarrera = new Label("Carrera");
@@ -1220,6 +1261,7 @@ public class MainProyectoSoft extends Application {
         
         
         VBox vb = new VBox();
+        vb.setAlignment(Pos.CENTER);
         vb.setPadding(new Insets(10, 0, 0, 10));
         vb.setSpacing(10);
         
@@ -1231,16 +1273,18 @@ public class MainProyectoSoft extends Application {
     }
     public void Admin_RamoaMalla(){
         Stage windowRamoaMalla = new Stage();
+        windowRamoaMalla.setResizable(true);
         windowRamoaMalla.initModality(Modality.APPLICATION_MODAL);
         windowRamoaMalla.setTitle("Agregar Ramos a Malla");
-        windowRamoaMalla.setMinWidth(500);
-        windowRamoaMalla.setMinHeight(350);
+        windowRamoaMalla.setMinWidth(400);
+        windowRamoaMalla.setMinHeight(250);
 
         //GridPane
         GridPane grid_ramoamalla = new GridPane();
         grid_ramoamalla.setPadding(new Insets(10, 10, 10, 10));
         grid_ramoamalla.setVgap(8);
         grid_ramoamalla.setHgap(5);
+        grid_ramoamalla.setAlignment(Pos.CENTER);
         
         // Label Carrera
         Label lcarrera = new Label("Carrera");
@@ -1324,6 +1368,7 @@ public class MainProyectoSoft extends Application {
         vb.setSpacing(10);
         
         vb.getChildren().addAll(grid_ramoamalla, Ingresar, mensaje);
+        vb.setAlignment(Pos.CENTER);
         Scene scene_ramoamalla = new Scene(vb);
         windowRamoaMalla.setScene(scene_ramoamalla);
         windowRamoaMalla.show();
@@ -1334,14 +1379,15 @@ public class MainProyectoSoft extends Application {
     Stage windowCalificar = new Stage();
         windowCalificar.initModality(Modality.APPLICATION_MODAL);
         windowCalificar.setTitle("Calificar");
-        windowCalificar.setMinWidth(500);
-        windowCalificar.setMinHeight(350);
+        windowCalificar.setMinWidth(320);
+        windowCalificar.setMinHeight(250);
 
         //GridPane
         GridPane grid_calificar = new GridPane();
         grid_calificar.setPadding(new Insets(10, 10, 10, 10));
         grid_calificar.setVgap(8);
         grid_calificar.setHgap(5);
+        grid_calificar.setAlignment(Pos.CENTER);
         
         // Label Ramo
         Label lramo = new Label("Ramo:");
@@ -1413,8 +1459,9 @@ public class MainProyectoSoft extends Application {
         
         
         VBox vb = new VBox();
-        vb.setPadding(new Insets(30, 80, 10, 80));
+        vb.setPadding(new Insets(10, 10, 10, 10));
         vb.setSpacing(10);
+        vb.setAlignment(Pos.CENTER);
         
         vb.getChildren().addAll(grid_calificar, Ingresar, mensaje);
         Scene scene_calificar = new Scene(vb);
@@ -1437,7 +1484,8 @@ public class MainProyectoSoft extends Application {
  
         final Label label = new Label("Ramos");
         label.setFont(new Font("Arial", 15));
- 
+        table.setMinWidth(770);
+        table.setMinHeight(550);
         table.setEditable(false);
  
         TableColumn col1 = new TableColumn("Sigla");
