@@ -29,7 +29,7 @@ public class Semestre {
         	int aux=0;
         	for(int i=0;i<Ramos.length;i++){
         		if(Ramos[i].Nota>0.0 && Ramos[i].Nota<3.95){
-        			aux+=Ramos[i].Creditos;
+        			aux++;
         		}
         	}
         	return aux;

@@ -74,7 +74,7 @@ public class Alumno extends Usuario{
 		File xmlFile2 = new File("data/Carreras/"+carrera+"/Ramos.txt");
 	    Element root2 = null;
 	    try{
-	    if(xmlFile.exists()) {
+	    if(xmlFile2.exists()) {
 	        // try to load document from xml file if it exist
 	        // create a file input stream
 	        FileInputStream fis = new FileInputStream(xmlFile2);
@@ -123,7 +123,11 @@ public class Alumno extends Usuario{
 			if(test.checkRequisitos(this, semestre[i])){}
 			else{return false;}
 		}
-		//Paso el chequeo y solo agrego los ramos.
+		//Paso el chequeo y solo agrego los ramos y al alumno a la lista.
+		Element alumno = new Element("alumno");
+		alumno.setText(this.id_usuario);
+		alumno.setAttribute("num_alumno",String.valueOf(this.numero_alumno));
+		
 		Element element = new Element("Semestre");
 		element.setAttribute("periodo",periodo);
 		xmlFile = new File("data/Carreras/"+carrera+"/Ramos.txt");
@@ -134,6 +138,38 @@ public class Alumno extends Usuario{
 	      element2.setAttribute("nota", "0.0");
 	      element2.setText(semestre[i].Sigla);
 	      element.addContent(element2);
+	      
+	      //anotamos en lista
+	      Document document3 = null;
+			File xmlFile3 = new File("data/Listas/"+semestre[i].Sigla+".txt");
+		    Element root3 = null;
+		    try{
+		    if(xmlFile3.exists()) {
+		        // try to load document from xml file if it exist
+		        // create a file input stream
+		        FileInputStream fis = new FileInputStream(xmlFile3);
+		 
+		        // create a sax builder to parse the document
+		        SAXBuilder sb = new SAXBuilder();
+		        // parse the xml content provided by the file input stream and create a Document object
+		        document3 = sb.build(fis);
+		        
+		        // get the root element of the document
+		        
+		        root3 = document3.getRootElement();
+		        fis.close();
+		    }
+		      root3.addContent(alumno);
+		      FileWriter writer3 = new FileWriter("data/Listas/"+semestre[i].Sigla+".txt");
+		      
+		      XMLOutputter outputter = new XMLOutputter();
+		      outputter.setFormat(Format.getPrettyFormat());
+		      outputter.output(document3, writer3);
+		     
+		      //outputter.output(document, System.out);
+		      writer3.close(); // close writer
+		    }
+		    catch(Exception e){e.printStackTrace();}
 	      
 	     
 		}

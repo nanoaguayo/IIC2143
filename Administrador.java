@@ -25,6 +25,7 @@ import org.jdom2.JDOMException;
 public class Administrador extends Usuario{
     
         int MaxCr=50;
+        String carreratemp;
 	
 	
 	public Administrador(String nombre,int edad, String sexo, String rut,String id, String pass){
@@ -159,33 +160,7 @@ Boolean AgregarRamoMalla (Malla_Curricular malla, String siglaRamo)
      }
 	 
   }
- /*
 
-  Element element = new Element("Ramo");
-  element.setText(ramo.Sigla);
-  element.addContent(element2);
-  element.addContent(element3);
-  element.addContent(element4);
-  element.addContent(element5);
-  element.addContent(element6);
-  root.addContent(element);
-  
- 
-  Element rootHist = new Element("Historial");
-  Attribute carrera_att = new Attribute("carrera",carrera);
-  rootHist.setAttribute(carrera_att);
-
-  document2.setContent(rootHist);
-  FileWriter writer = new FileWriter("data/Alumnos.txt");
-  FileWriter writer2 = new FileWriter("data/Alumnos/"+num_alumno+"/Historial.txt");
-  XMLOutputter outputter = new XMLOutputter();
-  outputter.setFormat(Format.getPrettyFormat());
-  outputter.output(document, writer);
-  outputter.output(document2,writer2);
-  //outputter.output(document, System.out);
-  writer.close(); // close writer
-  writer2.close();
-      */
 }
 catch (IOException | JDOMException e) {
   System.err.println(e);
@@ -333,7 +308,7 @@ Boolean CrearRamo(String Sigla,String Nombre, String Horario, String Sala, Strin
 	    element.addContent(element9);
 	    element.addContent(element10);
 	    root.addContent(element);
-	    //Creamos el archivo del foro y agregamos el ramo al profesor.
+	    //Creamos el archivo del foro y agregamos el ramo al profesor.  Ademas, debemos crear la lista del ramo
 	   
 	    Document document2=new Document();
 	    Element rootHist = new Element("Foro");
@@ -376,6 +351,23 @@ Boolean CrearRamo(String Sigla,String Nombre, String Horario, String Sala, Strin
 
         //outputter.output(document, System.out);
         writer.close(); // close writer
+        
+   
+        
+        
+        //Creamos lista del ramo
+        Document document4=new Document();
+	    Element rootHist2 = new Element("lista");
+
+	    document4.setContent(rootHist2);
+	      
+	    FileWriter writer4 = new FileWriter("data/Listas/"+r.Sigla+".txt");
+	    XMLOutputter outputter4 = new XMLOutputter();
+	    outputter4.setFormat(Format.getPrettyFormat());
+        outputter4.output(document4,writer4);
+        writer4.close();
+        
+ 
       
 }
 catch (Exception e) {
@@ -399,7 +391,7 @@ void ModCantMaxCr(int cant){
 
 
 
-void SetCreditosReprobados(int max){
+void SetRamosReprobados(int max){
 	try {
 	    Document document = null;
 	    Element root = null;

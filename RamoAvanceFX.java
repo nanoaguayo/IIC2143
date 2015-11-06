@@ -17,7 +17,13 @@ public class RamoAvanceFX {
 		
 		this.Nombre= new SimpleStringProperty(nombre);
 		this.Sigla= new SimpleStringProperty(sigla);
-		this.Nota = new SimpleStringProperty(String.valueOf(nota));
+                if (nota ==0.0){
+                    this.Nota = new SimpleStringProperty("P");
+                }else{
+                    this.Nota = new SimpleStringProperty(String.valueOf(nota));
+                }
+		           
+                this.Periodo = new SimpleStringProperty("");
 	}
         public String getNombre(){
             return this.Nombre.get();
@@ -41,6 +47,6 @@ public class RamoAvanceFX {
             Sigla.set(sigla);
         }
         void setPeriodo(String periodo){
-            Sigla.set(periodo);
+            Periodo.set(periodo);
         }
 }

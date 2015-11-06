@@ -87,6 +87,196 @@ public boolean RegistrarAlumno(String id,String nombre,String carrera,String mal
     
 	return true;
 }
+public ArrayList<String> getRamosMalla(String carrera,String malla){
+	   System.out.println("AAAAAAAAA");
+	ArrayList<String> ramos2 = new ArrayList<>();
+	
+	 try {
+ 	    Document document = null;
+ 	    Document document2 = null;
+ 	    Element root = null;
+ 	    Element root2=null;
+ 	    File xmlFile = new File("data/Carreras/"+carrera+"/Malla_Curricular.txt");
+ 	    File xmlFile2 = new File("data/Carreras/"+carrera+"/Ramos.txt");
+ 	    
+ 	    if(xmlFile.exists()) {
+ 	        // try to load document from xml file if it exist
+ 	        // create a file input stream
+ 	        FileInputStream fis = new FileInputStream(xmlFile);
+ 	        FileInputStream fis2 = new FileInputStream(xmlFile2);
+ 	        // create a sax builder to parse the document
+ 	        SAXBuilder sb = new SAXBuilder();
+ 	        // parse the xml content provided by the file input stream and create a Document object
+ 	        document = sb.build(fis);
+ 	        document2 = sb.build(fis2);
+ 	        
+ 	        // get the root element of the document
+ 	        
+ 	        root = document.getRootElement();
+ 	        root2 = document2.getRootElement();
+ 	        fis.close();
+ 	        fis2.close();
+ 	        
+ 	    } else{return null;}
+ 	   List<Element> Ramos = root2.getChildren();
+	   for(int i=0;i<Ramos.size();i++){
+		   String name=Ramos.get(i).getChildText("sigla");
+		   ramos2.add(name);
+		   System.out.println(name);
+		   
+	   }
+ 	   List<Element> mallas = root.getChildren();
+ 	   
+ 	   for(int i=0;i<mallas.size();i++){
+ 		   String name=mallas.get(i).getAttributeValue("nombre");
+ 		   if(name.equals(malla)){
+ 			   System.out.println(name+"---"+malla);
+ 			   //esta es la carrera
+ 			   List<Element> ramosmalla = mallas.get(i).getChildren();
+ 			   for(int j=0;j<ramosmalla.size();j++){
+ 				   String aux = ramosmalla.get(j).getText();
+ 				   ramos2.remove(aux);
+ 			   }
+ 		   }
+ 	   }
+ 	   
+ 	 
+ 	   
+	 }
+ 	 catch(Exception e){}
+	 
+	
+	
+	return ramos2;
+}
+
+public void CambiarPeriodo(){
+	try {
+	    Document document = null;
+	    Element root = null;
+	    
+	    File xmlFile = new File("data/Status.txt");
+	    
+	    if(xmlFile.exists()) {
+	        // try to load document from xml file if it exist
+	        // create a file input stream
+	        FileInputStream fis = new FileInputStream(xmlFile);
+	 
+	        // create a sax builder to parse the document
+	        SAXBuilder sb = new SAXBuilder();
+	        // parse the xml content provided by the file input stream and create a Document object
+	        document = sb.build(fis);
+	        
+	        // get the root element of the document
+	        
+	        root = document.getRootElement();
+	        fis.close();
+	    } else{}
+  String anofin="";
+  String semfin="";
+  String periodo=root.getChild("periodo").getText();
+  String ano = periodo.substring(0, 4);
+  int anox = Integer.valueOf(ano);
+  String semestre = periodo.substring(5,6);
+  if(semestre.equals("1")){
+	  semfin="-2";
+	  anofin=ano;
+	  anofin=anofin.concat(semfin);
+  } 
+  else{
+	  anox++;
+	  anofin=String.valueOf(anox);
+	  anofin=anofin.concat("-1");
+  }
+  root.getChild("periodo").setText(anofin);
+  root.getChild("tomaramos").setText("true");
+  FileWriter writer = new FileWriter("data/Status.txt");
+  XMLOutputter outputter = new XMLOutputter();
+  outputter.setFormat(Format.getPrettyFormat());
+  outputter.output(document, writer);
+  //outputter.output(document, System.out);
+  writer.close(); // close writer
+      
+}
+	catch(Exception e){e.printStackTrace();}
+
+}
+
+public boolean getEstado(){
+	boolean estado=true;
+	try {
+	    Document document = null;
+	    Element root = null;
+	    
+	    File xmlFile = new File("data/Status.txt");
+	    
+	    if(xmlFile.exists()) {
+	        // try to load document from xml file if it exist
+	        // create a file input stream
+	        FileInputStream fis = new FileInputStream(xmlFile);
+	 
+	        // create a sax builder to parse the document
+	        SAXBuilder sb = new SAXBuilder();
+	        // parse the xml content provided by the file input stream and create a Document object
+	        document = sb.build(fis);
+	        
+	        // get the root element of the document
+	        
+	        root = document.getRootElement();
+	        fis.close();
+	    } else{}
+	    
+  String periodo=root.getChild("tomaramos").getText();
+  if(periodo.equals("true")){
+	  estado=true;
+  }
+  else{
+	  estado=false;
+  }
+	}catch(Exception e){
+		
+	}
+	
+	return estado;
+}
+
+void setFalseTomaRamos(){
+	
+	try {
+	    Document document = null;
+	    Element root = null;
+	    
+	    File xmlFile = new File("data/Status.txt");
+	    
+	    if(xmlFile.exists()) {
+	        // try to load document from xml file if it exist
+	        // create a file input stream
+	        FileInputStream fis = new FileInputStream(xmlFile);
+	 
+	        // create a sax builder to parse the document
+	        SAXBuilder sb = new SAXBuilder();
+	        // parse the xml content provided by the file input stream and create a Document object
+	        document = sb.build(fis);
+	        
+	        // get the root element of the document
+	        
+	        root = document.getRootElement();
+	        fis.close();
+	    } else{}
+	    
+  root.getChild("tomaramos").setText("false");
+  FileWriter writer = new FileWriter("data/Status.txt");
+  XMLOutputter outputter = new XMLOutputter();
+  outputter.setFormat(Format.getPrettyFormat());
+  outputter.output(document, writer);
+  //outputter.output(document, System.out);
+  writer.close(); // close writer
+  
+ 
+	}catch(Exception e){
+		
+	}
+}
 
 }
 	

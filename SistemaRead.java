@@ -1,6 +1,7 @@
 package mainproyectosoft;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -136,6 +137,37 @@ public Administrador SetAdmin(String id, String pass){
 		}
 		
 	}
+public Profesor SetProfesor(String id, String pass){
+	try{
+		File Registro = new File("data/Profesores.txt");
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(Registro);
+		
+		NodeList Datos = doc.getElementsByTagName("Profesor");
+		
+		for(int i=0;i<Datos.getLength();i++){
+		Node nodo = Datos.item(i);
+		Element info = (Element)nodo;
+		String NAME = info.getAttribute("Nombre");
+		String FACULTAD = info.getAttribute("facultad");
+		String ID = info.getAttribute("id");	
+		if(ID.equals(id)){
+			Profesor aux= new Profesor(NAME,FACULTAD);
+		
+			return aux;
+		}
+		}
+
+	}
+	catch(Exception e){
+		e.printStackTrace();
+		return null;
+	}
+	return null;
+	
+}
+
 public boolean CheckRamosReprobados(Alumno a){
 	Historial hist = new Historial();
 	Semestre[] ramos=hist.GetHistorial(a);
@@ -158,6 +190,7 @@ public boolean CheckRamosReprobados(Alumno a){
 		String Data = info.getTextContent();
 		int max = Integer.valueOf(Data);
 		System.out.println(Data);
+		
 		if(reprobados>max){
 			return false;}
 		
@@ -171,5 +204,103 @@ public boolean CheckRamosReprobados(Alumno a){
 	
 	
 	return true;
+}
+ArrayList<String> getCarreras(){
+	ArrayList<String> Carreras = new ArrayList<String>();
+	File file = new File("data/Carreras");
+	String[] names = file.list();
+
+	for(String name : names)
+	{
+	    if (new File("data/Carreras/" + name).isDirectory())
+	    {
+	        Carreras.add(name);
+	    }
+	}
+	return Carreras;
+}
+ArrayList<String> getMallas(String carrera){
+	ArrayList<String> mallas = new ArrayList<String>();
+	try{
+		File Registro = new File("data/Carreras/"+carrera +"/Malla_Curricular.txt");
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(Registro);
+		
+		NodeList Datos = doc.getElementsByTagName("Malla");
+		for(int i=0;i<Datos.getLength();i++){
+			Node nodo = Datos.item(i);
+			Element info = (Element)nodo;
+			String aux = info.getAttribute("nombre");
+			mallas.add(aux);
+		}
+
+		
+
+	}
+	catch(Exception e){
+		e.printStackTrace();
+		return null;
+		
+	}
+	 
+	return mallas;
+}
+
+ArrayList<String> getRamosMalla(String carrera,String malla){
+	ArrayList<String> mallas = new ArrayList<String>();
+	try{
+		File Registro = new File("data/Carreras/"+carrera +"/Malla_Curricular.txt");
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(Registro);
+		
+		NodeList Datos = doc.getElementsByTagName("Malla");
+		for(int i=0;i<Datos.getLength();i++){
+			Node nodo = Datos.item(i);
+			Element info = (Element)nodo;
+			String aux = info.getAttribute("nombre");
+			mallas.add(aux);
+		}
+
+		
+
+	}
+	catch(Exception e){
+		e.printStackTrace();
+		return null;
+		
+	}
+	 
+	return mallas;
+	
+}
+
+ArrayList<String> getProfesores(){
+	ArrayList<String> profesores = new ArrayList<String>();
+	try{
+		File Registro = new File("data/Profesores.txt");
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(Registro);
+		
+		NodeList Datos = doc.getElementsByTagName("Profesor");
+		for(int i=0;i<Datos.getLength();i++){
+			Node nodo = Datos.item(i);
+			Element info = (Element)nodo;
+			String aux = info.getAttribute("Nombre");
+			profesores.add(aux);
+		}
+
+		
+
+	}
+	catch(Exception e){
+		e.printStackTrace();
+		return null;
+		
+	}
+	
+	return profesores;
 }
 }
