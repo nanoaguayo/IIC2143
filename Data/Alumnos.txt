@@ -21,11 +21,4 @@
     <rut>12345</rut>
     <numero_alumno>123456</numero_alumno>
   </a>
-  <ab>
-    <nombre>ab</nombre>
-    <edad>21</edad>
-    <sexo>Masculino</sexo>
-    <rut>1234</rut>
-    <numero_alumno>1234</numero_alumno>
-  </ab>
 </Alumnos>

@@ -1,4 +1,4 @@
-package mainproyectosoft;
+
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,10 +14,6 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 import java.util.List;  
-  
-import org.jdom2.Document;  
-import org.jdom2.Element;  
-import org.jdom2.JDOMException;  
 
 
 
@@ -173,8 +169,10 @@ catch (IOException | JDOMException e) {
 	
 Boolean VerificarRamo(String profesor, Ramo r){
      // Profesor no puede dictar dos ramos a la misma hora y no puede haber 2 salas a la misma hora.
+	Buscador buscar = new Buscador();
 	boolean horario=false;
 	boolean salas = false;
+	boolean sigla=false;
 	try {
 	    Document document = null;
 	    
@@ -214,15 +212,19 @@ Boolean VerificarRamo(String profesor, Ramo r){
 	    	doc2=sb2.build(fis2);
 	    	Element root2 = doc2.getRootElement();
 	    	fis2.close();
+	    	
 	    	//chequeamos si el mismo profesor tendria 2 ramos a misma hora.
 	    	System.out.println("size="+root2.getChildren().size());
 	    	for(int i=0;i<root2.getChildren().size();i++){
 	    		Element aux = root2.getChildren().get(i);
+	    		if(aux.getChildText("sigla").equals(r.Sigla)){
+	    			sigla=true;
+	    		}
 	    		for(int j=0;j<ramos.size();j++){
 	    			System.out.println(aux.getChild("sigla").getText()+"---"+ramos.get(j).getText()+"///"+aux.getChild("horario").getText()+"---"+r.Horario);
-	    		if(aux.getChild("horario").getText().equals(r.Horario) && ramos.get(j).getText().equals(aux.getChild("sigla").getText())){System.out.println("match horario");horario=true;}
+	    		if(buscar.contieneHorarios(aux.getChild("horario").getText(),(r.Horario)) && ramos.get(j).getText().equals(aux.getChild("sigla").getText())){System.out.println("match horario");horario=true;}
 	    		}
-	    		if(r.Sala.equals(aux.getChild("sala").getText()) && r.Horario.equals(aux.getChildText("horario"))){System.out.println("match sala");salas=true;}
+	    		if(r.Sala.equals(aux.getChild("sala").getText()) && buscar.contieneHorarios(r.Horario,aux.getChildText("horario"))){System.out.println("match sala");salas=true;}
 	    	}
 	    }//p!=null
 }
@@ -230,7 +232,7 @@ catch (IOException | JDOMException e) {
   System.err.println(e);
   return false;
 }
-if(salas || horario){return false;}
+if(salas || horario || sigla){return false;}
 else{
 return true;}
         }
@@ -461,6 +463,54 @@ void SetCreditosMaximos(int max){
       
 }
 	catch(Exception e){e.printStackTrace();}
+}
+
+public boolean CrearCarrera(String carrera){
+	SistemaRead s = new SistemaRead();
+	ArrayList<String> carreras=s.getCarreras();
+	if(carreras.contains(carrera)){
+		//Ya existe el nombre
+		return false;
+	}
+	
+	try {
+	    Document document = new Document();
+	    Document document2 = new Document();
+	    Document document3 = new Document();
+	    Element root = null;
+	    boolean a = new File("data/Carreras/"+carrera).mkdir();
+	    if(!a){return false;}
+	    
+	    //Creamos archivos bases de la base de datos
+	    Element mallas = new Element("Mallas");
+	    document.addContent(mallas);
+	    Element ramos = new Element("Ramos");
+	    document3.addContent(ramos);
+	    Element requisitos = new Element("Requisitos");
+	    document2.addContent(requisitos);
+	   
+ 
+	    FileWriter writer = new FileWriter("data/Carreras/"+carrera+"/Malla_Curricular");
+	    FileWriter writer2 = new FileWriter("data/Carreras/"+carrera+"/Requisitos");
+	    FileWriter writer3 = new FileWriter("data/Carreras/"+carrera+"/Ramos");
+	    XMLOutputter outputter = new XMLOutputter();
+	    outputter.setFormat(Format.getPrettyFormat());
+	    outputter.output(document, writer);
+	    outputter.output(document2,writer2);
+	    outputter.output(document3, writer3);
+	    //outputter.output(document, System.out);
+	    writer.close(); // close writer
+	    writer2.close();
+	    writer3.close();
+}
+catch (IOException e) {
+  System.err.println(e);
+  return false;
+}
+
+
+	
+	return true;
 }
 
 }

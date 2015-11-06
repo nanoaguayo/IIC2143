@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Requisitos>
+   <RamoBase sigla="ARQ2273">
+      <RamoReq>ARQ1010</RamoReq>   
+   </RamoBase>
+</Requisitos>

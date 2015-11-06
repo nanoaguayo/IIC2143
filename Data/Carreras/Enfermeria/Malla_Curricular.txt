@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Mallas>
+   <Malla carrera="Enfermeria" nombre="Enfermeria">
+      <Ramo>IIC2143</Ramo>
+      <Ramo>ICS3413</Ramo>
+   </Malla>
+</Mallas>

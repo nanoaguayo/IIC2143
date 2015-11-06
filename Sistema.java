@@ -1,4 +1,4 @@
-package mainproyectosoft;
+
 
 import java.io.*;
 //import org.jdom2.*;
@@ -276,6 +276,44 @@ void setFalseTomaRamos(){
 	}catch(Exception e){
 		
 	}
+}
+boolean CheckNumeroAlumno(String numero){
+	try {
+	    Document document = null;
+	    Element root = null;
+	    
+	    File xmlFile = new File("data/Alumnos.txt");
+	    
+	    if(xmlFile.exists()) {
+	        // try to load document from xml file if it exist
+	        // create a file input stream
+	        FileInputStream fis = new FileInputStream(xmlFile);
+	 
+	        // create a sax builder to parse the document
+	        SAXBuilder sb = new SAXBuilder();
+	        // parse the xml content provided by the file input stream and create a Document object
+	        document = sb.build(fis);
+	        
+	        // get the root element of the document
+	        
+	        root = document.getRootElement();
+	        fis.close();
+	    } else{}
+	    
+	    List<Element> alumnos = root.getChildren();
+	    for(int i=0;i<alumnos.size();i++){
+	    	Element aux = alumnos.get(i).getChild("numero_alumno");
+	    	String aux2 = aux.getText();
+	    	if(aux2.equals(numero)){
+	    		return false;
+	    	}
+	    }
+	}
+	catch(Exception e){
+		
+	}
+	
+	return true;
 }
 
 }

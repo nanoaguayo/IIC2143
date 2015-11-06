@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profesores>
-  <Profesor Nombre="Profesor1" id="Prueba3">
+  <Profesor Nombre="Profesor1" id="prueba3" facultad="Ingenieria">
     <ramo>IIC2143</ramo>
     <ramo>ICS3413</ramo>
   </Profesor>
-  <Profesor Nombre="Profesor2">
-    <ramo>IIC2133</ramo>
+  <Profesor Nombre="Profe Arquitectura" id="prueba4" facultad="Arquitectura">
+    <ramo>ARQ2013</ramo>
+    <ramo>ARQ2000</ramo>
+    <ramo>ARQ1020</ramo>
+    <ramo>ARQ1010</ramo>
+    <ramo>ARQ2273</ramo>
   </Profesor>
   <Profesor Nombre="Profesor3">
     <ramo>IIC2733</ramo>
+    <ramo>IIC2133</ramo>
   </Profesor>
   <Profesor Nombre="Profesor4">
     <ramo>IIC2764</ramo>

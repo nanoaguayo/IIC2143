@@ -1,4 +1,4 @@
-package mainproyectosoft;
+
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -70,6 +70,9 @@ public class Alumno extends Usuario{
 	    Element Aux = rootx.getChild("periodo");
 	    periodo=Aux.getText();
 	    String carrera= root.getAttributeValue("carrera");
+	    String maximo = rootx.getChildText("credxsemestre");
+	    int maximoxsemestre = Integer.valueOf(maximo);
+	    int creditosdesemestre=0;
 	    Document document2 = null;
 		File xmlFile2 = new File("data/Carreras/"+carrera+"/Ramos.txt");
 	    Element root2 = null;
@@ -114,7 +117,7 @@ public class Alumno extends Usuario{
 				   String retirable= aux2.getChild("retirable").getText();
 				   String seccion= aux2.getChild("seccion").getText();
 				   String comentario= aux2.getChild("comentario").getText();
-				   
+				   creditosdesemestre+=(Integer.valueOf(Creditos));
 				   semestre[i]= new Ramo(Nombre,aux,Horario,Sala,Facultad,Integer.valueOf(Creditos),Double.valueOf(nota),Boolean.valueOf(retirable),Integer.valueOf(seccion),comentario);	   
 				   
 			   }
@@ -122,6 +125,12 @@ public class Alumno extends Usuario{
 			//Ver requisitos, si no se sale
 			if(test.checkRequisitos(this, semestre[i])){}
 			else{return false;}
+		}
+		//Reviso que no exceda los creditos maximos
+		if(creditosdesemestre>maximoxsemestre){
+			//Excede
+			return false;
+			
 		}
 		//Paso el chequeo y solo agrego los ramos y al alumno a la lista.
 		Element alumno = new Element("alumno");
@@ -250,5 +259,49 @@ public class Alumno extends Usuario{
 		
 		return carreras;
 	}
+//Revisa si semestre esta calificado
+public boolean CheckEstadoSemestre(){
+	
+		try {
+		    Document document = null;
+		    Element root = null;
+		    
+		    File xmlFile = new File("data/Alumnos/"+this.numero_alumno+"/Historial.txt");
+		    
+		    if(xmlFile.exists()) {
+		        // try to load document from xml file if it exist
+		        // create a file input stream
+		        FileInputStream fis = new FileInputStream(xmlFile);
+		 
+		        // create a sax builder to parse the document
+		        SAXBuilder sb = new SAXBuilder();
+		        // parse the xml content provided by the file input stream and create a Document object
+		        document = sb.build(fis);
+		        
+		        // get the root element of the document
+		        
+		        root = document.getRootElement();
+		        fis.close();
+		    } else{}
+		    
+		    List<Element> semestres = root.getChildren();
+		    for(int i=0;i<semestres.size();i++){
+		    	List<Element> aux = semestres.get(i).getChildren();
+		    	for(int j=0;j<aux.size();j++){
+		    		Element aux2 = aux.get(j);
+		    		if(aux2.getAttributeValue("nota").equals("0.0")){
+		    			return false;
+		    		}
+		    	}
+		    }
+		}
+		catch(Exception e){
+			return false;
+		}
+		
+	
+	
+	return true;
+}
 
 }

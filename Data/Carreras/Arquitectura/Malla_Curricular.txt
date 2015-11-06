@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Mallas>
+   <Malla carrera="Arquitectura" nombre="Arquitectura">
+      <Ramo>ARQ2273</Ramo>
+      <Ramo>ARQ1010</Ramo>
+      <Ramo>ARQ1020</Ramo>
+   </Malla>
+   <Malla carrera="Arquitectura" nombre="Diseño">
+      <Ramo>ARQ2000</Ramo>
+      <Ramo>ARQ2013</Ramo>
+      <Ramo>ARQ2273</Ramo>
+   </Malla>
+</Mallas>
