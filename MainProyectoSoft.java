@@ -117,9 +117,19 @@ public class MainProyectoSoft extends Application {
             }
         });
    
+        //Button Logout
+        Button Logout = new Button("Logout");
+        GridPane.setConstraints(Logout, 0, 6);
+        Logout.setOnAction(e -> {
+            alumno = null;
+            admin = null;
+            profesor = null;
+            window.setScene(scene0);
+        });
+        
         //Agregando a grid
         grid_admin.getChildren().addAll(labelbienvenida_admin, RamoButton, 
-                MallaButton, RestriccionesButton, semstatusButton, RamoMallaButton);
+                MallaButton, RestriccionesButton, semstatusButton, RamoMallaButton, Logout);
         grid_admin.setAlignment(Pos.CENTER);
         scene_admin = new Scene(grid_admin); 
         
@@ -147,9 +157,19 @@ public class MainProyectoSoft extends Application {
         Button CalificarButton = new Button("Calificar");
         GridPane.setConstraints(CalificarButton, 0, 1);
         CalificarButton.setOnAction(e -> Calificar_profe());
+        
+        //Button Logout
+        Button PLogout = new Button("Logout");
+        GridPane.setConstraints(PLogout, 0, 2);
+        PLogout.setOnAction(e -> {
+            alumno = null;
+            admin = null;
+            profesor = null;
+            window.setScene(scene0);
+        });
    
         //Agregando a grid
-        grid_profe.getChildren().addAll(labelbienvenida_profe, CalificarButton);
+        grid_profe.getChildren().addAll(labelbienvenida_profe, CalificarButton, PLogout);
         
         scene_profesor = new Scene(grid_profe); 
         
@@ -185,12 +205,13 @@ public class MainProyectoSoft extends Application {
         passInput.setPromptText("password");
         GridPane.setConstraints(passInput, 3, 3);
         box.getChildren().add(passInput);
+        
         //Login
         Button loginButton = new Button("Log In");
         GridPane.setConstraints(loginButton, 4, 2);
         box.getChildren().add(loginButton);
         loginButton.setOnAction(e -> validarUsuario(nameInput.getText(), 
-                passInput.getText()));
+                passInput.getText(), nameInput, passInput));
         
         
         //Registrarse
@@ -335,10 +356,20 @@ public class MainProyectoSoft extends Application {
         Button BuscadorButton = new Button("Buscador de Cursos");
         GridPane.setConstraints(BuscadorButton, 0, 4);
         BuscadorButton.setOnAction(e -> BuscadordeCursos());
+        
+        //Button Logout
+        Button ALogout = new Button("Logout");
+        GridPane.setConstraints(ALogout, 0, 5);
+        ALogout.setOnAction(e -> {
+            alumno = null;
+            admin = null;
+            profesor = null;
+            window.setScene(scene0);
+        });
    
         //Agregando a grid
         grid2.getChildren().addAll(labelbienvenida, SemestreButton, HistorialButton, ACButton, 
-                BuscadorButton);
+                BuscadorButton, ALogout);
         
         // Sistema se puede crear ramo
         if (sistema.getEstado()){
@@ -346,13 +377,13 @@ public class MainProyectoSoft extends Application {
                 grid2.getChildren().add(SemestreButton);
                 
             }
-            scene2 = new Scene(grid2, 290, 200);
+            scene2 = new Scene(grid2, 290, 230);
         }else {
             if (grid2.getChildren().contains(SemestreButton)){
                 grid2.getChildren().remove(SemestreButton);
                 
             }
-            scene2 = new Scene(grid2, 290, 160);
+            scene2 = new Scene(grid2, 290, 190);
         }
 
         // scene2, grid2 = Menu Logueado
@@ -510,7 +541,7 @@ public class MainProyectoSoft extends Application {
             System.out.println(e); 
         }
     }
-    private void validarUsuario(String username, String pass){
+    private void validarUsuario(String username, String pass, TextField a, TextField b){
         // verifica username y pass con la base de datos
         int id;
         id = sr.Login(username, pass);
@@ -584,6 +615,8 @@ public class MainProyectoSoft extends Application {
             window1.setScene(scene);
             window1.showAndWait();
             }
+        a.clear();
+        b.clear();
         
          
         
