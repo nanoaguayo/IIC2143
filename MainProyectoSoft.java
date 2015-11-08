@@ -286,21 +286,33 @@ public class MainProyectoSoft extends Application {
         Label carreraLabel = new Label("Carrera:");
         GridPane.setConstraints(carreraLabel, 0, 5);
         
+        //Malla
+        ComboBox<String> malla = new ComboBox<>();
+        GridPane.setConstraints(malla, 1, 6);        
+        
         //Carrera
-        ChoiceBox<String> carrera = new ChoiceBox<>();
-        carrera.getItems().addAll("Ingenieria");
-        carrera.setValue("Ingenieria");
+        ComboBox<String> carrera = new ComboBox<>();
+        ArrayList<String> carreras = sr.getCarreras();
+        carrera.getItems().addAll(carreras);
+        carrera.getSelectionModel().selectFirst();
+        sistema.carreratemp = carrera.getValue();
+        ArrayList<String> mallas = sr.getMallas(carrera.getValue());
+        malla.getItems().addAll(mallas);
         GridPane.setConstraints(carrera, 1, 5);
+        carrera.setOnAction(e -> {
+            malla.getSelectionModel().clearSelection();
+            malla.getItems().clear();
+            if (carrera.getValue() != null){
+                malla.setDisable(false);
+                sistema.carreratemp = carrera.getValue();
+                ArrayList<String> mallas0 = sr.getMallas(carrera.getValue());
+                malla.getItems().addAll(mallas0);
+            }
+        });
         
         //MallaLabel
         Label mallaLabel = new Label("Malla:");
         GridPane.setConstraints(mallaLabel, 0, 6);
-        
-        //Malla
-        ChoiceBox<String> malla = new ChoiceBox<>();
-        malla.getItems().addAll("Ingenieria-Malla1", "Ingenieria-Malla2");
-        malla.setValue("Ingenieria-Malla1");
-        GridPane.setConstraints(malla, 1, 6);
         
         //Boton Registrarse
         Button registrarmeButton = new Button("Registrarme");
