@@ -352,7 +352,7 @@ public class MainProyectoSoft extends Application {
         //ButtonSemestres
         Button SemestreButton = new Button("Crear Semestre");
         GridPane.setConstraints(SemestreButton, 0, 1);
-        SemestreButton.setOnAction(e -> window.setScene(scene_tomaramos));
+        SemestreButton.setOnAction(e -> ventana_Tomaramos());
         
         //HistorialAcademico
         Button HistorialButton = new Button("Historial");
@@ -1601,5 +1601,129 @@ public class MainProyectoSoft extends Application {
  
         windowResultadoBuscador.setScene(scene_resultadobuscador);
         windowResultadoBuscador.show();
+    }
+    public void ventana_Tomaramos(){
+        Stage windowTomaramos = new Stage();
+        try{
+            //GridPane
+        GridPane grid_tomaramos = new GridPane();
+        grid_tomaramos.setPadding(new Insets(10, 10, 10, 10));
+        grid_tomaramos.setVgap(8);
+        grid_tomaramos.setHgap(5);
+        
+        //Ramo1 Label
+        Label LabelIngresarSiglas = new Label("Ingresar Siglas de Ramos");
+        GridPane.setConstraints(LabelIngresarSiglas, 0, 0);
+        
+        //Ramo1 Label
+        Label LabelRamo1 = new Label("Ramo 1:");
+        GridPane.setConstraints(LabelRamo1, 0, 2);
+
+        //Ramo1 Input
+        TextField InputRamo1 = new TextField();
+        GridPane.setConstraints(InputRamo1, 1, 2);
+        
+        //Ramo2 Label
+        Label LabelRamo2 = new Label("Ramo 2:");
+        GridPane.setConstraints(LabelRamo2, 0, 3);
+
+        //Ramo2 Input
+        TextField InputRamo2 = new TextField();
+        GridPane.setConstraints(InputRamo2, 1, 3);
+        
+        //Ramo3 Label
+        Label LabelRamo3 = new Label("Ramo 3:");
+        GridPane.setConstraints(LabelRamo3, 0, 4);
+
+        //Ramo3 Input
+        TextField InputRamo3 = new TextField();
+        GridPane.setConstraints(InputRamo3, 1, 4);
+        
+        //Ramo4 Label
+        Label LabelRamo4 = new Label("Ramo 4:");
+        GridPane.setConstraints(LabelRamo4, 0, 5);
+
+        //Ramo4 Input
+        TextField InputRamo4 = new TextField();
+        GridPane.setConstraints(InputRamo4, 1, 5);
+        
+        //Ramo5 Label
+        Label LabelRamo5 = new Label("Ramo 5:");
+        GridPane.setConstraints(LabelRamo5, 0, 6);
+
+        //Ramo5 Input
+        TextField InputRamo5 = new TextField();
+        GridPane.setConstraints(InputRamo5, 1, 6);
+        
+        //Ramo6 Label
+        Label LabelRamo6 = new Label("Ramo 6:");
+        GridPane.setConstraints(LabelRamo6, 0, 7);
+
+        //Ramo6 Input
+        TextField InputRamo6 = new TextField();
+        GridPane.setConstraints(InputRamo6, 1, 7);
+        
+        //Ramo7 Label
+        Label LabelRamo7 = new Label("Ramo 7:");
+        GridPane.setConstraints(LabelRamo7, 0, 8);
+
+        //Ramo7 Input
+        TextField InputRamo7 = new TextField();
+        GridPane.setConstraints(InputRamo7, 1, 8);
+        
+        //Ramo8 Label
+        Label LabelRamo8 = new Label("Ramo 8:");
+        GridPane.setConstraints(LabelRamo8, 0, 9);
+
+        //Ramo8 Input
+        TextField InputRamo8 = new TextField();
+        GridPane.setConstraints(InputRamo8, 1, 9);
+        
+        //Ramo9 Label
+        Label LabelRamo9 = new Label("Ramo 9:");
+        GridPane.setConstraints(LabelRamo9, 0, 10);
+
+        //Ramo9 Input
+        TextField InputRamo9 = new TextField();
+        GridPane.setConstraints(InputRamo9, 1, 10);
+        
+        //Ramo10 Label
+        Label LabelRamo10 = new Label("Ramo 10:");
+        GridPane.setConstraints(LabelRamo10, 0, 11);
+
+        //Ramo10 Input
+        TextField InputRamo10 = new TextField();
+        GridPane.setConstraints(InputRamo10, 1, 11);
+        
+        //Boton Ingresar Ramos
+        Button ingresarRamosButton = new Button("Ingresar");
+        GridPane.setConstraints(ingresarRamosButton, 1, 13);
+        ingresarRamosButton.setOnAction(e -> ingresarRamos(InputRamo1.getText(), 
+                InputRamo2.getText(), InputRamo3.getText(), 
+                InputRamo4.getText(), InputRamo5.getText(), 
+                InputRamo6.getText(), InputRamo7.getText(), 
+                InputRamo8.getText(), InputRamo9.getText(), 
+                InputRamo10.getText()));
+        
+        //ErrorLabel
+        Label Labelerror = new Label("");
+        GridPane.setConstraints(Labelerror, 0, 14);
+        
+
+        //Agregando a grid
+        grid_tomaramos.getChildren().addAll(LabelIngresarSiglas, LabelRamo1, 
+                InputRamo1, 
+                LabelRamo2, InputRamo2, LabelRamo3, InputRamo3, 
+                LabelRamo4, InputRamo4, LabelRamo5, InputRamo5, 
+                LabelRamo6, InputRamo6, LabelRamo7, InputRamo7, 
+                LabelRamo8, InputRamo8, LabelRamo9, InputRamo9, 
+                LabelRamo10, InputRamo10, ingresarRamosButton);
+
+        scene_tomaramos = new Scene(grid_tomaramos, 350, 430);
+        windowTomaramos.setScene(scene_tomaramos);
+        windowTomaramos.show();
+    } catch (Exception e){
+            System.out.println(e);
+    }
     }
 }
