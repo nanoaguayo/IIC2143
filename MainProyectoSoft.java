@@ -1,4 +1,4 @@
-
+package mainproyectosoft;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -1539,7 +1539,7 @@ public class MainProyectoSoft extends Application {
  
         final Label label = new Label("Ramos");
         label.setFont(new Font("Arial", 15));
-        table.setMinWidth(770);
+        table.setMinWidth(870);
         table.setMinHeight(550);
         table.setEditable(false);
  
@@ -1551,6 +1551,7 @@ public class MainProyectoSoft extends Application {
         TableColumn col6 = new TableColumn("Facultad");
         TableColumn col7 = new TableColumn("Creditos");
         TableColumn col8 = new TableColumn("Retirable");
+        TableColumn col9 = new TableColumn("Comentario");
         
         col1.setCellValueFactory(
                 new PropertyValueFactory<>("Sigla"));
@@ -1583,8 +1584,14 @@ public class MainProyectoSoft extends Application {
         col8.setCellValueFactory(
                 new PropertyValueFactory<>("Retirable"));
         col8.setMinWidth(70);
+        
+        col9.setCellValueFactory(
+                new PropertyValueFactory<>("Comentario"));
+        col9.setMinWidth(100);
+        
         table.setItems(data);
-        table.getColumns().addAll(col1, col2, col3, col4, col5, col6, col7, col8);
+        table.getColumns().addAll(col1, col2, col3, col4, col5, col6, col7, col8
+        , col9);
  
         final VBox vbox = new VBox();
         vbox.setSpacing(5);
