@@ -1,4 +1,4 @@
-package mainproyectosoft;
+
 
 import java.io.*;
 //import org.jdom2.*;
@@ -15,6 +15,15 @@ public class Sistema {
     
     String carreratemp;
 	
+    public static void main(String[] args) {
+    	
+    	SistemaRead sr = new SistemaRead();
+    	ArrayList<String> aux=sr.getMallas("Arquitectura");
+    	Iterator<String> it = aux.iterator();
+    	while(it.hasNext()){
+    		System.out.println(it.next());
+    	}
+    }
 
 public boolean RegistrarAlumno(String id,String nombre,String carrera,String malla, String edad, String sexo, String rut,String num_alumno) throws JDOMException{
 	
@@ -277,6 +286,22 @@ void setFalseTomaRamos(){
 	}catch(Exception e){
 		
 	}
+}
+
+public boolean CheckNumeroAlumno(String numero){
+	
+	File file = new File("data/Alumnos");
+	String[] names = file.list();
+
+	for(String name : names)
+	{
+	    if (new File("data/Alumnos/" + name).isDirectory() && name.equals(numero))
+	    {
+	       return false;
+	    }
+	}
+	
+	return true;
 }
 
 }

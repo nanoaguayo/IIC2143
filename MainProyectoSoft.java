@@ -1,4 +1,4 @@
-package mainproyectosoft;
+
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -296,6 +296,7 @@ public class MainProyectoSoft extends Application {
         carrera.getItems().addAll(carreras);
         carrera.getSelectionModel().selectFirst();
         sistema.carreratemp = carrera.getValue();
+        System.out.println(carrera.getValue());
         ArrayList<String> mallas = sr.getMallas(carrera.getValue());
         malla.getItems().addAll(mallas);
         GridPane.setConstraints(carrera, 1, 5);
@@ -544,11 +545,15 @@ public class MainProyectoSoft extends Application {
         String Malla = malla;
         String NumeroAlumno = NumeroInput;
         // Hacer las modificaciones
-        
+        boolean unico = sistema.CheckNumeroAlumno(NumeroAlumno);
+        if(unico){
         sistema.RegistrarAlumno(pre_username, Nombre, Carrera, Malla, Edad, 
                 Sexo, rut, NumeroAlumno);
         alumno = sr.SetStudent(pre_username, pre_pass);
         window.setScene(scene_tomaramos);
+        }else{
+        	System.out.println("Numero alumno ya existe");
+        }
         }catch(Throwable e){
             System.out.println(e); 
         }
@@ -654,7 +659,12 @@ public class MainProyectoSoft extends Application {
                 ramosIngresados.add(Ramo);
             }
         }
-        boolean ok = alumno.Tomar_Semestre(ramosIngresados);
+        boolean calificado = alumno.CheckEstadoSemestre();
+        //Filtro para saber si han calificado todos sus ramos
+        boolean ok=true;
+        if(calificado){
+        ok = alumno.Tomar_Semestre(ramosIngresados);
+        }
         System.out.println(ok);
         
         
