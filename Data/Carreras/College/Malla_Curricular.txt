@@ -7,7 +7,7 @@
       <Ramo>IIC2733</Ramo>
       <Ramo>IIC2764</Ramo>
    </Malla>
-   <Malla carrera="Ingenieria" nombre="Ciencias">
+   <Malla carrera="College" nombre="Ciencias">
       <Ramo>IIC2423</Ramo>
       <Ramo>ICS1342</Ramo>
       <Ramo>IIC4738</Ramo>

@@ -8,9 +8,9 @@
       <Ramo>IIC2764</Ramo>
    </Malla>
    <Malla carrera="Ingenieria" nombre="Industrial Transporte">
-      <Ramo>IIC2423</Ramo>
-      <Ramo>ICS1342</Ramo>
-      <Ramo>IIC4738</Ramo>
+      <Ramo>IIC2143</Ramo>
+      <Ramo>ICS3413</Ramo>
+      <Ramo>IIC2133</Ramo>
       <Ramo>IIC2733</Ramo>
       <Ramo>IIC2764</Ramo>
    </Malla>

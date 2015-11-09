@@ -5,9 +5,8 @@
       <Ramo>ARQ1010</Ramo>
       <Ramo>ARQ1020</Ramo>
    </Malla>
-   <Malla carrera="Arquitectura" nombre="Diseño">
-      <Ramo>ARQ2000</Ramo>
+   <Malla carrera="Arquitectura" nombre="DiseÃ±o">
       <Ramo>ARQ2013</Ramo>
-      <Ramo>ARQ2273</Ramo>
+      <Ramo>ARQ2000</Ramo>
    </Malla>
 </Mallas>
