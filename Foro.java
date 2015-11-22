@@ -3,6 +3,7 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom2.Document;
@@ -13,7 +14,8 @@ import org.jdom2.output.XMLOutputter;
 
 public class Foro {
 
-	void PrintForo(String Ramo){
+public ArrayList<ForoFX> PrintForo(String Ramo){
+	ArrayList<ForoFX> res = new ArrayList<ForoFX>();
 		 try {
 	    	    Document document = null;
 	    	    Element root = null;
@@ -41,9 +43,14 @@ public class Foro {
 	    	    	String alumno = mensajes.get(i).getChildText("alumno");
 	    	    	String texto = mensajes.get(i).getChildText("texto");
 	    	    	String archivo = mensajes.get(i).getChildText("archivo");
-	    	    	System.out.println(alumno+"--"+texto+"--"+archivo);
+	    	    	ForoFX aux = new ForoFX(alumno,texto,archivo);
+	    	    	res.add(aux);
 	    	    }
-		 }catch(Exception e){} 
+		 }catch(Exception e){
+			 return null;
+		 } 
+		 
+		 return res;
 	}
 	void AddMessage(String Ramo,String Alumno,String Texto,String FilePath){
 		try {

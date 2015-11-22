@@ -304,4 +304,180 @@ public boolean CheckEstadoSemestre(){
 	return true;
 }
 
+public boolean MandarMensaje(String nalumno, String mensaje){
+	String file1 = this.numero_alumno+"-"+nalumno+".txt";
+	String file2 = nalumno+"-"+this.numero_alumno+".txt";
+	int existe=0;
+	try {
+	    Document document = null;
+	    Element root = null;
+	    
+	    File xmlFile = new File(file1);
+	    File xmlFile2 = new File(file2);
+	    
+	    if(xmlFile.exists()) {
+	    	existe=1;
+	        // try to load document from xml file if it exist
+	        // create a file input stream
+	        FileInputStream fis = new FileInputStream(xmlFile);
+	 
+	        // create a sax builder to parse the document
+	        SAXBuilder sb = new SAXBuilder();
+	        // parse the xml content provided by the file input stream and create a Document object
+	        document = sb.build(fis);
+	        
+	        // get the root element of the document
+	        
+	        root = document.getRootElement();
+	        fis.close();
+	    } else if(xmlFile2.exists())
+	    {
+	    	existe=2;
+	    	// try to load document from xml file if it exist
+	        // create a file input stream
+	        FileInputStream fis = new FileInputStream(xmlFile2);
+	 
+	        // create a sax builder to parse the document
+	        SAXBuilder sb = new SAXBuilder();
+	        // parse the xml content provided by the file input stream and create a Document object
+	        document = sb.build(fis);
+	        
+	        // get the root element of the document
+	        
+	        root = document.getRootElement();
+	        fis.close();
+	    	
+	    }
+	    else{
+	    	
+	    }
+	   
+	    if(existe>0){
+	    	//Existe algun archivo y se leyo root
+	    	Element message = new Element("Mensaje");
+	    	Attribute emisor = new Attribute("emisor",this.Nombre);
+	    	message.setAttribute(emisor);
+	    	Element content = new Element("Contenido");
+	    	content.setText(mensaje);
+	    	message.addContent(content);
+	    	root.addContent(message);
+	    	
+	    	FileWriter writer3;
+	    	if(existe==1){
+	    		writer3=new FileWriter(file1);
+	    	}else{
+	    		writer3= new FileWriter(file2);
+	    	}
+		      
+		    XMLOutputter outputter = new XMLOutputter();
+		    outputter.setFormat(Format.getPrettyFormat());
+		    outputter.output(document, writer3);
+		     
+		      //outputter.output(document, System.out);
+		    writer3.close(); // close writer
+	    	
+	    	
+	    }
+	    else{
+	    	
+	    	Element base = new Element("Chat");
+	    	Element message = new Element("Mensaje");
+	    	Attribute emisor = new Attribute("emisor",this.Nombre);
+	    	message.setAttribute(emisor);
+	    	Element content = new Element("Contenido");
+	    	content.setText(mensaje);
+	    	message.addContent(content);
+	    	base.addContent(message);
+	    	
+	    	Document document0 = new Document();
+	    	document0.addContent(base);
+	    	FileWriter writer3=new FileWriter(file1);;
+		      
+		    XMLOutputter outputter = new XMLOutputter();
+		    outputter.setFormat(Format.getPrettyFormat());
+		    outputter.output(document0, writer3);
+		     
+		    //outputter.output(document, System.out);
+		    writer3.close(); // close writer
+	    	
+	    }
+	 
+	   
+	}
+	catch(Exception e){
+		return false;
+	}
+	
+	return true;
+}
+
+public ArrayList<InboxFX> GetMensajes(String nalumno){
+	String file1 = this.numero_alumno+"-"+nalumno+".txt";
+	String file2 = nalumno+"-"+this.numero_alumno+".txt";
+	ArrayList<InboxFX> res;
+
+	try {
+	    Document document = null;
+	    Element root = null;
+	    
+	    File xmlFile = new File(file1);
+	    File xmlFile2 = new File(file2);
+	    
+	    if(xmlFile.exists()) {
+	    
+	        // try to load document from xml file if it exist
+	        // create a file input stream
+	        FileInputStream fis = new FileInputStream(xmlFile);
+	 
+	        // create a sax builder to parse the document
+	        SAXBuilder sb = new SAXBuilder();
+	        // parse the xml content provided by the file input stream and create a Document object
+	        document = sb.build(fis);
+	        
+	        // get the root element of the document
+	        
+	        root = document.getRootElement();
+	        fis.close();
+	    } else if(xmlFile2.exists())
+	    {
+	    	
+	    	// try to load document from xml file if it exist
+	        // create a file input stream
+	        FileInputStream fis = new FileInputStream(xmlFile2);
+	 
+	        // create a sax builder to parse the document
+	        SAXBuilder sb = new SAXBuilder();
+	        // parse the xml content provided by the file input stream and create a Document object
+	        document = sb.build(fis);
+	        
+	        // get the root element of the document
+	        
+	        root = document.getRootElement();
+	        fis.close();
+	    	
+	    }
+	    else{
+	    	return null;
+	    }
+	    
+	   List<Element> lista = root.getChildren();
+	   res= new ArrayList<InboxFX>();
+	   
+	   for(int i=0;i<lista.size();i++){
+		   String emi = lista.get(i).getAttributeValue("emisor");
+		   String mensaje = lista.get(i).getChildText("Contenido");
+		   InboxFX aux = new InboxFX(emi,mensaje);
+		   res.add(aux);
+	   }
+	   
+	    
+	   
+	}
+	catch(Exception e){
+		return null;
+	}
+	
+	return res;
+}
+
 }

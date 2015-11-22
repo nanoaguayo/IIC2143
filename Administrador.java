@@ -108,7 +108,7 @@ Boolean AgregarRamoMalla (Malla_Curricular malla, String siglaRamo)
 {
     try {
 	    Document document = null;
-	    Document document2 = new Document();
+	    
 	    Element root = null;
 	    //boolean a = new File("data/Alumnos/"+num_alumno).mkdir();
 	    //if(!a){return false;}    	    
@@ -477,7 +477,7 @@ public boolean CrearCarrera(String carrera){
 	    Document document = new Document();
 	    Document document2 = new Document();
 	    Document document3 = new Document();
-	    Element root = null;
+	  
 	    boolean a = new File("data/Carreras/"+carrera).mkdir();
 	    if(!a){return false;}
 	    
@@ -509,6 +509,273 @@ catch (IOException e) {
 }
 
 
+	
+	return true;
+}
+public boolean EscribirRequisitos1(String Carrera,String RamoBase,String RamoRequisito){
+	//Agrega como requisito de ramobase a ramoreq 
+	//Ambos ramos deben ser de la Carrera
+	try 
+	{
+	    Document document = null;
+	    
+	    Element root = null;
+	   
+	    File xmlFile = new File("data/Carreras/"+Carrera+"/Requisitos.txt");
+	    
+	    if(xmlFile.exists()) {
+	        // try to load document from xml file if it exist
+	        // create a file input stream
+	        FileInputStream fis = new FileInputStream(xmlFile);
+	 
+	        // create a sax builder to parse the document
+	        SAXBuilder sb = new SAXBuilder();
+	        // parse the xml content provided by the file input stream and create a Document object
+	        document = sb.build(fis);
+	        
+	        // get the root element of the document
+	        
+	        root = document.getRootElement();
+	        fis.close();
+	    } else{return false;}
+	 
+	  boolean existe = false;
+	  List<Element> requisitos = root.getChildren();
+	  for(int i=0;i<requisitos.size();i++){
+		  
+		  if(requisitos.get(i).getAttributeValue("sigla").equals(RamoBase)){
+			  existe=true;
+			  Element ramoreq = new Element("RamoReq");
+			  ramoreq.setText(RamoRequisito);
+			  requisitos.get(i).addContent(ramoreq);
+		  }
+	  }
+	  if(!existe)
+	  {
+		  Element ramobase = new Element("RamoBase");
+		  Attribute sigla = new Attribute("sigla",RamoBase);
+		  Element ramoreq= new Element("RamoReq");
+		  ramoreq.setText(RamoRequisito);
+		  ramobase.setAttribute(sigla);
+		  ramobase.setContent(ramoreq);
+	  }
+	
+	  document.setContent(root);
+	  FileWriter writer = new FileWriter("data/Carreras/"+Carrera+"/Requisitos.txt");
+	 
+	  XMLOutputter outputter = new XMLOutputter();
+	  outputter.setFormat(Format.getPrettyFormat());
+	  outputter.output(document, writer);
+	 
+	  //outputter.output(document, System.out);
+	  writer.close(); // close writer
+	  
+	      
+	}
+	catch (IOException | JDOMException e) {
+	  System.err.println(e);
+	  return false;
+	}
+	
+	return true;
+}
+
+public boolean EscribirRequisitos2(String Carrera,String RamoBase,int creditos){
+	//Agrega como requisito de ramobase los creditos 
+	//Ramo debe ser de la Carrera
+	try 
+	{
+	    Document document = null;
+	    
+	    Element root = null;
+	   
+	    File xmlFile = new File("data/Carreras/"+Carrera+"/Requisitos.txt");
+	    
+	    if(xmlFile.exists()) {
+	        // try to load document from xml file if it exist
+	        // create a file input stream
+	        FileInputStream fis = new FileInputStream(xmlFile);
+	 
+	        // create a sax builder to parse the document
+	        SAXBuilder sb = new SAXBuilder();
+	        // parse the xml content provided by the file input stream and create a Document object
+	        document = sb.build(fis);
+	        
+	        // get the root element of the document
+	        
+	        root = document.getRootElement();
+	        fis.close();
+	    } else{return false;}
+	 
+	  boolean existe = false;
+	  List<Element> requisitos = root.getChildren();
+	  for(int i=0;i<requisitos.size();i++){
+		  
+		  if(requisitos.get(i).getAttributeValue("sigla").equals(RamoBase)){
+			  Element requisito = new Element("CredReq");
+			  if(requisitos.get(i).getChildren().contains(requisito)){
+				 existe=true;
+				 requisitos.get(i).getChildren().get(requisitos.get(i).getChildren().indexOf(requisito)).setText(String.valueOf(creditos));
+			  }
+			  else{
+				  
+			  existe=true;
+			  Element credreq = new Element("CredReq");
+			  credreq.setText(String.valueOf(creditos));
+			  requisitos.get(i).addContent(credreq);
+			  }
+		  }
+	  }
+	  if(!existe)
+	  {
+		  Element ramobase = new Element("RamoBase");
+		  Attribute sigla = new Attribute("sigla",RamoBase);
+		  Element credreq= new Element("CredReq");
+		  credreq.setText(String.valueOf(creditos));
+		  ramobase.setAttribute(sigla);
+		  ramobase.setContent(credreq);
+	  }
+	
+	  document.setContent(root);
+	  FileWriter writer = new FileWriter("data/Carreras/"+Carrera+"/Requisitos.txt");
+	 
+	  XMLOutputter outputter = new XMLOutputter();
+	  outputter.setFormat(Format.getPrettyFormat());
+	  outputter.output(document, writer);
+	 
+	  //outputter.output(document, System.out);
+	  writer.close(); // close writer
+	  
+	      
+	}
+	catch (IOException | JDOMException e) {
+	  System.err.println(e);
+	  return false;
+	}
+	
+	return true;
+}
+
+public boolean EliminarRequisitos(String Carrera,String RamoBase,String RamoRequisito){
+	//Agrega como requisito de ramobase a ramoreq 
+	//Ambos ramos deben ser de la Carrera
+	try 
+	{
+	    Document document = null;
+	    
+	    Element root = null;
+	   
+	    File xmlFile = new File("data/Carreras/"+Carrera+"/Requisitos.txt");
+	    
+	    if(xmlFile.exists()) {
+	        // try to load document from xml file if it exist
+	        // create a file input stream
+	        FileInputStream fis = new FileInputStream(xmlFile);
+	 
+	        // create a sax builder to parse the document
+	        SAXBuilder sb = new SAXBuilder();
+	        // parse the xml content provided by the file input stream and create a Document object
+	        document = sb.build(fis);
+	        
+	        // get the root element of the document
+	        
+	        root = document.getRootElement();
+	        fis.close();
+	    } else{return false;}
+	 
+	  List<Element> requisitos = root.getChildren();
+	  for(int i=0;i<requisitos.size();i++){
+		  
+		  if(requisitos.get(i).getAttributeValue("sigla").equals(RamoBase))
+		  {
+			  List<Element> ramos = requisitos.get(i).getChildren();
+			  for(int j=0;j<ramos.size();j++)
+			  {
+				  if(ramos.get(j).getText().equals(RamoRequisito))
+				  {
+					  requisitos.get(i).removeContent(j);
+				  }
+			  }
+			 
+		  }
+	  }
+	
+	
+	  document.setContent(root);
+	  FileWriter writer = new FileWriter("data/Carreras/"+Carrera+"/Requisitos.txt");
+	 
+	  XMLOutputter outputter = new XMLOutputter();
+	  outputter.setFormat(Format.getPrettyFormat());
+	  outputter.output(document, writer);
+	 
+	  //outputter.output(document, System.out);
+	  writer.close(); // close writer
+	  
+	      
+	}
+	catch (IOException | JDOMException e) {
+	  System.err.println(e);
+	  return false;
+	}
+	
+	return true;
+}
+
+public boolean EliminarRamo(String Carrera,String RamoBase){
+	//Borra RamoBase de Carrera
+	
+	try 
+	{
+	    Document document = null;
+	    
+	    Element root = null;
+	   
+	    File xmlFile = new File("data/Carreras/"+Carrera+"/Ramos.txt");
+	    
+	    if(xmlFile.exists()) {
+	        // try to load document from xml file if it exist
+	        // create a file input stream
+	        FileInputStream fis = new FileInputStream(xmlFile);
+	 
+	        // create a sax builder to parse the document
+	        SAXBuilder sb = new SAXBuilder();
+	        // parse the xml content provided by the file input stream and create a Document object
+	        document = sb.build(fis);
+	        
+	        // get the root element of the document
+	        
+	        root = document.getRootElement();
+	        fis.close();
+	    } else{return false;}
+	 
+	  List<Element> ramos = root.getChildren();
+	  for(int i=0;i<ramos.size();i++){
+		  List<Element> aux = ramos.get(i).getChildren();
+		  Element sigla = aux.get(1);
+		  System.out.println(sigla);
+		  if(sigla.getText().equals(RamoBase)){
+			  //eliminamos
+			  ramos.remove(ramos.get(i));
+		  }
+	  }
+	
+	
+	  document.setContent(root);
+	  FileWriter writer = new FileWriter("data/Carreras/"+Carrera+"/Ramos.txt");
+	 
+	  XMLOutputter outputter = new XMLOutputter();
+	  outputter.setFormat(Format.getPrettyFormat());
+	  outputter.output(document, writer);
+	 
+	  //outputter.output(document, System.out);
+	  writer.close(); // close writer
+	  
+	      
+	}
+	catch (IOException | JDOMException e) {
+	  System.err.println(e);
+	  return false;
+	}
 	
 	return true;
 }

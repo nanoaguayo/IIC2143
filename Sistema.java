@@ -14,16 +14,19 @@ import org.jdom2.Attribute;
 public class Sistema {
     
     String carreratemp;
-	
-    public static void main(String[] args) {
+public static void main(String[] args) {
     	
-    	SistemaRead sr = new SistemaRead();
+    	Administrador admin = new Administrador("AA",22,"M","12","aa","bb");
+    	admin.EscribirRequisitos1("Ingenieria", "IIC2143", "ICS3413");
+    	
+    	/*SistemaRead sr = new SistemaRead();
     	ArrayList<String> aux=sr.getMallas("Arquitectura");
     	Iterator<String> it = aux.iterator();
     	while(it.hasNext()){
     		System.out.println(it.next());
-    	}
-    }
+    	}*/
+ }
+
 
 public boolean RegistrarAlumno(String id,String nombre,String carrera,String malla, String edad, String sexo, String rut,String num_alumno) throws JDOMException{
 	
@@ -295,7 +298,8 @@ public boolean CheckNumeroAlumno(String numero){
 
 	for(String name : names)
 	{
-	    if (new File("data/Alumnos/" + name).isDirectory() && name.equals(numero))
+	    System.out.println(name);
+		if (new File("data/Alumnos/" + name).isDirectory() && name.equals(numero))
 	    {
 	       return false;
 	    }
