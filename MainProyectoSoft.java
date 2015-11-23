@@ -1,3 +1,4 @@
+package mainproyectosoft;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,6 +30,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 
 
 public class MainProyectoSoft extends Application {
@@ -334,7 +336,7 @@ public class MainProyectoSoft extends Application {
         
         // Fin menu registro
         
-        // Scene2 Menu Logueado Alumno
+        // Scene2 Modo Alumno
         
         //GridPane
         GridPane grid2 = new GridPane();
@@ -369,9 +371,14 @@ public class MainProyectoSoft extends Application {
         GridPane.setConstraints(BuscadorButton, 0, 4);
         BuscadorButton.setOnAction(e -> BuscadordeCursos());
         
+        //Foro Ramos
+        Button ForoButton = new Button("Foro Ramos");
+        GridPane.setConstraints(ForoButton, 0, 5);
+        ForoButton.setOnAction(e -> preVentana_Foro());
+        
         //Button Logout
         Button ALogout = new Button("Logout");
-        GridPane.setConstraints(ALogout, 0, 5);
+        GridPane.setConstraints(ALogout, 0, 6);
         ALogout.setOnAction(e -> {
             alumno = null;
             admin = null;
@@ -381,7 +388,7 @@ public class MainProyectoSoft extends Application {
    
         //Agregando a grid
         grid2.getChildren().addAll(labelbienvenida, SemestreButton, HistorialButton, ACButton, 
-                BuscadorButton, ALogout);
+                BuscadorButton, ForoButton, ALogout);
         
         // Sistema se puede crear ramo
         if (sistema.getEstado()){
@@ -389,13 +396,13 @@ public class MainProyectoSoft extends Application {
                 grid2.getChildren().add(SemestreButton);
                 
             }
-            scene2 = new Scene(grid2, 290, 230);
+            scene2 = new Scene(grid2, 290, 260);
         }else {
             if (grid2.getChildren().contains(SemestreButton)){
                 grid2.getChildren().remove(SemestreButton);
                 
             }
-            scene2 = new Scene(grid2, 290, 190);
+            scene2 = new Scene(grid2, 290, 230);
         }
 
         // scene2, grid2 = Menu Logueado
@@ -1037,7 +1044,9 @@ public class MainProyectoSoft extends Application {
         GridPane.setConstraints(LabelProfesor, 0, 2);
 
         //Profesor Input
-        TextField InputProfesor = new TextField();
+        ComboBox<String> InputProfesor = new ComboBox<>();
+        ArrayList<String> profesores = sr.getProfesores();
+        InputProfesor.getItems().addAll(profesores);
         GridPane.setConstraints(InputProfesor, 1, 2);
         
         //Facultad Label
@@ -1045,59 +1054,114 @@ public class MainProyectoSoft extends Application {
         GridPane.setConstraints(LabelCampus, 0, 3);
 
         //Facultad Input
-        TextField Inputcampus = new TextField();
+        ComboBox<String> Inputcampus = new ComboBox<>();
+        ArrayList<String> facultades = sr.getCarreras();
+        Inputcampus.getItems().addAll(facultades);
         GridPane.setConstraints(Inputcampus, 1, 3);
         
         //Horario Label
-        Label LabelHorario = new Label("Horario:");
+        Label LabelHorario = new Label("Horario");
+        LabelHorario.setStyle("-fx-font-weight: bold");
         GridPane.setConstraints(LabelHorario, 0, 4);
         
-        //Horario Input
-        TextField InputHorario = new TextField();
-        InputHorario.setPromptText("M-J:4");
-        GridPane.setConstraints(InputHorario, 1, 4);
+        //Dia Semana Label
+        Label LabelDiadesemana = new Label("Dia de Semana:");
+        LabelDiadesemana.setStyle("-fx-font-weight: bold");
+        GridPane.setConstraints(LabelDiadesemana, 0, 5);
+
+        //Dia Semana Input
+        ComboBox<String> diadesemanabox = new ComboBox<>();
+        diadesemanabox.getItems().addAll("L", "M", "W", "J", "V", "S");
+        diadesemanabox.setValue("L");
+        GridPane.setConstraints(diadesemanabox, 1, 5);
+        
+        //Modulo Label
+        Label LabelModulo= new Label("Modulo:");
+        LabelModulo.setStyle("-fx-font-weight: bold");
+        GridPane.setConstraints(LabelModulo, 0, 6);
+
+        //Modulo Input
+        ChoiceBox<String> modulobox = new ChoiceBox<>();
+        modulobox.getItems().addAll("1", "2", "3", "4", "5", "6", "7",
+                "8");
+        modulobox.setValue("1");
+        GridPane.setConstraints(modulobox, 1, 6);
+        
+        //Button Ingresar Horario
+        Button ButtonAgregarHorario = new Button("Agregar Horario");
+        GridPane.setConstraints(ButtonAgregarHorario, 1, 4);
+        
+        //Texto Horarios Agregados
+        Label Labelagregarhorario = new Label("Horarios Agregados: ");
+        GridPane.setConstraints(Labelagregarhorario, 0, 8);
+        
+        //Resultado Horarios Agregados
+        Label Resultadoagregarhorario = new Label("");
+        GridPane.setConstraints(Resultadoagregarhorario, 1, 8);
+        ArrayList<String> horariosingresados = new ArrayList<>();
+        
+        ButtonAgregarHorario.setOnAction((ActionEvent event) -> {
+            if (!diadesemanabox.getValue().equals("Todas") && 
+                    !modulobox.getValue().equals("Todas") && 
+                    !horariosingresados.contains(diadesemanabox.getValue()+
+                            ":"+modulobox.getValue())){
+                String texto_actual = Resultadoagregarhorario.getText();
+                if (texto_actual.equals("")){
+                    Resultadoagregarhorario.setText(texto_actual+diadesemanabox.getValue()+
+                    ":"+modulobox.getValue());
+                } else {
+                    Resultadoagregarhorario.setText(texto_actual+"-"+diadesemanabox.getValue()+
+                    ":"+modulobox.getValue());
+                }
+            
+            horariosingresados.add(diadesemanabox.getValue()+":"+modulobox.getValue());
+            System.out.println(horariosingresados);
+            }
+            
+            
+            });
         
         //Sala Label
         Label LabelSala = new Label("Sala:");
-        GridPane.setConstraints(LabelSala, 0, 5);
+        GridPane.setConstraints(LabelSala, 0, 9);
         
         //Sala Input
         TextField InputSala = new TextField();
-        GridPane.setConstraints(InputSala, 1, 5);
+        GridPane.setConstraints(InputSala, 1, 9);
         
         //Creditos Label
         Label LabelCreditos = new Label("Creditos:");
-        GridPane.setConstraints(LabelCreditos, 0, 6);
+        GridPane.setConstraints(LabelCreditos, 0, 10);
         
         //Creditos Input
         TextField Inputcreditos = new TextField();
-        GridPane.setConstraints(Inputcreditos, 1, 6);
+        GridPane.setConstraints(Inputcreditos, 1, 10);
         
         //Retirable Label
         Label LabelRetirable = new Label("Retirable:");
-        GridPane.setConstraints(LabelRetirable, 0, 7);
+        GridPane.setConstraints(LabelRetirable, 0, 11);
         
         //Retirable Box
         ComboBox<String> retirablebox = new ComboBox<>();
         retirablebox.getItems().addAll("Si", "No");
         retirablebox.setValue("Si");
-        GridPane.setConstraints(retirablebox, 1, 7);
+        GridPane.setConstraints(retirablebox, 1, 11);
   
         //Seccion Label
         Label LabelSeccion = new Label("Seccion:");
-        GridPane.setConstraints(LabelSeccion, 0, 8);
+        GridPane.setConstraints(LabelSeccion, 0, 12);
         
         //Seccion Input
         TextField InputSeccion = new TextField();
-        GridPane.setConstraints(InputSeccion, 1, 8);
+        GridPane.setConstraints(InputSeccion, 1, 12);
         
         //Comentario Label
         Label LabelComentario = new Label("Comentarios:");
-        GridPane.setConstraints(LabelComentario, 0, 9);
+        GridPane.setConstraints(LabelComentario, 0, 13);
         
         //Comentario Input
         TextArea Inputcomentario = new TextArea();
-        GridPane.setConstraints(Inputcomentario, 1, 9);
+        GridPane.setConstraints(Inputcomentario, 1, 13);
         Inputcomentario.setMaxWidth(200);
         Inputcomentario.setMaxHeight(80);
         
@@ -1113,14 +1177,14 @@ public class MainProyectoSoft extends Application {
         
         //Button Ingresar
         Button ButtonIngresarRamo = new Button("Ingresar Ramo");
-        GridPane.setConstraints(ButtonIngresarRamo, 1, 11);
+        GridPane.setConstraints(ButtonIngresarRamo, 1, 14);
         ButtonIngresarRamo.setOnAction((ActionEvent e) -> {
             try{
                 if ("".equals(InputNombre.getText()) ||
-                        "".equals(InputProfesor.getText()) ||
+                        "".equals(InputProfesor.getValue()) ||
                         "".equals(InputSigla.getText()) ||
-                        "".equals(Inputcampus.getText())||
-                        "".equals(InputHorario.getText()) ||
+                        "".equals(Inputcampus.getValue())||
+                        "".equals(Resultadoagregarhorario.getText()) ||
                         "".equals(Inputcreditos.getText()) ||
                         "".equals(retirablebox.getValue()) ||
                         "".equals(InputSala.getText()) ||
@@ -1133,9 +1197,9 @@ public class MainProyectoSoft extends Application {
                 }else {
                     String Sigla = InputSigla.getText().toUpperCase();
                     String Nombre = InputNombre.getText();
-                    String Profesor = InputProfesor.getText();
-                    String Campus = Inputcampus.getText();
-                    String Horario = InputHorario.getText().toUpperCase();
+                    String Profesor = InputProfesor.getValue();
+                    String Campus = Inputcampus.getValue();
+                    String Horario = Resultadoagregarhorario.getText();
                     int Creditos = Integer.parseInt(Inputcreditos.getText());
                     boolean Esretirable = "Si".equals(retirablebox.getValue());
                     String Sala = InputSala.getText();
@@ -1163,7 +1227,9 @@ public class MainProyectoSoft extends Application {
         //Display
         grid_crearamo.getChildren().addAll(LabelSigla, InputSigla, LabelNombre, 
                 InputNombre, LabelProfesor, InputProfesor, LabelCampus, 
-                Inputcampus, LabelHorario, InputHorario, LabelCreditos, 
+                Inputcampus, LabelHorario, LabelDiadesemana, diadesemanabox, 
+                LabelModulo, modulobox, ButtonAgregarHorario, Labelagregarhorario,
+                Resultadoagregarhorario, LabelCreditos, 
                 Inputcreditos, LabelRetirable, retirablebox, LabelSeccion,
                 InputSeccion, LabelComentario, Inputcomentario, 
                 ButtonIngresarRamo, LabelSala, InputSala);
@@ -1276,7 +1342,7 @@ public class MainProyectoSoft extends Application {
         ComboBox<String> carrerabox = new ComboBox<>();
         ArrayList<String> carreras = sr.getCarreras();
         carrerabox.getItems().addAll(carreras);
-        carrerabox.setValue("Ingenieria");
+        carrerabox.getSelectionModel().selectFirst();
         GridPane.setConstraints(carrerabox, 1, 0);
         
         // Label Nombre Malla
@@ -1725,5 +1791,168 @@ public class MainProyectoSoft extends Application {
     } catch (Exception e){
             System.out.println(e);
     }
+    }
+    public void Ventana_Foro(String carrera, String ramo){
+        Stage windowForo = new Stage();
+        Foro foro = new Foro();
+        ArrayList<ForoFX> mensajes = foro.PrintForo(ramo);
+        
+        Scene scene_foro = new Scene(new Group());
+        TableView<ForoFX> table = new TableView<>();
+        ObservableList<ForoFX> data = FXCollections.observableArrayList(mensajes);
+        windowForo.setTitle("Foro");
+
+ 
+        final Label label = new Label("Foro "+ramo);
+        label.setFont(new Font("Arial", 15));
+        table.setMinWidth(870);
+        table.setMinHeight(550);
+        table.setEditable(false);
+ 
+        TableColumn col1 = new TableColumn("Alumno");
+        TableColumn col2 = new TableColumn("Mensaje");
+        TableColumn col3 = new TableColumn("Archivo");
+        
+        col1.setCellValueFactory(
+                new PropertyValueFactory<>("Alumno"));
+        col1.setMinWidth(80);
+        
+        col2.setCellValueFactory(
+                new PropertyValueFactory<>("Mensaje"));
+        col2.setMinWidth(80);
+        
+        col3.setCellValueFactory(
+                new PropertyValueFactory<>("Archivo"));
+        col3.setMinWidth(80);
+        
+        table.setItems(data);
+        table.getColumns().addAll(col1, col2, col3);
+        
+
+        final TextField nombre0 = new TextField();
+        nombre0.setPromptText("Nombre");
+        nombre0.setMaxWidth(nombre0.getPrefWidth());
+        final TextField mensaje0 = new TextField();
+        mensaje0.setPromptText("Mensaje");
+        mensaje0.setMaxWidth(mensaje0.getPrefWidth());
+        final TextField archivo0 = new TextField();
+        archivo0.setMaxWidth(archivo0.getPrefWidth());
+        archivo0.setPromptText("www.dropbox.com/....");
+        
+        final Button send_btn = new Button("Enviar");
+        send_btn.setOnAction(e -> {
+                data.add(new ForoFX(nombre0.getText(), mensaje0.getText(), 
+                        archivo0.getText()));
+                foro.AddMessage(ramo, nombre0.getText(), mensaje0.getText(), 
+                        archivo0.getText());
+                nombre0.clear();
+                archivo0.clear();
+                mensaje0.clear();
+            
+        });
+        
+        final HBox hb = new HBox(nombre0, mensaje0, archivo0, send_btn);
+        
+        final VBox vbox = new VBox();
+        vbox.setSpacing(5);
+        vbox.setPadding(new Insets(10, 10, 10, 10));
+        vbox.getChildren().addAll(label, table, hb);
+ 
+        ((Group) scene_foro.getRoot()).getChildren().addAll(vbox);
+ 
+        windowForo.setScene(scene_foro);
+        windowForo.show();
+    }
+    
+    public void preVentana_Foro(){
+        Stage windowpreForo = new Stage();
+        windowpreForo.setResizable(true);
+        windowpreForo.initModality(Modality.APPLICATION_MODAL);
+        windowpreForo.setTitle("Elegir Ramo");
+        windowpreForo.setMinWidth(400);
+        windowpreForo.setMinHeight(250);
+
+        //GridPane
+        GridPane grid_preForo = new GridPane();
+        grid_preForo.setPadding(new Insets(10, 10, 10, 10));
+        grid_preForo.setVgap(8);
+        grid_preForo.setHgap(5);
+        grid_preForo.setAlignment(Pos.CENTER);
+        
+        // Label Carrera
+        Label lcarrera = new Label("Carrera");
+        GridPane.setConstraints(lcarrera, 0, 0);
+        
+        // Label Nombre Malla
+        Label nombremalla = new Label("Malla:");
+        GridPane.setConstraints(nombremalla, 0, 1);
+        
+        // Label Nombre Ramo
+        Label nombreramo = new Label("Ramo:");
+        GridPane.setConstraints(nombreramo, 0, 2);
+        
+        // Ramo Box
+        ComboBox<String> ramosbox = new ComboBox<>();
+        GridPane.setConstraints(ramosbox, 1, 2);
+        ramosbox.setDisable(true);
+        
+        // Malla Box
+        ComboBox<String> mallabox = new ComboBox<>();
+        GridPane.setConstraints(mallabox, 1, 1);
+        mallabox.setDisable(true);
+        mallabox.setOnAction(e -> {
+            ramosbox.getSelectionModel().clearSelection();
+            ramosbox.getItems().clear();
+            if (mallabox.getValue() != null){
+                ramosbox.setDisable(false);
+                ArrayList<String> ramos = sistema.getRamosMalla2(alumno.carreratemp, mallabox.getValue());
+                System.out.println(ramos);
+                ramosbox.getItems().addAll(ramos);
+                ramosbox.getSelectionModel().selectFirst();
+            }
+        });
+        
+        // Carrera Box
+        ComboBox<String> carrerabox = new ComboBox<>();
+        ArrayList<String> carreras = sr.getCarreras();
+        carrerabox.getItems().addAll(carreras);
+        GridPane.setConstraints(carrerabox, 1, 0);
+        carrerabox.setOnAction(e -> {
+            mallabox.getSelectionModel().clearSelection();
+            mallabox.getItems().clear();
+            ramosbox.getSelectionModel().clearSelection();
+            ramosbox.getItems().clear();
+            if (carrerabox.getValue() != null){
+                mallabox.setDisable(false);
+                alumno.carreratemp = carrerabox.getValue();
+                ArrayList<String> mallas = sr.getMallas(carrerabox.getValue());
+                mallabox.getItems().addAll(mallas);
+                mallabox.getSelectionModel().selectFirst();
+            }
+        });
+        
+        //Mensaje
+        Label mensaje = new Label("");
+        
+        //Button Ingresar
+        Button Ingresar = new Button("Ingresar");
+        GridPane.setConstraints(Ingresar, 1, 4);
+        Ingresar.setOnAction(e -> Ventana_Foro(carrerabox.getValue(), 
+                ramosbox.getValue()));
+        
+        grid_preForo.getChildren().addAll(lcarrera, carrerabox, nombremalla, 
+                mallabox, nombreramo, ramosbox);
+        
+        
+        VBox vb = new VBox();
+        vb.setPadding(new Insets(30, 80, 10, 80));
+        vb.setSpacing(10);
+        
+        vb.getChildren().addAll(grid_preForo, Ingresar, mensaje);
+        vb.setAlignment(Pos.CENTER);
+        Scene scene_preForo = new Scene(vb);
+        windowpreForo.setScene(scene_preForo);
+        windowpreForo.show();
+        
     }
 }

@@ -1,4 +1,4 @@
-
+package mainproyectosoft;
 
 import javafx.beans.property.SimpleStringProperty;
 

@@ -1,4 +1,4 @@
-
+package mainproyectosoft;
 
 import java.io.*;
 //import org.jdom2.*;
@@ -101,7 +101,6 @@ public boolean RegistrarAlumno(String id,String nombre,String carrera,String mal
 	return true;
 }
 public ArrayList<String> getRamosMalla(String carrera,String malla){
-	   System.out.println("AAAAAAAAA");
 	ArrayList<String> ramos2 = new ArrayList<>();
 	
 	 try {
@@ -152,6 +151,54 @@ public ArrayList<String> getRamosMalla(String carrera,String malla){
  			   }
  		   }
  	   }
+ 	   
+ 	 
+ 	   
+	 }
+ 	 catch(Exception e){}
+	 
+	
+	
+	return ramos2;
+}
+
+public ArrayList<String> getRamosMalla2(String carrera,String malla){
+	ArrayList<String> ramos2 = new ArrayList<>();
+	
+	 try {
+ 	    Document document = null;
+ 	    Document document2 = null;
+ 	    Element root = null;
+ 	    Element root2=null;
+ 	    File xmlFile = new File("data/Carreras/"+carrera+"/Malla_Curricular.txt");
+ 	    File xmlFile2 = new File("data/Carreras/"+carrera+"/Ramos.txt");
+ 	    
+ 	    if(xmlFile.exists()) {
+ 	        // try to load document from xml file if it exist
+ 	        // create a file input stream
+ 	        FileInputStream fis = new FileInputStream(xmlFile);
+ 	        FileInputStream fis2 = new FileInputStream(xmlFile2);
+ 	        // create a sax builder to parse the document
+ 	        SAXBuilder sb = new SAXBuilder();
+ 	        // parse the xml content provided by the file input stream and create a Document object
+ 	        document = sb.build(fis);
+ 	        document2 = sb.build(fis2);
+ 	        
+ 	        // get the root element of the document
+ 	        
+ 	        root = document.getRootElement();
+ 	        root2 = document2.getRootElement();
+ 	        fis.close();
+ 	        fis2.close();
+ 	        
+ 	    } else{return null;}
+ 	   List<Element> Ramos = root2.getChildren();
+	   for(int i=0;i<Ramos.size();i++){
+		   String name=Ramos.get(i).getChildText("sigla");
+		   ramos2.add(name);
+		   System.out.println(name);
+		   
+	   }
  	   
  	 
  	   

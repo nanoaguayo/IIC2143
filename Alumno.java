@@ -1,4 +1,4 @@
-
+package mainproyectosoft;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +13,7 @@ import org.jdom2.output.XMLOutputter;
 
 public class Alumno extends Usuario{
 	int numero_alumno;
+        String carreratemp;
 	
 	public Alumno(String nombre,int edad, String sexo, String rut,String id, String pass,int num){
 		super(nombre,edad,sexo,rut,id,pass);

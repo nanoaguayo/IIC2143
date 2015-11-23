@@ -1,3 +1,4 @@
+package mainproyectosoft;
 
 public class Malla_Curricular extends Carrera {
 	String Especialidad;
