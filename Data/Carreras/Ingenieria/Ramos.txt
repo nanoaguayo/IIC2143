@@ -15,7 +15,7 @@
   <Ramo>
     <nombre>Ingenieria de Software</nombre>
     <sigla>ICS3413</sigla>
-    <horario>M:2-J:2</horario>
+    <horario>M:3-J:3</horario>
     <sala>A1</sala>
     <facultad>Ingenieria</facultad>
     <creditos>10</creditos>
@@ -59,5 +59,29 @@
     <retirable>true</retirable>
     <seccion>1</seccion>
     <comentario>Comentario5</comentario>
+  </Ramo>
+  <Ramo>
+    <nombre>Analisis Estructural</nombre>
+    <sigla>ICE20114</sigla>
+    <horario>S:1</horario>
+    <sala>F15</sala>
+    <facultad>Ingenieria</facultad>
+    <creditos>10</creditos>
+    <nota>0.0</nota>
+    <retirable>true</retirable>
+    <seccion>10</seccion>
+    <comentario>-</comentario>
+  </Ramo>
+  <Ramo>
+    <nombre>Gestion de Infraestructura</nombre>
+    <sigla>ICC3524</sigla>
+    <horario>L:7-W:7</horario>
+    <sala>A6</sala>
+    <facultad>Ingenieria</facultad>
+    <creditos>10</creditos>
+    <nota>0.0</nota>
+    <retirable>true</retirable>
+    <seccion>10</seccion>
+    <comentario>-</comentario>
   </Ramo>
 </Ramos>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Foro>
+  <mensaje>
+    <alumno>Fernando Aguayo</alumno>
+    <texto>Buenas tarde</texto>
+    <archivo />
+  </mensaje>
+</Foro>

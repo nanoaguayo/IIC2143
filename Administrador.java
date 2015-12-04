@@ -1,4 +1,4 @@
-package mainproyectosoft;
+
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -167,7 +167,7 @@ catch (IOException | JDOMException e) {
 	return true;
 }
 	
-Boolean VerificarRamo(String profesor, Ramo r){
+int VerificarRamo(String profesor, Ramo r){
      // Profesor no puede dictar dos ramos a la misma hora y no puede haber 2 salas a la misma hora.
 	Buscador buscar = new Buscador();
 	boolean horario=false;
@@ -193,7 +193,7 @@ Boolean VerificarRamo(String profesor, Ramo r){
 	        
 	        root = document.getRootElement();
 	        fis.close();
-	    } else{return false;}
+	    } else{return -1;}
  
 	    List <Element> profesores= root.getChildren();
 	    Element p=null;
@@ -222,28 +222,38 @@ Boolean VerificarRamo(String profesor, Ramo r){
 	    		}
 	    		for(int j=0;j<ramos.size();j++){
 	    			System.out.println(aux.getChild("sigla").getText()+"---"+ramos.get(j).getText()+"///"+aux.getChild("horario").getText()+"---"+r.Horario);
-	    		if(buscar.contieneHorarios(aux.getChild("horario").getText(),(r.Horario)) && ramos.get(j).getText().equals(aux.getChild("sigla").getText())){System.out.println("match horario");horario=true;}
+	    		if(buscar.contieneHorarios(aux.getChild("horario").getText(),(r.Horario)) && ramos.get(j).getText().equals(aux.getChild("sigla").getText()))
+	    		{System.out.println("match horario");horario=true;}
 	    		}
-	    		if(r.Sala.equals(aux.getChild("sala").getText()) && buscar.contieneHorarios(r.Horario,aux.getChildText("horario"))){System.out.println("match sala");salas=true;}
+	    		if(r.Sala.equals(aux.getChild("sala").getText()) && buscar.contieneHorarios(r.Horario,aux.getChildText("horario")))
+	    		{System.out.println("match sala");salas=true;}
 	    	}
 	    }//p!=null
 }
 catch (IOException | JDOMException e) {
   System.err.println(e);
-  return false;
+  return -1;
 }
-if(salas || horario || sigla){return false;}
+if(salas)
+{return 1;}
+else if(sigla){
+	return 2;
+}
+else if(horario){
+	return 3;
+}
 else{
-return true;}
+return 0;}
         }
         
 
 
 
-Boolean CrearRamo(String Sigla,String Nombre, String Horario, String Sala, String Facultad, int Creditos, double Nota, boolean Retirable, int Seccion, String Comentario,String profesor){
+int CrearRamo(String Sigla,String Nombre, String Horario, String Sala, String Facultad, int Creditos, double Nota, boolean Retirable, int Seccion, String Comentario,String profesor){
     //Verificar si cumple todo   
 	Ramo r = new Ramo(Nombre,Sigla,Horario,Sala,Facultad,Creditos,Nota,Retirable,Seccion,Comentario);
-	if(VerificarRamo(profesor,r)){
+	int test =VerificarRamo(profesor,r);
+	if(test==0){
 	String retirablex="false";
 	if(Retirable==true){retirablex="true";}
 	try {
@@ -270,7 +280,7 @@ Boolean CrearRamo(String Sigla,String Nombre, String Horario, String Sala, Strin
 	        root = document.getRootElement();
 	        root2 = document3.getRootElement();
 	        fis.close();
-	    } else{System.out.println("No existe");return false;}
+	    } else{System.out.println("No existe");return -1;}
  
 	    Element element = new Element("Ramo");
 	    Element elementx = new Element("nombre");
@@ -374,12 +384,13 @@ Boolean CrearRamo(String Sigla,String Nombre, String Horario, String Sala, Strin
 }
 catch (Exception e) {
   System.err.println(e);
-  return false;
+  return -1;
 }
-return true;}
+return 0;
+}
 	else{
 		//No se cumple horario o sala
-		return false;}
+		return test;}
 }
    
 

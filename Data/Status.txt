@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Status>
-  <reprobados>40</reprobados>
-  <credxsemestre>10</credxsemestre>
+  <reprobados>30</reprobados>
+  <credxsemestre>50</credxsemestre>
   <periodo>2015-2</periodo>
-  <tomaramos>true</tomaramos>
+  <tomaramos>false</tomaramos>
 </Status>

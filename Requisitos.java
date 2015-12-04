@@ -1,4 +1,3 @@
-package mainproyectosoft;
 
 import java.io.*;
 import org.w3c.dom.*;

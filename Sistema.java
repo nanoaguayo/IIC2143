@@ -1,5 +1,3 @@
-package mainproyectosoft;
-
 import java.io.*;
 //import org.jdom2.*;
 import javax.xml.parsers.*;
@@ -340,7 +338,7 @@ void setFalseTomaRamos(){
 
 public boolean CheckNumeroAlumno(String numero){
 	
-	File file = new File("data/Alumnos");
+	File file = new File("data/Alumnos/");
 	String[] names = file.list();
 
 	for(String name : names)
@@ -353,6 +351,60 @@ public boolean CheckNumeroAlumno(String numero){
 	}
 	
 	return true;
+}
+
+public ArrayList<String> getAlumnos(String num){
+	ArrayList<String> lista = new ArrayList<>();
+	
+	 try {
+ 	    Document document = null;
+ 	    
+ 	    Element root = null;
+ 	    
+ 	    File xmlFile = new File("data/Alumnos.txt");
+ 	    
+ 	    
+ 	    if(xmlFile.exists()) {
+ 	        // try to load document from xml file if it exist
+ 	        // create a file input stream
+ 	        FileInputStream fis = new FileInputStream(xmlFile);
+ 	       
+ 	        // create a sax builder to parse the document
+ 	        SAXBuilder sb = new SAXBuilder();
+ 	        // parse the xml content provided by the file input stream and create a Document object
+ 	        document = sb.build(fis);
+ 	       
+ 	        
+ 	        // get the root element of the document
+ 	        
+ 	        root = document.getRootElement();
+ 	        
+ 	        fis.close();
+ 	       
+ 	        
+ 	    } else{return null;}
+ 	   List<Element> alumnos = root.getChildren();
+	   for(int i=0;i<alumnos.size();i++){
+		   String name=alumnos.get(i).getChildText("nombre");
+		   String numero = alumnos.get(i).getChildText("numero_alumno");
+		   //System.out.println(name+"--"+numero);
+		   if(!numero.equals(num))
+		   {	
+			   //System.out.println("entro");
+			   String put = name.concat("-").concat(numero);
+			   lista.add(put);
+			   System.out.println(put);
+		   }
+	   }
+ 	   
+ 	 
+ 	   
+	 }
+ 	 catch(Exception e){}
+	 
+	
+	
+	return lista;
 }
 
 }

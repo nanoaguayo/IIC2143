@@ -1,4 +1,4 @@
-package mainproyectosoft;
+
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -123,6 +123,18 @@ public class Alumno extends Usuario{
 				   
 			   }
 			 }
+			for(int k=0;k<semestre.length;k++){
+				Ramo auxn = semestre[k];
+				for(int p=0;p<semestre.length && p!=k;p++){
+					//Comaprar horario 
+					Ramo auxm = semestre[p];
+					Buscador b = new Buscador();
+					if(b.contieneHorarios(auxn.Horario,auxm.Horario)){
+						return false;
+					}
+							
+				}
+			}
 			//Ver requisitos, si no se sale
 			if(test.checkRequisitos(this, semestre[i])){}
 			else{return false;}
@@ -306,8 +318,8 @@ public boolean CheckEstadoSemestre(){
 }
 
 public boolean MandarMensaje(String nalumno, String mensaje){
-	String file1 = this.numero_alumno+"-"+nalumno+".txt";
-	String file2 = nalumno+"-"+this.numero_alumno+".txt";
+	String file1 = "data/Chat/"+this.numero_alumno+"-"+nalumno+".txt";
+	String file2 = "data/Chat/"+nalumno+"-"+this.numero_alumno+".txt";
 	int existe=0;
 	try {
 	    Document document = null;
@@ -413,8 +425,9 @@ public boolean MandarMensaje(String nalumno, String mensaje){
 }
 
 public ArrayList<InboxFX> GetMensajes(String nalumno){
-	String file1 = this.numero_alumno+"-"+nalumno+".txt";
-	String file2 = nalumno+"-"+this.numero_alumno+".txt";
+	String file1 = "data/Chat/"+this.numero_alumno+"-"+nalumno+".txt";
+	String file2 = "data/Chat/"+nalumno+"-"+this.numero_alumno+".txt";
+	System.out.println(file1+"/"+file2);
 	ArrayList<InboxFX> res;
 
 	try {
@@ -439,7 +452,8 @@ public ArrayList<InboxFX> GetMensajes(String nalumno){
 	        
 	        root = document.getRootElement();
 	        fis.close();
-	    } else if(xmlFile2.exists())
+	    } 
+	    else if(xmlFile2.exists())
 	    {
 	    	
 	    	// try to load document from xml file if it exist
@@ -458,7 +472,36 @@ public ArrayList<InboxFX> GetMensajes(String nalumno){
 	    	
 	    }
 	    else{
-	    	return null;
+	    	//Creamos archivo
+	    	
+	    	Element base = new Element("Chat");
+	    
+	    	
+	    	Document document0 = new Document();
+	    	document0.addContent(base);
+	    	FileWriter writer3=new FileWriter(file1);;
+		      
+		    XMLOutputter outputter = new XMLOutputter();
+		    outputter.setFormat(Format.getPrettyFormat());
+		    outputter.output(document0, writer3);
+		     
+		    //outputter.output(document, System.out);
+		    writer3.close(); // close writer
+	    	
+	    	System.out.println("null -> Se creo archivo");
+	    	
+	    	 FileInputStream fis = new FileInputStream(xmlFile);
+	    	 
+		        // create a sax builder to parse the document
+		        SAXBuilder sb = new SAXBuilder();
+		        // parse the xml content provided by the file input stream and create a Document object
+		        document = sb.build(fis);
+		        
+		        // get the root element of the document
+		        
+		        root = document.getRootElement();
+		        fis.close();
+	    	
 	    }
 	    
 	   List<Element> lista = root.getChildren();
@@ -466,9 +509,17 @@ public ArrayList<InboxFX> GetMensajes(String nalumno){
 	   
 	   for(int i=0;i<lista.size();i++){
 		   String emi = lista.get(i).getAttributeValue("emisor");
+		   if(emi.equals(this.Nombre))
+		   {
+			   emi="Tu";
+		   }
 		   String mensaje = lista.get(i).getChildText("Contenido");
-		   InboxFX aux = new InboxFX(emi,mensaje);
-		   res.add(aux);
+		   if(mensaje!=null && emi!=null)
+		   {
+			   InboxFX aux = new InboxFX(emi,mensaje);
+			   res.add(aux);
+		   }
+		   
 	   }
 	   
 	    

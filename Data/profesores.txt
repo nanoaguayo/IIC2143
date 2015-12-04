@@ -3,6 +3,7 @@
   <Profesor Nombre="Profesor1" id="prueba3" facultad="Ingenieria">
     <ramo>IIC2143</ramo>
     <ramo>ICS3413</ramo>
+    <ramo>ICH3600</ramo>
   </Profesor>
   <Profesor Nombre="Profe Arquitectura" id="prueba4" facultad="Arquitectura">
     <ramo>ARQ2013</ramo>
@@ -11,11 +12,11 @@
     <ramo>ARQ1010</ramo>
     <ramo>ARQ2273</ramo>
   </Profesor>
-  <Profesor Nombre="Profesor3">
+  <Profesor Nombre="Profesor3" id="prueba5" facultad="Ingenieria">
     <ramo>IIC2733</ramo>
     <ramo>IIC2133</ramo>
-  </Profesor>
-  <Profesor Nombre="Profesor4">
     <ramo>IIC2764</ramo>
+    <ramo>ICE20114</ramo>
+    <ramo>ICC3524</ramo>
   </Profesor>
 </Profesores>

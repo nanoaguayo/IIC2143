@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Mallas>
    <Malla carrera="Enfermeria" nombre="Enfermeria">
-      <Ramo>IIC2143</Ramo>
-      <Ramo>ICS3413</Ramo>
+      <Ramo>ENF2528</Ramo>
+      <Ramo>ENF4020</Ramo>
+      <Ramo>ENF2218</Ramo>
+      <Ramo>ENF1119</Ramo>
    </Malla>
 </Mallas>

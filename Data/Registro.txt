@@ -24,4 +24,22 @@
       <admin>false</admin>
       <profesor>false</profesor>
    </data>
+    <data>
+      <id>sapu</id>
+      <password>aa</password>
+      <admin>false</admin>
+      <profesor>false</profesor>
+   </data>
+   <data>
+      <id>nano</id>
+      <password>pass</password>
+      <admin>false</admin>
+      <profesor>false</profesor>
+   </data>
+   <data>
+      <id>asd</id>
+      <password>pass</password>
+      <admin>false</admin>
+      <profesor>false</profesor>
+   </data>
 </Registro>

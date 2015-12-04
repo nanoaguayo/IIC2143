@@ -1,4 +1,3 @@
-package mainproyectosoft;
 import javafx.beans.property.SimpleStringProperty;
 
 public class InboxFX {

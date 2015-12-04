@@ -1,5 +1,3 @@
-package mainproyectosoft;
-
 import java.io.*;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
@@ -52,8 +50,9 @@ Semestre[] GetHistorial(Alumno a){
 				Element nodo1 = (Element)ramos.item(j);
 				
 				String name1= nodo.getElementsByTagName("sigla").item(0).getTextContent();
+				
 				String name2= nodo1.getTextContent();
-
+				
 				
 					if(name1.equals(name2)){
 							String Nombre=nodo.getElementsByTagName("nombre").item(0).getTextContent();

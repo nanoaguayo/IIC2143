@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lista>
+  <alumno num_alumno="10111213">prueba</alumno>
+</lista>

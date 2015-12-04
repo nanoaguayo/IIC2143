@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Chat>
   <Mensaje emisor="Juan Rojas">
-    <Contenido>Mensaje Prueba</Contenido>
+    <Contenido>Hola</Contenido>
+  </Mensaje>
+  <Mensaje emisor="Juan Rojas">
+    <Contenido>como estas?</Contenido>
+  </Mensaje>
+  <Mensaje emisor="Juan Rojas">
+    <Contenido>Cristobal?</Contenido>
+  </Mensaje>
+  <Mensaje emisor="Cristobal Sapunar">
+    <Contenido>Hola Juan</Contenido>
   </Mensaje>
 </Chat>

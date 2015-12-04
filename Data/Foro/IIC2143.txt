@@ -10,4 +10,19 @@
     <texto>Este es un texto de prueba</texto>
     <archivo>Archivo test</archivo>
   </mensaje>
+  <mensaje>
+    <alumno>Juan Rojas</alumno>
+    <texto>Un comentario</texto>
+    <archivo>http://prueba2.com</archivo>
+  </mensaje>
+  <mensaje>
+    <alumno>Fernando Aguayo</alumno>
+    <texto>Hola</texto>
+    <archivo />
+  </mensaje>
+  <mensaje>
+    <alumno>Cristobal Sapunar</alumno>
+    <texto>Entrega6</texto>
+    <archivo>www.x.cl</archivo>
+  </mensaje>
 </Foro>

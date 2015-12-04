@@ -1,10 +1,7 @@
-package mainproyectosoft;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.application.Application;
 import javafx.scene.Group;
-
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Font;
@@ -50,6 +47,7 @@ public class MainProyectoSoft extends Application {
     Sistema sistema = new Sistema();
     String pre_username;
     String pre_pass;
+    String destinatario="";
     
     
 
@@ -100,6 +98,11 @@ public class MainProyectoSoft extends Application {
         GridPane.setConstraints(RamoMallaButton, 0, 4);
         RamoMallaButton.setOnAction(e -> Admin_RamoaMalla());
         
+        //Eliminar ramo
+        Button DeleteRamoButton = new Button("Eliminar Ramo");
+        GridPane.setConstraints(DeleteRamoButton, 0, 5);
+        RamoMallaButton.setOnAction(e -> EliminarRamoPrev());
+        
         //Button Activar/Desactivar Crear Semestre
         Button semstatusButton = new Button();        
         if (sistema.getEstado()){
@@ -107,7 +110,7 @@ public class MainProyectoSoft extends Application {
         } else{
             semstatusButton.setText("Activar Crear Semestre");
         }
-        GridPane.setConstraints(semstatusButton, 0, 5);
+        GridPane.setConstraints(semstatusButton, 0, 6);
         semstatusButton.setOnAction(e -> {
             if (semstatusButton.getText().equals("Activar Crear Semestre")){
                 sistema.CambiarPeriodo();
@@ -120,7 +123,7 @@ public class MainProyectoSoft extends Application {
    
         //Button Logout
         Button Logout = new Button("Logout");
-        GridPane.setConstraints(Logout, 0, 6);
+        GridPane.setConstraints(Logout, 0, 7);
         Logout.setOnAction(e -> {
             alumno = null;
             admin = null;
@@ -130,7 +133,7 @@ public class MainProyectoSoft extends Application {
         
         //Agregando a grid
         grid_admin.getChildren().addAll(labelbienvenida_admin, RamoButton, 
-                MallaButton, RestriccionesButton, semstatusButton, RamoMallaButton, Logout);
+                MallaButton, RestriccionesButton, semstatusButton, RamoMallaButton,DeleteRamoButton, Logout);
         grid_admin.setAlignment(Pos.CENTER);
         scene_admin = new Scene(grid_admin); 
         
@@ -324,12 +327,13 @@ public class MainProyectoSoft extends Application {
                 EdadInput.getText(), sexo.getValue(), 
                 carrera.getValue(), NumeroInput.getText(), malla.getValue()));
         
-
+        Label error = new Label("");
+        GridPane.setConstraints(error,0,8);
         //Agregando a grid
         grid1.getChildren().addAll(RegistroRut, RutRegistroInput, 
                 NombreRegistro, NombreInput, NumeroRegistro, EdadRegistro, 
                 EdadInput, sexoLabel, sexo, carreraLabel, carrera, mallaLabel, 
-                malla, registrarmeButton, NumeroInput);
+                malla, registrarmeButton, NumeroInput,error);
 
         // scene1, grid1 = Menu Registro
         scene1 = new Scene(grid1, 330, 300);
@@ -376,9 +380,14 @@ public class MainProyectoSoft extends Application {
         GridPane.setConstraints(ForoButton, 0, 5);
         ForoButton.setOnAction(e -> preVentana_Foro());
         
+        //Mensajes
+        Button Inbox = new Button("Bandeja Entrada");
+        GridPane.setConstraints(Inbox, 0, 6);
+        Inbox.setOnAction(e -> preVentana_Inbox());
+        
         //Button Logout
         Button ALogout = new Button("Logout");
-        GridPane.setConstraints(ALogout, 0, 6);
+        GridPane.setConstraints(ALogout, 0, 7);
         ALogout.setOnAction(e -> {
             alumno = null;
             admin = null;
@@ -388,7 +397,7 @@ public class MainProyectoSoft extends Application {
    
         //Agregando a grid
         grid2.getChildren().addAll(labelbienvenida, SemestreButton, HistorialButton, ACButton, 
-                BuscadorButton, ForoButton, ALogout);
+                BuscadorButton, ForoButton,Inbox, ALogout);
         
         // Sistema se puede crear ramo
         if (sistema.getEstado()){
@@ -396,13 +405,13 @@ public class MainProyectoSoft extends Application {
                 grid2.getChildren().add(SemestreButton);
                 
             }
-            scene2 = new Scene(grid2, 290, 260);
+            scene2 = new Scene(grid2, 300, 360);
         }else {
             if (grid2.getChildren().contains(SemestreButton)){
                 grid2.getChildren().remove(SemestreButton);
                 
             }
-            scene2 = new Scene(grid2, 290, 230);
+            scene2 = new Scene(grid2, 300, 360);
         }
 
         // scene2, grid2 = Menu Logueado
@@ -559,6 +568,7 @@ public class MainProyectoSoft extends Application {
         window.setScene(scene_tomaramos);
         }else{
         	System.out.println("Numero alumno ya existe");
+        	
         }
         }catch(Throwable e){
             System.out.println(e); 
@@ -1207,13 +1217,23 @@ public class MainProyectoSoft extends Application {
                     String Comentario = Inputcomentario.getText();
                     double Nota = 0.0;
                     
-                    boolean aux = admin.CrearRamo(Sigla, Nombre, Horario, Sala, Campus,
+                    int aux = admin.CrearRamo(Sigla, Nombre, Horario, Sala, Campus,
                             Creditos, Nota, Esretirable, Seccion, Comentario, Profesor);
                     
-                    if (aux){
+                    if (aux==0){
                         mensaje.setText("Ingreso de Ramo Exitoso");
-                    } else {
-                        mensaje.setText("Error de Incompatibilidad");
+                    } 
+                    else if(aux==1) {
+                        mensaje.setText("Sala no disponible en dicho horario");
+                    }
+                    else if(aux==2) {
+                        mensaje.setText("Sigla ya se encuentra inscrita");
+                    }
+                    else if(aux==3) {
+                        mensaje.setText("Profesor ya tiene ramo asignado en ese horario");
+                    }
+                    else if(aux==-1) {
+                        mensaje.setText("Error al crear ramo");
                     }
                     mensaje.setStyle("-fx-font-weight: bold");
                 }
@@ -1494,6 +1514,109 @@ public class MainProyectoSoft extends Application {
         windowRamoaMalla.show();
         
     }
+    
+    public void EliminarRamoPrev(){
+        Stage windowRamoaMalla = new Stage();
+        windowRamoaMalla.setResizable(true);
+        windowRamoaMalla.initModality(Modality.APPLICATION_MODAL);
+        windowRamoaMalla.setTitle("Eliminar Ramo");
+        windowRamoaMalla.setMinWidth(400);
+        windowRamoaMalla.setMinHeight(250);
+
+        //GridPane
+        GridPane grid_ramoamalla = new GridPane();
+        grid_ramoamalla.setPadding(new Insets(10, 10, 10, 10));
+        grid_ramoamalla.setVgap(8);
+        grid_ramoamalla.setHgap(5);
+        grid_ramoamalla.setAlignment(Pos.CENTER);
+        
+        // Label Carrera
+        Label lcarrera = new Label("Carrera");
+        GridPane.setConstraints(lcarrera, 0, 0);
+        
+        // Label Nombre Malla
+        Label nombremalla = new Label("Malla:");
+        GridPane.setConstraints(nombremalla, 0, 1);
+        
+        // Label Nombre Ramo
+        Label nombreramo = new Label("Ramo:");
+        GridPane.setConstraints(nombreramo, 0, 2);
+        
+        // Ramo Box
+        ComboBox<String> ramosbox = new ComboBox<>();
+        GridPane.setConstraints(ramosbox, 1, 2);
+        ramosbox.setDisable(true);
+        
+        // Malla Box
+        ComboBox<String> mallabox = new ComboBox<>();
+        GridPane.setConstraints(mallabox, 1, 1);
+        mallabox.setDisable(true);
+        mallabox.setOnAction(e -> {
+            ramosbox.getSelectionModel().clearSelection();
+            ramosbox.getItems().clear();
+            if (mallabox.getValue() != null){
+                ramosbox.setDisable(false);
+                ArrayList<String> ramos = sistema.getRamosMalla2(admin.carreratemp, mallabox.getValue());
+                System.out.println(ramos);
+                ramosbox.getItems().addAll(ramos);
+            }
+        });
+        
+        // Carrera Box
+        ComboBox<String> carrerabox = new ComboBox<>();
+        ArrayList<String> carreras = sr.getCarreras();
+        carrerabox.getItems().addAll(carreras);
+        GridPane.setConstraints(carrerabox, 1, 0);
+        carrerabox.setOnAction(e -> {
+            mallabox.getSelectionModel().clearSelection();
+            mallabox.getItems().clear();
+            ramosbox.getSelectionModel().clearSelection();
+            ramosbox.getItems().clear();
+            if (carrerabox.getValue() != null){
+                mallabox.setDisable(false);
+                admin.carreratemp = carrerabox.getValue();
+                ArrayList<String> mallas = sr.getMallas(carrerabox.getValue());
+                mallabox.getItems().addAll(mallas);
+            }
+        });
+        
+        //Mensaje
+        Label mensaje = new Label("");
+        
+        //Button Ingresar
+        Button Ingresar = new Button("Eliminar");
+        GridPane.setConstraints(Ingresar, 1, 4);
+        Ingresar.setOnAction(e -> {
+            if (carrerabox.getValue() == null || mallabox.getValue() == null || 
+                    ramosbox.getValue() == null){
+                mensaje.setText("Faltan campos");
+        }else{
+            boolean aux=admin.EliminarRamo(carrerabox.getValue(), ramosbox.getValue());
+            if (aux){
+                mensaje.setText("Ramo Eliminado");
+            } else {
+                mensaje.setText("Error al eliminar ramo");
+            }
+            }
+            ramosbox.getItems().clear();
+        });
+        
+        grid_ramoamalla.getChildren().addAll(lcarrera, carrerabox, nombremalla, 
+                mallabox, nombreramo, ramosbox);
+        
+        
+        VBox vb = new VBox();
+        vb.setPadding(new Insets(30, 80, 10, 80));
+        vb.setSpacing(10);
+        
+        vb.getChildren().addAll(grid_ramoamalla, Ingresar, mensaje);
+        vb.setAlignment(Pos.CENTER);
+        Scene scene_ramoamalla = new Scene(vb);
+        windowRamoaMalla.setScene(scene_ramoamalla);
+        windowRamoaMalla.show();
+        
+    }
+    
     public void Calificar_profe(){
         
     Stage windowCalificar = new Stage();
@@ -1829,9 +1952,9 @@ public class MainProyectoSoft extends Application {
         table.getColumns().addAll(col1, col2, col3);
         
 
-        final TextField nombre0 = new TextField();
+        /*final TextField nombre0 = new TextField();
         nombre0.setPromptText("Nombre");
-        nombre0.setMaxWidth(nombre0.getPrefWidth());
+        nombre0.setMaxWidth(nombre0.getPrefWidth());*/
         final TextField mensaje0 = new TextField();
         mensaje0.setPromptText("Mensaje");
         mensaje0.setMaxWidth(mensaje0.getPrefWidth());
@@ -1841,17 +1964,17 @@ public class MainProyectoSoft extends Application {
         
         final Button send_btn = new Button("Enviar");
         send_btn.setOnAction(e -> {
-                data.add(new ForoFX(nombre0.getText(), mensaje0.getText(), 
+                data.add(new ForoFX(alumno.Nombre, mensaje0.getText(), 
                         archivo0.getText()));
-                foro.AddMessage(ramo, nombre0.getText(), mensaje0.getText(), 
+                foro.AddMessage(ramo, alumno.Nombre, mensaje0.getText(), 
                         archivo0.getText());
-                nombre0.clear();
+                //nombre0.clear();
                 archivo0.clear();
                 mensaje0.clear();
             
         });
         
-        final HBox hb = new HBox(nombre0, mensaje0, archivo0, send_btn);
+        final HBox hb = new HBox(mensaje0, archivo0, send_btn);
         
         final VBox vbox = new VBox();
         vbox.setSpacing(5);
@@ -1862,6 +1985,75 @@ public class MainProyectoSoft extends Application {
  
         windowForo.setScene(scene_foro);
         windowForo.show();
+    }
+    
+    public void Ventana_Inbox(String input){
+    	
+    	int x = input.indexOf("-");
+    	String nombre = input.substring(0,x);
+    	String numero2 = input.substring(x+1, input.length());
+    	//System.out.println(input+"/"+nombre+"/"+numero2);
+        Stage windowInbox = new Stage();
+        
+        ArrayList<InboxFX> mensajes = alumno.GetMensajes(numero2);
+        
+        Scene scene_Inbox = new Scene(new Group());
+        TableView<InboxFX> table = new TableView<>();
+        ObservableList<InboxFX> data = FXCollections.observableArrayList(mensajes);
+        windowInbox.setTitle("Bandeja Entrada");
+
+ 
+        final Label label = new Label("Mensajes con "+nombre);
+        label.setFont(new Font("Arial", 15));
+        table.setMinWidth(400);
+        table.setMinHeight(400);
+        table.setEditable(false);
+ 
+        TableColumn col1 = new TableColumn("Emisor");
+        TableColumn col2 = new TableColumn("Mensaje");
+        
+        
+        col1.setCellValueFactory(
+                new PropertyValueFactory<>("Emisor"));
+        col1.setMinWidth(80);
+        
+        col2.setCellValueFactory(
+                new PropertyValueFactory<>("Mensaje"));
+        col2.setMinWidth(80);
+        
+        
+        table.setItems(data);
+        table.getColumns().addAll(col1, col2);
+        
+
+        /*final TextField nombre0 = new TextField();
+        nombre0.setPromptText("Nombre");
+        nombre0.setMaxWidth(nombre0.getPrefWidth());*/
+        final TextField mensaje0 = new TextField();
+        mensaje0.setPromptText("Mensaje");
+        mensaje0.setMaxWidth(mensaje0.getPrefWidth());
+       
+        
+        final Button send_btn = new Button("Enviar");
+        send_btn.setOnAction(e -> {
+                data.add(new InboxFX("Tu", mensaje0.getText()));
+                alumno.MandarMensaje(numero2, mensaje0.getText());
+                //nombre0.clear();
+                mensaje0.clear();
+            
+        });
+        
+        final HBox hb = new HBox(mensaje0, send_btn);
+        
+        final VBox vbox = new VBox();
+        vbox.setSpacing(5);
+        vbox.setPadding(new Insets(10, 10, 10, 10));
+        vbox.getChildren().addAll(label, table, hb);
+ 
+        ((Group) scene_Inbox.getRoot()).getChildren().addAll(vbox);
+ 
+        windowInbox.setScene(scene_Inbox);
+        windowInbox.show();
     }
     
     public void preVentana_Foro(){
@@ -1953,6 +2145,66 @@ public class MainProyectoSoft extends Application {
         Scene scene_preForo = new Scene(vb);
         windowpreForo.setScene(scene_preForo);
         windowpreForo.show();
+        
+    }
+    
+    public void preVentana_Inbox(){
+        Stage windowpreInbox = new Stage();
+        windowpreInbox.setResizable(true);
+        windowpreInbox.initModality(Modality.APPLICATION_MODAL);
+        windowpreInbox.setTitle("Elegir Alumno");
+        windowpreInbox.setMinWidth(250);
+        windowpreInbox.setMinHeight(250);
+
+        //GridPane
+        GridPane grid_preInbox = new GridPane();
+        grid_preInbox.setPadding(new Insets(10, 10, 10, 10));
+        grid_preInbox.setVgap(8);
+        grid_preInbox.setHgap(5);
+        grid_preInbox.setAlignment(Pos.CENTER);
+        
+        // Label Carrera
+        Label labelalumno = new Label("Alumno");
+        GridPane.setConstraints(labelalumno, 0, 0);
+        
+     
+        
+        
+        // Carrera Box
+        ComboBox<String> alumnosbox = new ComboBox<>();
+        ArrayList<String> alumnos = sistema.getAlumnos(String.valueOf(alumno.numero_alumno));
+       
+        alumnosbox.getItems().addAll(alumnos);
+        GridPane.setConstraints(alumnosbox, 1, 0);
+        alumnosbox.setOnAction(e -> {
+           
+            if (alumnosbox.getValue() != null){
+                
+                destinatario = alumnosbox.getValue();
+               
+            }
+        });
+        
+        //Mensaje
+        Label mensaje = new Label("");
+        
+        //Button Ingresar
+        Button Ingresar = new Button("Ingresar");
+        GridPane.setConstraints(Ingresar, 1, 4);
+        Ingresar.setOnAction(e -> Ventana_Inbox(alumnosbox.getValue()));
+        
+        grid_preInbox.getChildren().addAll(labelalumno, alumnosbox);
+        
+        
+        VBox vb = new VBox();
+        vb.setPadding(new Insets(30, 80, 10, 80));
+        vb.setSpacing(10);
+        
+        vb.getChildren().addAll(grid_preInbox, Ingresar, mensaje);
+        vb.setAlignment(Pos.CENTER);
+        Scene scene_preInbox= new Scene(vb);
+        windowpreInbox.setScene(scene_preInbox);
+        windowpreInbox.show();
         
     }
 }

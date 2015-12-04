@@ -1,5 +1,3 @@
-package mainproyectosoft;
-
 import java.io.*;
 
 import javax.xml.parsers.DocumentBuilder;
